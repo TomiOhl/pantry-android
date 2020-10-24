@@ -71,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful())
                                         // Névbeállítás sikeres
-                                        // TODO: létrehozni egy dokumentumot a usernek
                                         redirectToProfile();
                                 });
                     } else {
