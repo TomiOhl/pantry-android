@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Szakdoga proto</string>
+    <string name="email">E-mail-cím</string>
+    <string name="password">Jelszó</string>
+    <string name="register">Regisztráció</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="logout">Kijelentkezés</string>
+    <string name="display_name">Teljes név</string>
+</resources>
