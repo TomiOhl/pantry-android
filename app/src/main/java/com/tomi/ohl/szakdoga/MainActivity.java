@@ -10,16 +10,16 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private FirebaseUser user;
     private TextView listTextView;
 
     @Override
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         Button logoutButton = findViewById(R.id.btnLogout);
 
         // Kérjük le a bejelentkezett usert, majd jelenítsük meg az adatait
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             nameTextView.setText(String.format("%s: %s", getString(R.string.display_name), user.getDisplayName()));
             emailTextView.setText(String.format("%s: %s", getString(R.string.email), user.getEmail()));
@@ -64,16 +64,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void getTestList() {
         // Kilistázza az adott user adatait
-        StringBuilder testText = new StringBuilder();
-        db.collection("Users").get().addOnCompleteListener(task -> {
+        StringBuilder userDataList = new StringBuilder();
+        db.collection("Users").document(user.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    testText.append(document.getId()).append(" => ").append(document.getData()).append("\n");
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    HashMap<String, Object> userdata = (HashMap<String, Object>) document.getData();
+                    assert userdata != null;
+                    for (String elem : userdata.keySet())
+                        userDataList.append(elem).append(" => ").append(userdata.get(elem)).append("\n");
+                    listTextView.setText(userDataList);
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Dokumentumok lekérése sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Dokumentum lekérése sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
             }
-            listTextView.setText(testText.toString());
         });
     }
 }
