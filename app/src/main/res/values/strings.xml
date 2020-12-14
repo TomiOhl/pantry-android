@@ -7,4 +7,17 @@
     <string name="logout">Kijelentkezés</string>
     <string name="display_name">Teljes név</string>
     <string name="add">Hozzáadás</string>
+    <string name="storage">Tároló</string>
+    <string name="shoppinglist">Bevásárlólista</string>
+    <string name="messages">Üzenetek</string>
+    <string name="settings">Beállítások</string>
+    <string name="search">Keresés</string>
+    <string name="account_header">Fiók</string>
+    <string name="app_header">Alkalmazás</string>
+    <string name="nickname_title">Becenév</string>
+    <string name="theme_title">Téma</string>
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
