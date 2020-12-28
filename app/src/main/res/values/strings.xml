@@ -25,4 +25,9 @@
     <string name="login_failed">Bejelentkezés sikertelen.</string>
     <string name="password_again">Jelszó újra</string>
     <string name="passwords_dont_match">A jelszavak nem egyeznek</string>
+    <string name="connect_to_family">Csatlakozás családhoz</string>
+    <string name="create_new">Új létrehozása</string>
+    <string name="connect_to_existing">Csatlakozás meglévőhöz</string>
+    <string name="email_family">A család létrehozojának e-mail-címe</string>
+    <string name="family_does_not_exist">A család nem létezik</string>
 </resources>

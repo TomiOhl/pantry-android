@@ -5,4 +5,6 @@
     <color name="colorAccent">#00B3FF</color>
     <color name="colorAccentRipple">#1200B3FF</color>
     <item name="darkBg" type="color">#ff202124</item>
+    <color name="colorText">#000000</color>
+    <color name="colorLayout">#FFFFFF</color>
 </resources>
