@@ -20,4 +20,9 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="back">Vissza</string>
+    <string name="create_user_failed">Felhasználó létrehozása sikertelen.</string>
+    <string name="login_failed">Bejelentkezés sikertelen.</string>
+    <string name="password_again">Jelszó újra</string>
+    <string name="passwords_dont_match">A jelszavak nem egyeznek</string>
 </resources>

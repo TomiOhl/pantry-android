@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -18,6 +18,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText emailEditText;
     private EditText passwordEditText;
+    private EditText passwordAgainEditText;
+    //private TextInputLayout passwordAgainEditTextContainer;   // ennek használatával custom errorokat lehet megjeleníteni, de több témázást igényel
     private EditText displayNameEditText;
     private Button loginButton;
 
@@ -30,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.editTextEmail);
         passwordEditText = findViewById(R.id.editTextPassword);
+        //passwordAgainEditTextContainer = findViewById(R.id.editTextPasswordAgainContainer);
+        passwordAgainEditText = findViewById(R.id.editTextPasswordAgain);
         displayNameEditText = findViewById(R.id.editTextDisplayName);
 
         Button registerButton = findViewById(R.id.btnRegister);
@@ -48,16 +52,23 @@ public class LoginActivity extends AppCompatActivity {
         redirectToProfile();
     }
 
+    // A regisztráció gombra kattintva
     private void registerUser() {
         // UI módosuljon regisztrációs módba
         if (displayNameEditText.getVisibility() == View.GONE) {
             displayNameEditText.setVisibility(View.VISIBLE);
-            loginButton.setVisibility(View.GONE);
+            passwordAgainEditText.setVisibility(View.VISIBLE);
+            loginButton.setText(R.string.back);
         } else
             createUser();
     }
 
     private void createUser() {
+        if (!passwordEditText.getText().equals(passwordAgainEditText.getText())) {
+            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.passwords_dont_match, Snackbar.LENGTH_SHORT).show();
+            // passwordAgainEditTextContainer.setError(getString(R.string.passwords_dont_match));
+            return;
+        }
         mAuth.createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -74,21 +85,27 @@ public class LoginActivity extends AppCompatActivity {
                                         redirectToProfile();
                                 });
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(getApplicationContext(), "Felhasználó létrehozása sikertelen.", Toast.LENGTH_SHORT).show();
+                        // Sikertelen regisztráció esetén hibaüzenet
+                        Snackbar.make(getWindow().getDecorView().getRootView(), R.string.create_user_failed, Snackbar.LENGTH_SHORT).show();
                     }
                 });
     }
 
+    // A bejelentkezés gombra kattintva
     private void loginUser() {
+        if (displayNameEditText.getVisibility() == View.VISIBLE) {
+            displayNameEditText.setVisibility(View.GONE);
+            passwordAgainEditText.setVisibility(View.GONE);
+            loginButton.setText(R.string.login);
+        } else
         mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Bejelentkezés sikeres
                         redirectToProfile();
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(getApplicationContext(), "Bejelentkezés sikertelen.", Toast.LENGTH_SHORT).show();
+                        // Sikertelen bejelentkezés esetén hibaüzenet
+                        Snackbar.make(getWindow().getDecorView().getRootView(), R.string.login_failed, Snackbar.LENGTH_SHORT).show();
                     }
                 });
     }
