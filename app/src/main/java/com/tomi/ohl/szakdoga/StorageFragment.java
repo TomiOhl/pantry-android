@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,6 +25,7 @@ import java.util.Map;
 public class StorageFragment extends Fragment {
 
     private TextView listTextView;
+    private BottomSheetBehavior<View> mBottomSheetBehavior;
     private FirebaseFirestore db;
     private FirebaseUser user;
 
@@ -45,9 +49,10 @@ public class StorageFragment extends Fragment {
         listTextView = layout.findViewById(R.id.textTestList);
 
         Button addButton = layout.findViewById(R.id.btnTestAdd);
+        Button saveAddButton = layout.findViewById(R.id.btnSaveAdd);
+        Button cancelAddButton = layout.findViewById(R.id.btnCancelAdd);
 
         // Jelenítsük meg a bejelentkezett user adatait
-        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             nameTextView.setText(String.format("%s: %s", getString(R.string.display_name), user.getDisplayName()));
             emailTextView.setText(String.format("%s: %s", getString(R.string.email), user.getEmail()));
@@ -64,6 +69,48 @@ public class StorageFragment extends Fragment {
             db.collection("Users").document(user.getUid()).set(randomitem)
                     .addOnSuccessListener(runnable -> getTestList());
         });
+
+        // Tárhelyválasztó tabek
+        TabLayout storageChooser = layout.findViewById(R.id.tabStorageChooser);
+        storageChooser.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        Toast.makeText(getContext(), "Hu To Gep", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Toast.makeText(getContext(), "Kamra", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(getContext(), "Default", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        // Hozzáadás layout
+        View bottom_sheet = layout.findViewById(R.id.bottom_sheet_add);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+        mBottomSheetBehavior.setPeekHeight(0);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        // Hozzáadás layout gombjai
+        cancelAddButton.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+        saveAddButton.setOnClickListener(view -> Toast.makeText(getContext(), "Mentés...", Toast.LENGTH_SHORT).show());
+
+        // Hozzáadás FAB
+        FloatingActionButton addFab = layout.findViewById(R.id.fabAdd);
+        addFab.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
 
         return layout;
     }

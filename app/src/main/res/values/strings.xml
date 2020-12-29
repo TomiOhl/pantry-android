@@ -30,4 +30,9 @@
     <string name="connect_to_existing">Csatlakozás meglévőhöz</string>
     <string name="email_family">A család létrehozojának e-mail-címe</string>
     <string name="family_does_not_exist">A család nem létezik</string>
+    <string name="fridge">Hűtőszekrény</string>
+    <string name="pantry">Kamra</string>
+    <string name="name">Megnevezés</string>
+    <string name="volume">Mennyiség</string>
+    <string name="shelf">Polc</string>
 </resources>

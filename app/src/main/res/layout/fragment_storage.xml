@@ -1,40 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".StorageFragment">
 
-    <TextView
-        android:id="@+id/textProfileName"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center|top" >
+
+        <TextView
+            android:id="@+id/textProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/display_name"/>
+
+        <TextView
+            android:id="@+id/textProfileEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"/>
+
+        <TextView
+            android:id="@+id/textTestList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+
+        <Button
+            android:id="@+id/btnTestAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/white"
+            app:cornerRadius="18dp"
+            android:text="@string/add"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabStorageChooser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItemFridge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fridge" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItemPantry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pantry" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/display_name"/>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/colorAccent"/>
 
-    <TextView
-        android:id="@+id/textProfileEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email"/>
+    <include layout="@layout/bottom_sheet_add" />
 
-    <TextView
-        android:id="@+id/textTestList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""/>
-
-    <Button
-        android:id="@+id/btnTestAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorAccent"
-        android:textColor="@android:color/white"
-        app:cornerRadius="18dp"
-        android:text="@string/add"/>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

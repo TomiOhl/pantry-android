@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 setFamily(s);
         });
 
-        // Családválaszto layout
+        // Családválasztó layout
         View bottom_sheet = findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         mBottomSheetBehavior.setPeekHeight(0);
