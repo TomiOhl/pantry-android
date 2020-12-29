@@ -28,13 +28,14 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private EditText emailEditText;
+    private TextInputEditText emailEditText;
     private EditText passwordEditText;
     private EditText passwordAgainEditText;
-    //private TextInputLayout passwordAgainEditTextContainer;   // ennek használatával custom errorokat lehet megjeleníteni, de több témázást igényel
-    private TextInputLayout newFamilyTextInputLayout;
+    private TextInputLayout passwordAgainEditTextContainer;
     private EditText displayNameEditText;
+    private TextInputLayout displayNameEditTextContainer;
     private Button loginButton;
+    private TextInputLayout newFamilyTextInputLayout;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
 
     @Override
@@ -46,8 +47,9 @@ public class LoginActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.editTextEmail);
         passwordEditText = findViewById(R.id.editTextPassword);
-        //passwordAgainEditTextContainer = findViewById(R.id.editTextPasswordAgainContainer);
+        passwordAgainEditTextContainer = findViewById(R.id.editTextPasswordAgainContainer);
         passwordAgainEditText = findViewById(R.id.editTextPasswordAgain);
+        displayNameEditTextContainer = findViewById(R.id.editTextDisplayNameContainer);
         displayNameEditText = findViewById(R.id.editTextDisplayName);
         newFamilyTextInputLayout = findViewById(R.id.textInputLayoutNewFamily);
         TextInputEditText newFamilyEditText = findViewById(R.id.editTextNewFamily);
@@ -72,14 +74,15 @@ public class LoginActivity extends AppCompatActivity {
         mBottomSheetBehavior.setPeekHeight(0);
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         mBottomSheetBehavior.setHideable(false);
+        mBottomSheetBehavior.setDraggable(false);
     }
 
     // A regisztráció gombra kattintva
     private void registerUser() {
         // UI módosuljon regisztrációs módba
-        if (displayNameEditText.getVisibility() == View.GONE) {
-            displayNameEditText.setVisibility(View.VISIBLE);
-            passwordAgainEditText.setVisibility(View.VISIBLE);
+        if (displayNameEditTextContainer.getVisibility() == View.GONE) {
+            displayNameEditTextContainer.setVisibility(View.VISIBLE);
+            passwordAgainEditTextContainer.setVisibility(View.VISIBLE);
             loginButton.setText(R.string.back);
         } else
             createUser();
@@ -152,9 +155,9 @@ public class LoginActivity extends AppCompatActivity {
 
     // A bejelentkezés gombra kattintva
     private void loginUser() {
-        if (displayNameEditText.getVisibility() == View.VISIBLE) {
-            displayNameEditText.setVisibility(View.GONE);
-            passwordAgainEditText.setVisibility(View.GONE);
+        if (displayNameEditTextContainer.getVisibility() == View.VISIBLE) {
+            displayNameEditTextContainer.setVisibility(View.GONE);
+            passwordAgainEditTextContainer.setVisibility(View.GONE);
             loginButton.setText(R.string.login);
         } else
         mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
