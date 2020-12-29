@@ -37,13 +37,4 @@
         app:cornerRadius="18dp"
         android:text="@string/add"/>
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorAccent"
-        android:textColor="@android:color/white"
-        app:cornerRadius="18dp"
-        android:text="@string/logout"/>
-
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.tomi.ohl.szakdoga;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +21,6 @@ import java.util.Map;
 
 public class StorageFragment extends Fragment {
 
-    private MainActivity mainActivity;
     private TextView listTextView;
     private FirebaseFirestore db;
     private FirebaseUser user;
@@ -32,7 +30,6 @@ public class StorageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity) getActivity();
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
@@ -48,7 +45,6 @@ public class StorageFragment extends Fragment {
         listTextView = layout.findViewById(R.id.textTestList);
 
         Button addButton = layout.findViewById(R.id.btnTestAdd);
-        Button logoutButton = layout.findViewById(R.id.btnLogout);
 
         // Jelenítsük meg a bejelentkezett user adatait
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -67,12 +63,6 @@ public class StorageFragment extends Fragment {
             assert user != null;
             db.collection("Users").document(user.getUid()).set(randomitem)
                     .addOnSuccessListener(runnable -> getTestList());
-        });
-
-        logoutButton.setOnClickListener(view -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(mainActivity, LoginActivity.class));
-            mainActivity.finish();
         });
 
         return layout;
