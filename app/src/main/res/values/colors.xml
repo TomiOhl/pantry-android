@@ -6,6 +6,6 @@
     <color name="colorAccentRipple">#1200B3FF</color>
     <color name="darkBg">#ff202124</color>
     <color name="colorText">#000000</color>
-    <color name="colorLayout">#F0F0F0</color>
+    <color name="colorLayout">@android:color/white</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

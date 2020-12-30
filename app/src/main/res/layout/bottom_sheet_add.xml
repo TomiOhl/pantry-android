@@ -10,13 +10,15 @@
     android:paddingStart="12dp"
     android:paddingEnd="12dp"
     android:paddingBottom="12dp"
-    android:elevation="8dp"
+    android:elevation="12dp"
+    android:layout_marginTop="1dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:src="@drawable/handle"
         android:contentDescription="@string/back" />
 
@@ -24,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:textSize="32sp"
         android:textColor="@color/colorText"
         android:text="@string/add"/>
@@ -31,7 +34,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutAddItemName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextAddItemName"
             android:layout_width="match_parent"
@@ -45,7 +49,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutAddItemVolume"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextAddItemVolume"
             android:layout_width="match_parent"
@@ -61,6 +66,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:hint="@string/storage">
         <AutoCompleteTextView
             android:layout_width="match_parent"
@@ -85,7 +91,9 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" >
         <Button
             android:id="@+id/btnCancelAdd"
             android:layout_width="wrap_content"
