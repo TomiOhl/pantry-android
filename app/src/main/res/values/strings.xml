@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Szakdoga proto</string>
+    <string name="app_name">Éléskamra</string>
     <string name="email">E-mail-cím</string>
     <string name="password">Jelszó</string>
     <string name="register">Regisztráció</string>
