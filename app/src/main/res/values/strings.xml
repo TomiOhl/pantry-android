@@ -35,4 +35,6 @@
     <string name="name">Megnevezés</string>
     <string name="volume">Mennyiség</string>
     <string name="shelf">Polc</string>
+    <string name="shoppinglist_desc">Tegye a kívánt elemeket bevásárlólistára.</string>
+    <string name="messages_desc">Hagyjon üzenetet, megjegyzéseket a családtagoknak, hogy biztosan minden a legjobban menjen.</string>
 </resources>
