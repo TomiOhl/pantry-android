@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,6 +29,10 @@ public class StorageFragment extends Fragment {
 
     private TextView listTextView;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
+    private TextInputEditText nameEditText;
+    private TextInputEditText countEditText;
+    private AutoCompleteTextView menuStorageChooser;
+    private TextInputEditText shelfEditText;
     private FirebaseFirestore db;
     private FirebaseUser user;
 
@@ -47,6 +54,11 @@ public class StorageFragment extends Fragment {
         TextView nameTextView = layout.findViewById(R.id.textProfileName);
         TextView emailTextView = layout.findViewById(R.id.textProfileEmail);
         listTextView = layout.findViewById(R.id.textTestList);
+
+        nameEditText = layout.findViewById(R.id.editTextAddItemName);
+        countEditText = layout.findViewById(R.id.editTextAddItemVolume);
+        menuStorageChooser = layout.findViewById(R.id.menuStoragechooser);
+        shelfEditText = layout.findViewById(R.id.editTextAddItemShelf);
 
         Button addButton = layout.findViewById(R.id.btnTestAdd);
         Button saveAddButton = layout.findViewById(R.id.btnSaveAdd);
@@ -108,9 +120,17 @@ public class StorageFragment extends Fragment {
         cancelAddButton.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
         saveAddButton.setOnClickListener(view -> Toast.makeText(getContext(), "Mentés...", Toast.LENGTH_SHORT).show());
 
+        // Hozzáadás layout tárhelyválasztó menüje
+        String[] storageTypes = {"Huto", "Spajz"};
+        ArrayAdapter<String> storageTypeAdapter = new ArrayAdapter<>(requireContext(), R.layout.menu_add_choose_storage, storageTypes);
+        menuStorageChooser.setAdapter(storageTypeAdapter);
+
         // Hozzáadás FAB
         FloatingActionButton addFab = layout.findViewById(R.id.fabAdd);
-        addFab.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
+        addFab.setOnClickListener(view -> {
+            clearAddLayout();
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        });
 
         return layout;
     }
@@ -132,6 +152,17 @@ public class StorageFragment extends Fragment {
                 Toast.makeText(getContext(), "Dokumentum lekérése sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void clearAddLayout() {
+        nameEditText.setText(null);
+        nameEditText.clearFocus();
+        countEditText.setText(null);
+        countEditText.clearFocus();
+        menuStorageChooser.setText(null);
+        menuStorageChooser.clearFocus();
+        shelfEditText.setText(null);
+        shelfEditText.clearFocus();
     }
 
 }
