@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
 
 import java.util.Objects;
@@ -116,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         // Sikertelen regisztráció esetén hibaüzenet
                         hideKeyboard(this);
-                        Snackbar.make(getWindow().getDecorView().getRootView(), R.string.create_user_failed, Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(getWindow().getDecorView().getRootView(), R.string.create_user_failed + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -125,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
     private void setFamily(String family_email) {
         FirebaseUser user = Objects.requireNonNull(mAuth.getCurrentUser());
         String userEmail = Objects.requireNonNull(user.getEmail());
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         if (family_email == null) {
             // új család létrehozása
             FamilyController.getInstance().setFamily(userEmail,  userEmail)
@@ -168,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // Sikertelen bejelentkezés esetén hibaüzenet
                             hideKeyboard(this);
-                            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.login_failed, Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.login_failed + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
                         }
                     });
         }

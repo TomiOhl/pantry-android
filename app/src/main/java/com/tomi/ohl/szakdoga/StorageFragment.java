@@ -145,7 +145,7 @@ public class StorageFragment extends Fragment {
                     listTextView.setText(userDataList);
                 }
             } else {
-                Toast.makeText(getContext(), "Az adatok lekérése hibába ütközött", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Az adatok lekérése sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
 

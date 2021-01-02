@@ -21,8 +21,8 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="back">Vissza</string>
-    <string name="create_user_failed">Felhasználó létrehozása sikertelen.</string>
-    <string name="login_failed">Bejelentkezés sikertelen.</string>
+    <string name="create_user_failed">Felhasználó létrehozása sikertelen</string>
+    <string name="login_failed">Bejelentkezés sikertelen</string>
     <string name="password_again">Jelszó újra</string>
     <string name="connect_to_family">Csatlakozás családhoz</string>
     <string name="create_new">Új létrehozása</string>
