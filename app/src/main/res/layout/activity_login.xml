@@ -15,12 +15,15 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextEmailContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
@@ -31,12 +34,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextPasswordContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:inputType="textPassword"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
@@ -56,6 +62,8 @@
             android:id="@+id/editTextPasswordAgain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:inputType="textPassword"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
@@ -74,6 +82,8 @@
             android:id="@+id/editTextDisplayName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:inputType="textCapWords"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"

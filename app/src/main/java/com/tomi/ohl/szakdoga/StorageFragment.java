@@ -1,9 +1,6 @@
 package com.tomi.ohl.szakdoga;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -20,10 +19,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.tomi.ohl.szakdoga.controller.StorageController;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class StorageFragment extends Fragment {
 
@@ -33,7 +31,6 @@ public class StorageFragment extends Fragment {
     private TextInputEditText countEditText;
     private AutoCompleteTextView menuStorageChooser;
     private TextInputEditText shelfEditText;
-    private FirebaseFirestore db;
     private FirebaseUser user;
 
     public StorageFragment() {}
@@ -41,7 +38,6 @@ public class StorageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
@@ -75,11 +71,8 @@ public class StorageFragment extends Fragment {
         addButton.setOnClickListener(view -> {
             // A user egyedi id-jével elnevezett dokumentumba beszúr egy adatot
             // A hozzáadás gomb többszöri megnyomása felülírja, de a kód működik több elemmel is
-            Map<String, Object> randomitem = new HashMap<>();
-            randomitem.put("timestamp", System.currentTimeMillis());
-            assert user != null;
-            db.collection("Users").document(user.getUid()).set(randomitem)
-                    .addOnSuccessListener(runnable -> getTestList());
+            StorageController.getInstance().insertTest();
+            getTestList();
         });
 
         // Tárhelyválasztó tabek
@@ -118,10 +111,13 @@ public class StorageFragment extends Fragment {
 
         // Hozzáadás layout gombjai
         cancelAddButton.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
-        saveAddButton.setOnClickListener(view -> Toast.makeText(getContext(), "Mentés...", Toast.LENGTH_SHORT).show());
+        saveAddButton.setOnClickListener(view -> {
+            Toast.makeText(getContext(), "Mentés...", Toast.LENGTH_SHORT).show();
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        });
 
         // Hozzáadás layout tárhelyválasztó menüje
-        String[] storageTypes = {"Huto", "Spajz"};
+        String[] storageTypes = {getString(R.string.fridge), getString(R.string.pantry)};
         ArrayAdapter<String> storageTypeAdapter = new ArrayAdapter<>(requireContext(), R.layout.menu_add_choose_storage, storageTypes);
         menuStorageChooser.setAdapter(storageTypeAdapter);
 
@@ -137,21 +133,22 @@ public class StorageFragment extends Fragment {
 
     private void getTestList() {
         // Kilistázza az adott user adatait
-        StringBuilder userDataList = new StringBuilder();
-        db.collection("Users").document(user.getUid()).get().addOnCompleteListener(task -> {
+        StorageController.getInstance().getTestInsert().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document != null && document.exists()) {
                     HashMap<String, Object> userdata = (HashMap<String, Object>) document.getData();
+                    StringBuilder userDataList = new StringBuilder();
                     assert userdata != null;
                     for (String elem : userdata.keySet())
                         userDataList.append(elem).append(" => ").append(userdata.get(elem)).append("\n");
                     listTextView.setText(userDataList);
                 }
             } else {
-                Toast.makeText(getContext(), "Dokumentum lekérése sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Az adatok lekérése hibába ütközött", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void clearAddLayout() {
