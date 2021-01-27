@@ -17,8 +17,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import static com.tomi.ohl.szakdoga.utils.ImeUtils.hideKeyboard;
@@ -127,7 +129,10 @@ public class LoginActivity extends AppCompatActivity {
         if (family_email == null) {
             // új család létrehozása
             FamilyController.getInstance().setFamily(userEmail,  userEmail)
-                    .addOnSuccessListener(runnable -> redirectToProfile());
+                    .addOnSuccessListener(runnable -> {
+                        FamilyController.getInstance().setCurrentFamily(userEmail);
+                        redirectToProfile();
+                    });
         } else {
             // létezik-e a család
             FamilyController.getInstance().exists(family_email).addOnCompleteListener(
@@ -139,7 +144,10 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 // Van ilyen family, el lehet menteni a jelenlegi usert is ahhoz
                                 FamilyController.getInstance().setFamily(userEmail, family_email)
-                                        .addOnSuccessListener(runnable -> redirectToProfile());
+                                        .addOnSuccessListener(runnable -> {
+                                            FamilyController.getInstance().setCurrentFamily(family_email);
+                                            redirectToProfile();
+                                        });
                             }
                         } else {
                             Toast.makeText(this, "Ellenőrzés sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
@@ -162,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             // Bejelentkezés sikeres
-                            redirectToProfile();
+                            setCurrentFamilyAndRedirect();
                         } else {
                             // Sikertelen bejelentkezés esetén hibaüzenet
                             hideKeyboard(this);
@@ -170,6 +178,21 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void setCurrentFamilyAndRedirect() {
+        FamilyController.getInstance().getFamily().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    HashMap<String, Object> familydata = (HashMap<String, Object>) document.getData();
+                    assert familydata != null;
+                    String family = (String) familydata.get("family");
+                    FamilyController.getInstance().setCurrentFamily(family);
+                    redirectToProfile();
+                }
+            }
+        });
     }
 
     private void redirectToProfile() {

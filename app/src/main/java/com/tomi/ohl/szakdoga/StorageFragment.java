@@ -14,14 +14,18 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.controller.StorageController;
+import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class StorageFragment extends Fragment {
 
@@ -49,6 +53,7 @@ public class StorageFragment extends Fragment {
 
         TextView nameTextView = layout.findViewById(R.id.textProfileName);
         TextView emailTextView = layout.findViewById(R.id.textProfileEmail);
+        TextView familyTextView = layout.findViewById(R.id.textProfileFamily);
         listTextView = layout.findViewById(R.id.textTestList);
 
         nameEditText = layout.findViewById(R.id.editTextAddItemName);
@@ -64,6 +69,7 @@ public class StorageFragment extends Fragment {
         if (user != null) {
             nameTextView.setText(String.format("%s: %s", getString(R.string.display_name), user.getDisplayName()));
             emailTextView.setText(String.format("%s: %s", getString(R.string.email), user.getEmail()));
+            familyTextView.setText(String.format("%s: %s", getString(R.string.family), FamilyController.getInstance().getCurrentFamily()));
             getTestList();
         }
 
@@ -112,11 +118,20 @@ public class StorageFragment extends Fragment {
         // Hozzáadás layout gombjai
         cancelAddButton.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
         saveAddButton.setOnClickListener(view -> {
-            Toast.makeText(getContext(), "Mentés...", Toast.LENGTH_SHORT).show();
+            Snackbar.make(requireActivity().findViewById(R.id.storageLayout), R.string.saving, Snackbar.LENGTH_SHORT).show();
+            StorageItem item = new StorageItem(
+                Objects.requireNonNull(nameEditText.getText()).toString(),
+                Integer.parseInt(String.valueOf(countEditText.getText())),
+                menuStorageChooser.getText().toString(),
+                Integer.parseInt(String.valueOf(shelfEditText.getText())),
+                String.valueOf(System.currentTimeMillis())
+            );
+            StorageController.getInstance().insertStorageItem(item);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
         // Hozzáadás layout tárhelyválasztó menüje
+        // TODO: Megcsinálni úgy, hogy rendesen használható legyen több nyelven is
         String[] storageTypes = {getString(R.string.fridge), getString(R.string.pantry)};
         ArrayAdapter<String> storageTypeAdapter = new ArrayAdapter<>(requireContext(), R.layout.menu_add_choose_storage, storageTypes);
         menuStorageChooser.setAdapter(storageTypeAdapter);

@@ -7,6 +7,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.tomi.ohl.szakdoga.controller.FamilyController;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -31,6 +32,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void logout() {
         FirebaseAuth.getInstance().signOut();
+        FamilyController.getInstance().setCurrentFamily(null);
         startActivity(new Intent(mainActivity, LoginActivity.class));
         mainActivity.finish();
     }
