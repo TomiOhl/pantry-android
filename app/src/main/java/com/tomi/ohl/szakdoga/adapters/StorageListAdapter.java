@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.models.StorageItem;
+import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StorageListAdapter extends BaseAdapter {
     Context ctx;
@@ -40,13 +43,20 @@ public class StorageListAdapter extends BaseAdapter {
         View row;
         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            row = inflater.inflate(android.R.layout.simple_list_item_1, viewGroup, false);
+            row = inflater.inflate(R.layout.storage_list_item, viewGroup, false);
         } else {
             row = convertView;
         }
         StorageItem storageItem = items.get(i);
-        TextView name = row.findViewById(android.R.id.text1);
+        TextView name = row.findViewById(R.id.listTitle);
         name.setText(storageItem.getName());
+        TextView shelf = row.findViewById(R.id.listSuffix);
+        shelf.setText(String.format(Locale.getDefault(),
+                "%d%s", storageItem.getShelf(), ctx.getString(R.string.nthShelf)
+        ));
+        row.setOnClickListener(view ->
+            DialogUtils.showItemDetailsDialog(ctx, (StorageItem) getItem(i))
+        );
         return row;
     }
 }

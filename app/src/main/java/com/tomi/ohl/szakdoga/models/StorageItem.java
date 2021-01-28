@@ -1,7 +1,6 @@
 package com.tomi.ohl.szakdoga.models;
 
 public class StorageItem {
-
     private String name;
     private int count;
     private String location;

@@ -20,6 +20,7 @@
             android:name=".LoginActivity"/>
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

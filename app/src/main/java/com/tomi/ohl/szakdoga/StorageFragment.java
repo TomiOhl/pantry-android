@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 import androidx.viewpager.widget.ViewPager;
@@ -103,10 +105,6 @@ public class StorageFragment extends Fragment {
         TabLayout tabLayout = layout.findViewById(R.id.tabStorageChooser);
         tabLayout.setupWithViewPager(storagePager);
 
-        // Hűtőszekrény és kamra kilistázása
-        loadFridgeContents(fridgeListFragment, getString(R.string.fridge));
-        loadFridgeContents(pantryListFragment, getString(R.string.pantry));
-
         // Hozzáadás layout
         View bottom_sheet = layout.findViewById(R.id.bottom_sheet_add);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
@@ -144,6 +142,14 @@ public class StorageFragment extends Fragment {
         return layout;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Hűtőszekrény és kamra kilistázása
+        loadFridgeContents(fridgeListFragment, getString(R.string.fridge));
+        loadFridgeContents(pantryListFragment, getString(R.string.pantry));
+    }
+
     private void getTestList() {
         // Kilistázza az adott user adatait
         StorageController.getInstance().getTestInsert().addOnCompleteListener(task -> {
@@ -177,12 +183,6 @@ public class StorageFragment extends Fragment {
                         itemsList.add(item);
                     }
                     listAdapter.notifyDataSetChanged();
-                    listFragment.getListView().setOnItemClickListener(
-                            (adapterView, view, i, l) -> DialogUtils.showItemDetailsDialog(
-                                    this.requireContext(),
-                                    (StorageItem) Objects.requireNonNull(listFragment.getListAdapter()).getItem(i)
-                            )
-                    );
                 }
         );
     }

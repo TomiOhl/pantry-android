@@ -52,21 +52,7 @@
             android:id="@+id/tabStorageChooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="fixed">
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:id="@+id/tabItemFridge"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/fridge" />-->
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:id="@+id/tabItemPantry"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/pantry" />-->
-
-        </com.google.android.material.tabs.TabLayout>
+            app:tabMode="fixed"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/storageViewPager"
