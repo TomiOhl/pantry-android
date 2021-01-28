@@ -28,7 +28,6 @@ public class NewMessageActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
         FloatingActionButton sendMessageFab = findViewById(R.id.fabSendMsg);
         sendMessageFab.setOnClickListener(view -> sendMessage());
     }

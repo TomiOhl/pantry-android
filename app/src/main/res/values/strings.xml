@@ -48,7 +48,7 @@
     <string name="modify">Módosítás</string>
     <string name="details">Részletek</string>
     <string name="date">Dátum</string>
-    <string name="nthShelf">. polc</string>
-    <string name="newMessage">Új üzenet</string>
-    <string name="newMessageHere">Írja üzenetét ide...</string>
+    <string name="nth_shelf">. polc</string>
+    <string name="new_message">Új üzenet</string>
+    <string name="new_message_here">Írja üzenetét ide…</string>
 </resources>

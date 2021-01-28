@@ -52,7 +52,7 @@ public class StorageListAdapter extends BaseAdapter {
         name.setText(storageItem.getName());
         TextView shelf = row.findViewById(R.id.listSuffix);
         shelf.setText(String.format(Locale.getDefault(),
-                "%d%s", storageItem.getShelf(), ctx.getString(R.string.nthShelf)
+                "%d%s", storageItem.getShelf(), ctx.getString(R.string.nth_shelf)
         ));
         row.setOnClickListener(view ->
             DialogUtils.showItemDetailsDialog(ctx, (StorageItem) getItem(i))

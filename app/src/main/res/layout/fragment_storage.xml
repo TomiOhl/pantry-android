@@ -52,6 +52,7 @@
             android:id="@+id/tabStorageChooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/tabColor"
             app:tabMode="fixed"/>
 
         <androidx.viewpager.widget.ViewPager

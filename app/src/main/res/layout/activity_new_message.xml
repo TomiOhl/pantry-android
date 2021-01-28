@@ -13,7 +13,7 @@
         android:gravity="top"
         android:background="@null"
         android:inputType="textCapSentences"
-        android:hint="@string/newMessageHere"
+        android:hint="@string/new_message_here"
         android:textSize="20sp"
         android:padding="8dp"
         android:importantForAutofill="no" />
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="@string/newMessage"
+        android:contentDescription="@string/new_message"
         app:srcCompat="@drawable/ic_send"
         app:tint="@android:color/white"
         app:backgroundTint="@color/colorAccent" />

@@ -18,10 +18,19 @@
     <!-- Splash screen theme. -->
     <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorPrimaryDark">#ffffffff</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
         <item name="android:navigationBarColor" tools:targetApi="27">@android:color/white</item>
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <!-- Login screen theme. -->
+    <style name="LoginTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:navigationBarColor" tools:targetApi="27">@android:color/white</item>
+    </style>
 </resources>

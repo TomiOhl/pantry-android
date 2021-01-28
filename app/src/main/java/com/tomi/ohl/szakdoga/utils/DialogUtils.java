@@ -26,7 +26,7 @@ public class DialogUtils {
                     "%s: %s\n%s: %d\n%s: %d%s\n%s: %s",
                     ctx.getString(R.string.name), item.getName(),
                     ctx.getString(R.string.volume), item.getCount(),
-                    ctx.getString(R.string.shelf), item.getShelf(), ctx.getString(R.string.nthShelf),
+                    ctx.getString(R.string.shelf), item.getShelf(), ctx.getString(R.string.nth_shelf),
                     ctx.getString(R.string.date), itemDate
             ))
             .setCancelable(true)
