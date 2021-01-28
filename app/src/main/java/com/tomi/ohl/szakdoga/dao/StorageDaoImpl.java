@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.tomi.ohl.szakdoga.models.MessageItem;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.HashMap;
@@ -31,9 +32,22 @@ public class StorageDaoImpl implements StorageDao {
         db.collection("Families").document(currentFamily).collection("Storages").document().set(item);
     }
 
+    // Elemek lekérése tárolóból
     public Query getStorageItems(String currentFamily, String location) {
         db = FirebaseFirestore.getInstance();
         return db.collection("Families").document(currentFamily).collection("Storages").whereEqualTo("location", location);
+    }
+
+    // Új üzenet gomb mentése az adatbázisba
+    public void insertNewMessage(String currentFamily, MessageItem item) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("Families").document(currentFamily).collection("Messages").document().set(item);
+    }
+
+    // Üzenetek lekérése az adatbázisból
+    public Query getNewMessages(String currentFamily) {
+        db = FirebaseFirestore.getInstance();
+        return db.collection("Families").document(currentFamily).collection("Messages");
     }
 
 }

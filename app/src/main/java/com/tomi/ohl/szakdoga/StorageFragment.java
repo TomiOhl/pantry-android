@@ -30,7 +30,6 @@ import com.tomi.ohl.szakdoga.adapters.StoragePagerAdapter;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
-import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editTextNewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:background="@null"
+        android:inputType="textCapSentences"
+        android:hint="@string/newMessageHere"
+        android:textSize="20sp"
+        android:padding="8dp"
+        android:importantForAutofill="no" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSendMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/newMessage"
+        app:srcCompat="@drawable/ic_send"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/colorAccent" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

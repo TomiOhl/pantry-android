@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.tomi.ohl.szakdoga.dao.StorageDao;
 import com.tomi.ohl.szakdoga.dao.StorageDaoImpl;
+import com.tomi.ohl.szakdoga.models.MessageItem;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 
 public class StorageController {
@@ -38,5 +39,14 @@ public class StorageController {
     public Query getStorageItems(String location) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         return dao.getStorageItems(currentFamily, location);
+    }
+
+    public void insertNewMessage(MessageItem item) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.insertNewMessage(currentFamily, item);
+    }
+    public Query getNewMessages() {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        return dao.getNewMessages(currentFamily);
     }
 }
