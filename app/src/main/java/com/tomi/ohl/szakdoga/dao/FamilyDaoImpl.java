@@ -28,8 +28,6 @@ public class FamilyDaoImpl implements FamilyDao {
         return db.collection("Users").document(Objects.requireNonNull(user.getEmail())).get();
     }
 
-
-
     public Task<Void> setFamily(String userEmail, String familyEmail) {
         Map<String, Object> familyItem = new HashMap<>();
         familyItem.put("family", familyEmail);

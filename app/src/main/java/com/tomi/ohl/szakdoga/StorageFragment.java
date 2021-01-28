@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.ListFragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,10 +22,15 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.tomi.ohl.szakdoga.adapters.StorageListAdapter;
+import com.tomi.ohl.szakdoga.adapters.StoragePagerAdapter;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
+import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -36,6 +43,8 @@ public class StorageFragment extends Fragment {
     private AutoCompleteTextView menuStorageChooser;
     private TextInputEditText shelfEditText;
     private FirebaseUser user;
+    private ListFragment fridgeListFragment;
+    private ListFragment pantryListFragment;
 
     public StorageFragment() {}
 
@@ -43,6 +52,8 @@ public class StorageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        fridgeListFragment = new ListFragment();
+        pantryListFragment = new ListFragment();
     }
 
     @Override
@@ -81,33 +92,20 @@ public class StorageFragment extends Fragment {
             getTestList();
         });
 
+        // Adapter létrehozása, ami meghatározza, mikor melyik listát kell betölteni
+        StoragePagerAdapter storagePagerAdapter = new StoragePagerAdapter(getChildFragmentManager(), this.getContext(), fridgeListFragment, pantryListFragment);
+
+        // ViewPager a fenti adapterrel
+        ViewPager storagePager = layout.findViewById(R.id.storageViewPager);
+        storagePager.setAdapter(storagePagerAdapter);
+
         // Tárhelyválasztó tabek
-        TabLayout storageChooser = layout.findViewById(R.id.tabStorageChooser);
-        storageChooser.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        Toast.makeText(getContext(), "Hu To Gep", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        Toast.makeText(getContext(), "Kamra", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(getContext(), "Default", Toast.LENGTH_SHORT).show();
-                }
-            }
+        TabLayout tabLayout = layout.findViewById(R.id.tabStorageChooser);
+        tabLayout.setupWithViewPager(storagePager);
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        // Hűtőszekrény és kamra kilistázása
+        loadFridgeContents(fridgeListFragment, getString(R.string.fridge));
+        loadFridgeContents(pantryListFragment, getString(R.string.pantry));
 
         // Hozzáadás layout
         View bottom_sheet = layout.findViewById(R.id.bottom_sheet_add);
@@ -124,7 +122,7 @@ public class StorageFragment extends Fragment {
                 Integer.parseInt(String.valueOf(countEditText.getText())),
                 menuStorageChooser.getText().toString(),
                 Integer.parseInt(String.valueOf(shelfEditText.getText())),
-                String.valueOf(System.currentTimeMillis())
+                System.currentTimeMillis()
             );
             StorageController.getInstance().insertStorageItem(item);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -163,7 +161,30 @@ public class StorageFragment extends Fragment {
                 Toast.makeText(getContext(), "Az adatok lekérése sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
+    private void loadFridgeContents(ListFragment listFragment, String storage) {
+        ArrayList<StorageItem> itemsList = new ArrayList<>();
+        StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsList);
+        listFragment.setListAdapter(listAdapter);
+        StorageController.getInstance().getStorageItems(storage).addSnapshotListener(
+                (value, error) -> {
+                    assert value != null;
+                    itemsList.clear();
+                    for (QueryDocumentSnapshot doc : value) {
+                        StorageItem item = doc.toObject(StorageItem.class);
+                        itemsList.add(item);
+                    }
+                    listAdapter.notifyDataSetChanged();
+                    listFragment.getListView().setOnItemClickListener(
+                            (adapterView, view, i, l) -> DialogUtils.showItemDetailsDialog(
+                                    this.requireContext(),
+                                    (StorageItem) Objects.requireNonNull(listFragment.getListAdapter()).getItem(i)
+                            )
+                    );
+                }
+        );
     }
 
     private void clearAddLayout() {

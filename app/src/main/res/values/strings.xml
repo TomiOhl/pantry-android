@@ -42,6 +42,10 @@
     <string name="require_name">Adja meg a nevét</string>
     <string name="require_longer_password">A jelszónak legalább 8 karakter hosszúnak kell lennie</string>
     <string name="require_matching_passwords">A jelszavak nem egyeznek</string>
-    <string name="saving">Mentés</string>
+    <string name="saving">Mentés…</string>
     <string name="family">Család</string>
+    <string name="delete">Törlés</string>
+    <string name="modify">Módosítás</string>
+    <string name="details">Részletek</string>
+    <string name="date">Dátum</string>
 </resources>

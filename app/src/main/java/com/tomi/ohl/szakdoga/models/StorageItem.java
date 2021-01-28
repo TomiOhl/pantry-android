@@ -1,13 +1,17 @@
 package com.tomi.ohl.szakdoga.models;
 
 public class StorageItem {
+
     private String name;
     private int count;
     private String location;
     private int shelf;
-    private String date;
+    private long date;
 
-    public StorageItem(String name, int count, String location, int shelf, String date) {
+    public StorageItem() {
+    }
+
+    public StorageItem(String name, int count, String location, int shelf, long date) {
         this.name = name;
         this.count = count;
         this.location = location;
@@ -31,7 +35,7 @@ public class StorageItem {
         return shelf;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 }
