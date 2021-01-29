@@ -35,7 +35,7 @@ public class StorageDaoImpl implements StorageDao {
     // Elemek lekérése tárolóból
     public Query getStorageItems(String currentFamily, String location) {
         db = FirebaseFirestore.getInstance();
-        return db.collection("Families").document(currentFamily).collection("Storages").whereEqualTo("location", location);
+        return db.collection("Families").document(currentFamily).collection("Storages").whereEqualTo("location", location).orderBy("shelf");
     }
 
     // Új üzenet gomb mentése az adatbázisba
@@ -47,7 +47,7 @@ public class StorageDaoImpl implements StorageDao {
     // Üzenetek lekérése az adatbázisból
     public Query getNewMessages(String currentFamily) {
         db = FirebaseFirestore.getInstance();
-        return db.collection("Families").document(currentFamily).collection("Messages");
+        return db.collection("Families").document(currentFamily).collection("Messages").orderBy("date");
     }
 
 }
