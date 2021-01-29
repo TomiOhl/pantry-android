@@ -33,6 +33,7 @@ import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class StorageFragment extends Fragment {
@@ -170,18 +171,19 @@ public class StorageFragment extends Fragment {
 
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
     private void loadFridgeContents(ListFragment listFragment, String storage) {
-        ArrayList<StorageItem> itemsList = new ArrayList<>();
-        StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsList);
+        LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
+        StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsMap);
         listFragment.setListAdapter(listAdapter);
         StorageController.getInstance().getStorageItems(storage).addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
-                    itemsList.clear();
+                    itemsMap.clear();
                     for (QueryDocumentSnapshot doc : value) {
+                        String id = doc.getId();
                         StorageItem item = doc.toObject(StorageItem.class);
-                        itemsList.add(item);
+                        itemsMap.put(id, item);
                     }
-                    listAdapter.notifyDataSetChanged();
+                    listAdapter.updateKeys(itemsMap.keySet());
                 }
         );
     }

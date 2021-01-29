@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
 
 import com.tomi.ohl.szakdoga.R;
+import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.Locale;
@@ -12,7 +13,7 @@ import java.util.Locale;
 public class DialogUtils {
 
     // TODO: gombok eseménykezelői
-    public static void showItemDetailsDialog(Context ctx, StorageItem item) {
+    public static void showItemDetailsDialog(Context ctx, String itemId, StorageItem item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder
             .setTitle(ctx.getString(R.string.details))
@@ -24,9 +25,10 @@ public class DialogUtils {
                     ctx.getString(R.string.date), DateUtils.convertToDateAndTime(item.getDate())
             ))
             .setCancelable(true)
-            .setNegativeButton(R.string.delete, (dialogInterface, i) -> dialogInterface.cancel())
+            .setNegativeButton(R.string.delete, (dialogInterface, i) ->
+                    StorageController.getInstance().deleteStorageItem(itemId))
             .setNeutralButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
-            .setPositiveButton(R.string.modify, (dialogInterface, id) -> dialogInterface.cancel())
+            .setPositiveButton(R.string.modify, (dialogInterface, i) -> dialogInterface.cancel())
             .show();
     }
 

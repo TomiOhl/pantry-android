@@ -36,6 +36,17 @@ public class StorageController {
         dao.insertStorageItem(currentFamily, item);
     }
 
+    // TODO: lehessen UI-ról
+    public void editStorageItem(String id, StorageItem item) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.editStorageItem(currentFamily, id, item);
+    }
+
+    public void deleteStorageItem(String id) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.deleteStorageItem(currentFamily, id);
+    }
+
     public Query getStorageItems(String location) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         return dao.getStorageItems(currentFamily, location);

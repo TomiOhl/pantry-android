@@ -12,25 +12,29 @@ import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Set;
 
 public class StorageListAdapter extends BaseAdapter {
     Context ctx;
-    ArrayList<StorageItem> items;
+    LinkedHashMap<String, StorageItem> items;
+    ArrayList<String> keys;
 
-    public StorageListAdapter(Context c, ArrayList<StorageItem> list) {
+    public StorageListAdapter(Context c, LinkedHashMap<String, StorageItem> list) {
         ctx = c;
         items = list;
+        keys = new ArrayList<>(items.keySet());
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return keys.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return items.get(i);
+        return items.get(keys.get(i));
     }
 
     @Override
@@ -47,7 +51,7 @@ public class StorageListAdapter extends BaseAdapter {
         } else {
             row = convertView;
         }
-        StorageItem storageItem = items.get(i);
+        StorageItem storageItem = (StorageItem) getItem(i);
         TextView name = row.findViewById(R.id.listTitle);
         name.setText(storageItem.getName());
         TextView shelf = row.findViewById(R.id.listSuffix);
@@ -55,8 +59,14 @@ public class StorageListAdapter extends BaseAdapter {
                 "%d%s", storageItem.getShelf(), ctx.getString(R.string.nth_shelf)
         ));
         row.setOnClickListener(view ->
-            DialogUtils.showItemDetailsDialog(ctx, (StorageItem) getItem(i))
+            DialogUtils.showItemDetailsDialog(ctx, keys.get(i), (StorageItem) getItem(i))
         );
         return row;
+    }
+
+    public void updateKeys(Set<String> newKeys) {
+        keys.clear();
+        keys.addAll(new ArrayList<>(newKeys));
+        notifyDataSetChanged();
     }
 }
