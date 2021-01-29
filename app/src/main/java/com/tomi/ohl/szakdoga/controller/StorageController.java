@@ -45,6 +45,17 @@ public class StorageController {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         dao.insertNewMessage(currentFamily, item);
     }
+
+    public void editMessage(String id, String newContent) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.editMessage(currentFamily, id, newContent);
+    }
+
+    public void deleteMessage(String id) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.deleteMessage(currentFamily, id);
+    }
+
     public Query getNewMessages() {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         return dao.getNewMessages(currentFamily);

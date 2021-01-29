@@ -51,4 +51,6 @@
     <string name="nth_shelf">. polc</string>
     <string name="new_message">Új üzenet</string>
     <string name="new_message_here">Írja üzenetét ide…</string>
+    <string name="edit">Szerkesztés</string>
+    <string name="edit_msg">Üzenet szerkesztése</string>
 </resources>

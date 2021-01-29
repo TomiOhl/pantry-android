@@ -18,11 +18,10 @@ import com.tomi.ohl.szakdoga.adapters.MessagesRecyclerViewAdapter;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.MessageItem;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.LinkedHashMap;
 
 public class MessagesFragment extends Fragment {
-    private ArrayList<MessageItem> msgList;
+    private LinkedHashMap<String, MessageItem> msgMap;
     private RecyclerView rv;
 
     public MessagesFragment() {}
@@ -39,10 +38,10 @@ public class MessagesFragment extends Fragment {
         View layout =  inflater.inflate(R.layout.fragment_messages, container, false);
 
         // Üzenetek listája RecyclerView-n
-        msgList = new ArrayList<>();
+        msgMap = new LinkedHashMap<>();
         rv = layout.findViewById(R.id.msgRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(layout.getContext()));
-        rv.setAdapter(new MessagesRecyclerViewAdapter(msgList));
+        rv.setAdapter(new MessagesRecyclerViewAdapter(msgMap));
 
         // Új üzenet gomb
         FloatingActionButton newMessageFab = layout.findViewById(R.id.fabNewMsg);
@@ -59,12 +58,14 @@ public class MessagesFragment extends Fragment {
         StorageController.getInstance().getNewMessages().addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
-                    msgList.clear();
+                    msgMap.clear();
                     for (QueryDocumentSnapshot doc : value) {
+                        String id = doc.getId();
                         MessageItem item = doc.toObject(MessageItem.class);
-                        msgList.add(item);
+                        msgMap.put(id, item);
                     }
-                    Objects.requireNonNull(rv.getAdapter()).notifyDataSetChanged();
+                    if (rv.getAdapter() != null)
+                        ((MessagesRecyclerViewAdapter)rv.getAdapter()).updateKeys(msgMap.keySet());
                 }
         );
     }

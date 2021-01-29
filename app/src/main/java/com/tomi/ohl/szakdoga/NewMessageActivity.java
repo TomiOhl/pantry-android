@@ -14,6 +14,7 @@ import java.util.Objects;
 
 public class NewMessageActivity extends AppCompatActivity {
 
+    EditText newMessageEditText;
     private boolean messageSent;
 
     @Override
@@ -23,13 +24,26 @@ public class NewMessageActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.slide_up, android.R.anim.fade_out);
 
+        // Vissza nyíl az Actionbarra
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_down);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        newMessageEditText = findViewById(R.id.editTextNewMessage);
         FloatingActionButton sendMessageFab = findViewById(R.id.fabSendMsg);
-        sendMessageFab.setOnClickListener(view -> sendMessage());
+
+        if(getIntent().getStringExtra("id") == null) {
+            // Új üzenet lesz
+            sendMessageFab.setOnClickListener(view -> sendMessage());
+        } else {
+            // Szerkeszteni jöttünk
+            getSupportActionBar().setTitle(R.string.edit_msg);
+            String id = getIntent().getStringExtra("id");
+            String oldText = getIntent().getStringExtra("content");
+            newMessageEditText.setText(oldText);
+            sendMessageFab.setOnClickListener(view -> editMessage(id));
+        }
     }
 
     // Az ActionBar vissza nyila mit csináljon
@@ -53,7 +67,6 @@ public class NewMessageActivity extends AppCompatActivity {
 
     // Az üzenet küldése gombot megnyomva
     private void sendMessage() {
-        EditText newMessageEditText = findViewById(R.id.editTextNewMessage);
         if (newMessageEditText.getText().toString().trim().isEmpty())
             return;
         MessageItem msg = new MessageItem(
@@ -62,6 +75,14 @@ public class NewMessageActivity extends AppCompatActivity {
                 System.currentTimeMillis()
         );
         StorageController.getInstance().insertNewMessage(msg);
+        messageSent = true;
+        finish();
+    }
+
+    private void editMessage(String id) {
+        if (newMessageEditText.getText().toString().trim().isEmpty())
+            return;
+        StorageController.getInstance().editMessage(id, newMessageEditText.getText().toString());
         messageSent = true;
         finish();
     }

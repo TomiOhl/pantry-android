@@ -38,10 +38,22 @@ public class StorageDaoImpl implements StorageDao {
         return db.collection("Families").document(currentFamily).collection("Storages").whereEqualTo("location", location).orderBy("shelf");
     }
 
-    // Új üzenet gomb mentése az adatbázisba
+    // Új üzenet mentése az adatbázisba
     public void insertNewMessage(String currentFamily, MessageItem item) {
         db = FirebaseFirestore.getInstance();
         db.collection("Families").document(currentFamily).collection("Messages").document().set(item);
+    }
+
+    // Üzenet szerkesztése az adatbázisban
+    public void editMessage(String currentFamily, String id, String newContent) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("Families").document(currentFamily).collection("Messages").document(id).update("content", newContent);
+    }
+
+    // Üzenet törlése az adatbázisbol
+    public void deleteMessage(String currentFamily, String id) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("Families").document(currentFamily).collection("Messages").document(id).delete();
     }
 
     // Üzenetek lekérése az adatbázisból
