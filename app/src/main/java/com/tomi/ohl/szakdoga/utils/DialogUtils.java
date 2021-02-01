@@ -3,8 +3,11 @@ package com.tomi.ohl.szakdoga.utils;
 import android.content.Context;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.tomi.ohl.szakdoga.R;
+import com.tomi.ohl.szakdoga.StorageFragment;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 
@@ -12,7 +15,7 @@ import java.util.Locale;
 
 public class DialogUtils {
 
-    // TODO: gombok eseménykezelői
+    // TODO: egyszerűbb módja egy kivételének, véletlen törlés kivédése
     public static void showItemDetailsDialog(Context ctx, String itemId, StorageItem item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder
@@ -28,7 +31,11 @@ public class DialogUtils {
             .setNegativeButton(R.string.delete, (dialogInterface, i) ->
                     StorageController.getInstance().deleteStorageItem(itemId))
             .setNeutralButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
-            .setPositiveButton(R.string.modify, (dialogInterface, i) -> dialogInterface.cancel())
+            .setPositiveButton(R.string.modify, (dialogInterface, i) -> {
+                Fragment parent = ((FragmentActivity) ctx).getSupportFragmentManager().findFragmentByTag("StorageFragment");
+                if (parent != null)
+                    ((StorageFragment) parent).openAddLayout(itemId, item);
+            })
             .show();
     }
 

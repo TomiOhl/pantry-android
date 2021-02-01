@@ -36,10 +36,9 @@ public class StorageController {
         dao.insertStorageItem(currentFamily, item);
     }
 
-    // TODO: lehessen UI-ról
-    public void editStorageItem(String id, StorageItem item) {
+    public void editStorageItem(String id, int count, String name, int shelf) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
-        dao.editStorageItem(currentFamily, id, item);
+        dao.editStorageItem(currentFamily, id, count, name, shelf);
     }
 
     public void deleteStorageItem(String id) {

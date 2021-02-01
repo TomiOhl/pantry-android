@@ -33,14 +33,12 @@ public class StorageDaoImpl implements StorageDao {
     }
 
     // Elem szerkesztése egy tárolóban
-    public void editStorageItem(String currentFamily, String id, StorageItem item) {
+    public void editStorageItem(String currentFamily, String id, int count, String name, int shelf) {
         db = FirebaseFirestore.getInstance();
         db.collection("Families").document(currentFamily).collection("Storages").document(id).update(
-                "count", item.getCount(),
-                "date", item.getDate(),
-                "location", item.getLocation(),
-                "name", item.getName(),
-                "shelf", item.getShelf()
+                "count", count,
+                "name", name,
+                "shelf", shelf
         );
     }
 

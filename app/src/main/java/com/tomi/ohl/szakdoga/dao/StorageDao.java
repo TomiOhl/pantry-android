@@ -10,7 +10,7 @@ public interface StorageDao {
     void insertTest(String currentFamily);
     Task<DocumentSnapshot> getTestInsert(String currentFamily);
     void insertStorageItem(String currentFamily, StorageItem item);
-    void editStorageItem(String currentFamily, String id, StorageItem item);
+    void editStorageItem(String currentFamily, String id, int count, String name, int shelf);
     void deleteStorageItem(String currentFamily, String id);
     Query getStorageItems(String currentFamily, String location);
     void insertNewMessage(String currentFamily, MessageItem item);

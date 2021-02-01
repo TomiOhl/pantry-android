@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,7 +32,6 @@ import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -42,8 +42,11 @@ public class StorageFragment extends Fragment {
     private BottomSheetBehavior<View> mBottomSheetBehavior;
     private TextInputEditText nameEditText;
     private TextInputEditText countEditText;
+    TextInputLayout menuStorageChooserContainer;
     private AutoCompleteTextView menuStorageChooser;
     private TextInputEditText shelfEditText;
+    private Button saveAddButton;
+    private Button cancelAddButton;
     private FirebaseUser user;
     private ListFragment fridgeListFragment;
     private ListFragment pantryListFragment;
@@ -71,12 +74,13 @@ public class StorageFragment extends Fragment {
 
         nameEditText = layout.findViewById(R.id.editTextAddItemName);
         countEditText = layout.findViewById(R.id.editTextAddItemVolume);
+        menuStorageChooserContainer = layout.findViewById(R.id.menuStoragechooserContainer);
         menuStorageChooser = layout.findViewById(R.id.menuStoragechooser);
         shelfEditText = layout.findViewById(R.id.editTextAddItemShelf);
 
         Button addButton = layout.findViewById(R.id.btnTestAdd);
-        Button saveAddButton = layout.findViewById(R.id.btnSaveAdd);
-        Button cancelAddButton = layout.findViewById(R.id.btnCancelAdd);
+        saveAddButton = layout.findViewById(R.id.btnSaveAdd);
+        cancelAddButton = layout.findViewById(R.id.btnCancelAdd);
 
         // Jelenítsük meg a bejelentkezett user adatait
         if (user != null) {
@@ -111,21 +115,6 @@ public class StorageFragment extends Fragment {
         mBottomSheetBehavior.setPeekHeight(0);
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        // Hozzáadás layout gombjai
-        cancelAddButton.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
-        saveAddButton.setOnClickListener(view -> {
-            Snackbar.make(requireActivity().findViewById(R.id.storageLayout), R.string.saving, Snackbar.LENGTH_SHORT).show();
-            StorageItem item = new StorageItem(
-                Objects.requireNonNull(nameEditText.getText()).toString(),
-                Integer.parseInt(String.valueOf(countEditText.getText())),
-                menuStorageChooser.getText().toString(),
-                Integer.parseInt(String.valueOf(shelfEditText.getText())),
-                System.currentTimeMillis()
-            );
-            StorageController.getInstance().insertStorageItem(item);
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        });
-
         // Hozzáadás layout tárhelyválasztó menüje
         // TODO: Megcsinálni úgy, hogy rendesen használható legyen több nyelven is
         String[] storageTypes = {getString(R.string.fridge), getString(R.string.pantry)};
@@ -134,10 +123,7 @@ public class StorageFragment extends Fragment {
 
         // Hozzáadás FAB
         FloatingActionButton addFab = layout.findViewById(R.id.fabAdd);
-        addFab.setOnClickListener(view -> {
-            clearAddLayout();
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        });
+        addFab.setOnClickListener(view -> openAddLayout(null, null));
 
         return layout;
     }
@@ -188,11 +174,50 @@ public class StorageFragment extends Fragment {
         );
     }
 
+    // Ez hívódik meg, ha szükség van az elem hozzáadása bottom sheetre
+    public void openAddLayout(String itemId, StorageItem item) {
+        clearAddLayout();
+        cancelAddButton.setOnClickListener(view -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+        if (itemId == null) {
+            // Új hozzáadás, ilyenkor menteni kell elemet az adatbázisba
+            saveAddButton.setOnClickListener(view -> {
+                Snackbar.make(requireActivity().findViewById(R.id.storageLayout), R.string.saving, Snackbar.LENGTH_SHORT).show();
+                StorageItem newItem = new StorageItem(
+                        Objects.requireNonNull(nameEditText.getText()).toString(),
+                        Integer.parseInt(String.valueOf(countEditText.getText())),
+                        menuStorageChooser.getText().toString(),
+                        Integer.parseInt(String.valueOf(shelfEditText.getText())),
+                        System.currentTimeMillis()
+                );
+                StorageController.getInstance().insertStorageItem(newItem);
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            });
+        } else {
+            // Elem szerkesztése, ilyenkor frissíteni kell a meglévő elemet, az inputokat pedig kitölteni a mostaniakkal
+            nameEditText.setText(item.getName());
+            countEditText.setText(String.valueOf(item.getCount()));
+            menuStorageChooserContainer.setVisibility(View.GONE);
+            shelfEditText.setText(String.valueOf(item.getShelf()));
+            saveAddButton.setOnClickListener(view -> {
+                Snackbar.make(requireActivity().findViewById(R.id.storageLayout), R.string.saving, Snackbar.LENGTH_SHORT).show();
+                StorageController.getInstance().editStorageItem(
+                        itemId,
+                        Integer.parseInt(String.valueOf(countEditText.getText())),
+                        String.valueOf(nameEditText.getText()),
+                        Integer.parseInt(String.valueOf(shelfEditText.getText()))
+                );
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            });
+        }
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
     private void clearAddLayout() {
         nameEditText.setText(null);
         nameEditText.clearFocus();
         countEditText.setText(null);
         countEditText.clearFocus();
+        menuStorageChooserContainer.setVisibility(View.VISIBLE);
         menuStorageChooser.setText(null);
         menuStorageChooser.clearFocus();
         shelfEditText.setText(null);
