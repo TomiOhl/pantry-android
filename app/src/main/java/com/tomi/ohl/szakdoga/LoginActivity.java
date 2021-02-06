@@ -2,8 +2,6 @@ package com.tomi.ohl.szakdoga;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,11 +17,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
+import com.tomi.ohl.szakdoga.utils.InputUtils;
 
 import java.util.HashMap;
 import java.util.Objects;
 
-import static com.tomi.ohl.szakdoga.utils.ImeUtils.hideKeyboard;
+import static com.tomi.ohl.szakdoga.utils.InputUtils.hideKeyboard;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -53,10 +52,10 @@ public class LoginActivity extends AppCompatActivity {
         emailEditTextContainer = findViewById(R.id.editTextEmailContainer);
         passwordEditText = findViewById(R.id.editTextPassword);
         passwordEditTextContainer = findViewById(R.id.editTextPasswordContainer);
-        passwordAgainEditTextContainer = findViewById(R.id.editTextPasswordAgainContainer);
         passwordAgainEditText = findViewById(R.id.editTextPasswordAgain);
-        displayNameEditTextContainer = findViewById(R.id.editTextDisplayNameContainer);
+        passwordAgainEditTextContainer = findViewById(R.id.editTextPasswordAgainContainer);
         displayNameEditText = findViewById(R.id.editTextDisplayName);
+        displayNameEditTextContainer = findViewById(R.id.editTextDisplayNameContainer);
         newFamilyEditText = findViewById(R.id.editTextNewFamily);
         newFamilyEditTextContainer = findViewById(R.id.editTextNewFamilyContainer);
         setInputTextWatchers();
@@ -217,15 +216,16 @@ public class LoginActivity extends AppCompatActivity {
         }
         // Regisztráció esetén ezek is kellenek
         if (displayNameEditTextContainer.getVisibility() == View.VISIBLE) {
-            if (passwordAgainEditText.getText().toString().trim().isEmpty()) {
-                passwordAgainEditTextContainer.setError(getString(R.string.require_password_again));
-                passwordAgainEditText.requestFocus();
-                return true;
-            }
             // Elég hosszú-e a jelszó
             if (passwordEditText.getText().toString().length() < 8) {
                 passwordEditTextContainer.setError(getString(R.string.require_longer_password));
                 passwordEditText.requestFocus();
+                return true;
+            }
+            // Még egyszer meg kell adni a jelszót
+            if (passwordAgainEditText.getText().toString().trim().isEmpty()) {
+                passwordAgainEditTextContainer.setError(getString(R.string.require_password_again));
+                passwordAgainEditText.requestFocus();
                 return true;
             }
             // Egyeznek-e a jelszavak
@@ -246,86 +246,11 @@ public class LoginActivity extends AppCompatActivity {
 
     // Beviteli mezőkről hiba eltüntetése, ha írni kezdünk beléjük
     private void setInputTextWatchers() {
-        emailEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                emailEditTextContainer.setError(null);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        passwordEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                passwordEditTextContainer.setError(null);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        passwordAgainEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                passwordAgainEditTextContainer.setError(null);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        displayNameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                displayNameEditTextContainer.setError(null);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        newFamilyEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                newFamilyEditTextContainer.setError(null);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        InputUtils.clearInputLayoutErrors(emailEditTextContainer, emailEditText);
+        InputUtils.clearInputLayoutErrors(passwordEditTextContainer, passwordEditText);
+        InputUtils.clearInputLayoutErrors(passwordAgainEditTextContainer, passwordAgainEditText);
+        InputUtils.clearInputLayoutErrors(displayNameEditTextContainer, displayNameEditText);
+        InputUtils.clearInputLayoutErrors(newFamilyEditTextContainer, newFamilyEditText);
     }
 
 }
