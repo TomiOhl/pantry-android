@@ -11,15 +11,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.ListenerRegistration;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
+    ArrayList<ListenerRegistration> dbListeners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbListeners = new ArrayList<>();
 
         // alsó navigáció beállítása
         bottomNavigation = findViewById(R.id.bottomNavigationView);

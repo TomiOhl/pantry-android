@@ -7,6 +7,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -31,8 +32,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void logout() {
+        // Regisztrált db listenerek eltávolítása
+        for(ListenerRegistration elem : ((MainActivity)requireActivity()).dbListeners) {
+            elem.remove();
+        }
+        // User kijelentkeztetése
         FirebaseAuth.getInstance().signOut();
         FamilyController.getInstance().setCurrentFamily(null);
+        // Átirányítás a login képernyőre
         startActivity(new Intent(mainActivity, LoginActivity.class));
         mainActivity.finish();
     }

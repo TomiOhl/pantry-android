@@ -55,7 +55,7 @@ public class MessagesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Üzenetek listájának lekérése
-        StorageController.getInstance().getNewMessages().addSnapshotListener(
+        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getNewMessages().addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     msgMap.clear();
@@ -67,6 +67,6 @@ public class MessagesFragment extends Fragment {
                     if (rv.getAdapter() != null)
                         ((MessagesRecyclerViewAdapter)rv.getAdapter()).updateKeys(msgMap.keySet());
                 }
-        );
+        ));
     }
 }

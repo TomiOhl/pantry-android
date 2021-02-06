@@ -168,7 +168,7 @@ public class StorageFragment extends Fragment {
         LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
         StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsMap);
         listFragment.setListAdapter(listAdapter);
-        StorageController.getInstance().getStorageItems(storage).addSnapshotListener(
+        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getStorageItems(storage).addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     itemsMap.clear();
@@ -179,7 +179,7 @@ public class StorageFragment extends Fragment {
                     }
                     listAdapter.updateKeys(itemsMap.keySet());
                 }
-        );
+        ));
     }
 
     // Ez hívódik meg, ha szükség van az elem hozzáadása bottom sheetre
