@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="top"
         android:background="@null"
-        android:inputType="textCapSentences"
+        android:inputType="textCapSentences|textMultiLine"
         android:hint="@string/new_message_here"
         android:textSize="20sp"
         android:padding="8dp"
