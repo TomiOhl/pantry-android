@@ -7,10 +7,9 @@ import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.MessageItem;
-
-import java.util.Objects;
 
 public class NewMessageActivity extends AppCompatActivity {
 
@@ -69,14 +68,18 @@ public class NewMessageActivity extends AppCompatActivity {
     private void sendMessage() {
         if (newMessageEditText.getText().toString().trim().isEmpty())
             return;
-        MessageItem msg = new MessageItem(
-                Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName(),
-                newMessageEditText.getText().toString(),
-                System.currentTimeMillis()
-        );
-        StorageController.getInstance().insertNewMessage(msg);
-        messageSent = true;
-        finish();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            MessageItem msg = new MessageItem(
+                    user.getUid(),
+                    user.getDisplayName(),
+                    newMessageEditText.getText().toString(),
+                    System.currentTimeMillis()
+            );
+            StorageController.getInstance().insertNewMessage(msg);
+            messageSent = true;
+            finish();
+        }
     }
 
     private void editMessage(String id) {

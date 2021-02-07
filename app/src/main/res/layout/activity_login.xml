@@ -129,6 +129,4 @@
 
 </LinearLayout>
 
-<include layout="@layout/bottom_sheet_family" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,14 +3,19 @@
     <PreferenceCategory app:title="@string/account_header">
 
         <EditTextPreference
-            app:key="nick"
-            app:title="@string/nickname_title"
+            app:key="displayName"
+            app:title="@string/edit_display_name"
             app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            app:key="family"
+            app:title="@string/edit_family"
+            app:summary="@string/edit_family_summary"/>
 
         <Preference
             app:key="logout"
             app:title="@string/logout"
-            app:summary="Kijelentkezés és a készüléken tárolt adatok törlése"/>
+            app:summary="@string/logout_summary"/>
 
     </PreferenceCategory>
 
@@ -24,16 +29,13 @@
             app:title="@string/theme_title"
             app:useSimpleSummaryProvider="true" />
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+        <Preference
+            app:key="version"
+            app:title="@string/version" />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <Preference
+            app:key="credits"
+            app:summary="@string/credits_summary" />
 
     </PreferenceCategory>
 

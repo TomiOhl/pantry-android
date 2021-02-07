@@ -42,6 +42,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
     @Override
     public void onBindViewHolder(@NonNull MessagesViewHolder holder, int position) {
         String key = keys.get(position);
+        String senderUid = Objects.requireNonNull(msgs.get(key)).getSenderUid();
         String sender = Objects.requireNonNull(msgs.get(key)).getSender();
         String content = Objects.requireNonNull(msgs.get(key)).getContent();
         holder.getSender().setText(sender);
@@ -49,7 +50,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
         holder.getContent().setText(content);
         holder.getCardView().setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null && Objects.equals(user.getDisplayName(), sender)) {
+            if (user != null && Objects.equals(user.getUid(), senderUid)) {
                 contextMenu.add(R.string.edit).setOnMenuItemClickListener(menuItem -> {
                     Context ctx = holder.getCardView().getContext();
                     Intent i = new Intent(ctx, NewMessageActivity.class);

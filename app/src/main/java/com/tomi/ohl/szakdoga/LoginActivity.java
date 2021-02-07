@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,9 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText displayNameEditText;
     private TextInputLayout displayNameEditTextContainer;
     private Button loginButton;
-    private EditText newFamilyEditText;
-    private TextInputLayout newFamilyEditTextContainer;
-    private BottomSheetBehavior<View> mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,32 +51,13 @@ public class LoginActivity extends AppCompatActivity {
         passwordAgainEditTextContainer = findViewById(R.id.editTextPasswordAgainContainer);
         displayNameEditText = findViewById(R.id.editTextDisplayName);
         displayNameEditTextContainer = findViewById(R.id.editTextDisplayNameContainer);
-        newFamilyEditText = findViewById(R.id.editTextNewFamily);
-        newFamilyEditTextContainer = findViewById(R.id.editTextNewFamilyContainer);
         setInputTextWatchers();
 
         // Gombok
         Button registerButton = findViewById(R.id.btnRegister);
         loginButton = findViewById(R.id.btnLogin);
-        Button newFamilyButton = findViewById(R.id.btnNewFamily);
-        Button existingFamilyButton = findViewById(R.id.btnExistingFamily);
-
         registerButton.setOnClickListener(view -> registerUser());
         loginButton.setOnClickListener(view -> loginUser());
-        newFamilyButton.setOnClickListener(view -> setFamily(null));
-        existingFamilyButton.setOnClickListener(view -> {
-            String s = newFamilyEditText.getText().toString();
-            if (!s.trim().isEmpty())
-                setFamily(s);
-        });
-
-        // Családválasztó layout
-        View bottom_sheet = findViewById(R.id.bottom_sheet);
-        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
-        mBottomSheetBehavior.setPeekHeight(0);
-        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        mBottomSheetBehavior.setHideable(false);
-        mBottomSheetBehavior.setDraggable(false);
     }
 
     // A regisztráció gombra kattintva
@@ -102,58 +78,26 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Bejelentkezés sikeres, adjuk meg a teljes nevet is
-                        FirebaseUser user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser());
+                        FirebaseUser user = Objects.requireNonNull(mAuth.getCurrentUser());
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(displayNameEditText.getText().toString())
                                 .build();
                         user.updateProfile(profileUpdates)
                                 .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful())
-                                        // Névbeállítás sikeres
-                                        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                                     hideKeyboard(this);
+                                    if (task1.isSuccessful()) {
+                                        // Névbeállítás sikeres
+                                        FamilyChooserBottomSheet familyChooser = new FamilyChooserBottomSheet();
+                                        familyChooser.setCancelable(false);
+                                        familyChooser.show(getSupportFragmentManager(), "initial_" + FamilyChooserBottomSheet.class.getSimpleName());
+                                    }
                                 });
                     } else {
                         // Sikertelen regisztráció esetén hibaüzenet
                         hideKeyboard(this);
-                        Snackbar.make(getWindow().getDecorView().getRootView(), R.string.create_user_failed + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.create_user_failed) + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    // Regisztrációnál családbeállítás
-    private void setFamily(String family_email) {
-        FirebaseUser user = Objects.requireNonNull(mAuth.getCurrentUser());
-        String userEmail = Objects.requireNonNull(user.getEmail());
-        if (family_email == null) {
-            // új család létrehozása
-            FamilyController.getInstance().setFamily(userEmail,  userEmail)
-                    .addOnSuccessListener(runnable -> {
-                        FamilyController.getInstance().setCurrentFamily(userEmail);
-                        redirectToProfile();
-                    });
-        } else {
-            // létezik-e a család
-            FamilyController.getInstance().exists(family_email).addOnCompleteListener(
-                    task -> {
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null && task.getResult().size() == 0) {
-                                // Nem létezik, hiba
-                                newFamilyEditTextContainer.setError(getString(R.string.family_does_not_exist));
-                            } else {
-                                // Van ilyen family, el lehet menteni a jelenlegi usert is ahhoz
-                                FamilyController.getInstance().setFamily(userEmail, family_email)
-                                        .addOnSuccessListener(runnable -> {
-                                            FamilyController.getInstance().setCurrentFamily(family_email);
-                                            redirectToProfile();
-                                        });
-                            }
-                        } else {
-                            Toast.makeText(this, "Ellenőrzés sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-            );
-        }
     }
 
     // A bejelentkezés gombra kattintva
@@ -173,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // Sikertelen bejelentkezés esetén hibaüzenet
                             hideKeyboard(this);
-                            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.login_failed + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.login_failed) + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -250,7 +194,6 @@ public class LoginActivity extends AppCompatActivity {
         InputUtils.clearInputLayoutErrors(passwordEditTextContainer, passwordEditText);
         InputUtils.clearInputLayoutErrors(passwordAgainEditTextContainer, passwordAgainEditText);
         InputUtils.clearInputLayoutErrors(displayNameEditTextContainer, displayNameEditText);
-        InputUtils.clearInputLayoutErrors(newFamilyEditTextContainer, newFamilyEditText);
     }
 
 }
