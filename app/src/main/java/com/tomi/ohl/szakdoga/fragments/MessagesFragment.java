@@ -1,4 +1,4 @@
-package com.tomi.ohl.szakdoga;
+package com.tomi.ohl.szakdoga.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,19 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.tomi.ohl.szakdoga.MainActivity;
+import com.tomi.ohl.szakdoga.NewMessageActivity;
+import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.MessagesRecyclerViewAdapter;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.MessageItem;
+import com.tomi.ohl.szakdoga.views.TopFadingEdgeRecyclerView;
 
 import java.util.LinkedHashMap;
 
 public class MessagesFragment extends Fragment {
     private LinkedHashMap<String, MessageItem> msgMap;
-    private RecyclerView rv;
+    private TopFadingEdgeRecyclerView rv;
 
     public MessagesFragment() {}
 
@@ -39,7 +42,7 @@ public class MessagesFragment extends Fragment {
 
         // Üzenetek listája RecyclerView-n
         msgMap = new LinkedHashMap<>();
-        rv = layout.findViewById(R.id.msgRecyclerView);
+        rv = (TopFadingEdgeRecyclerView) layout.findViewById(R.id.msgRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(layout.getContext()));
         rv.setAdapter(new MessagesRecyclerViewAdapter(msgMap));
 
@@ -66,6 +69,7 @@ public class MessagesFragment extends Fragment {
                     }
                     if (rv.getAdapter() != null)
                         ((MessagesRecyclerViewAdapter)rv.getAdapter()).updateKeys(msgMap.keySet());
+                    rv.scrollToPosition(msgMap.keySet().size() - 1);
                 }
         ));
     }

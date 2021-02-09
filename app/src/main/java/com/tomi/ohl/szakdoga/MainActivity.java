@@ -12,13 +12,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.tomi.ohl.szakdoga.fragments.MessagesFragment;
+import com.tomi.ohl.szakdoga.fragments.SettingsFragment;
+import com.tomi.ohl.szakdoga.fragments.ShoppingListFragment;
+import com.tomi.ohl.szakdoga.fragments.StorageFragment;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
-    ArrayList<ListenerRegistration> dbListeners;
+    public ArrayList<ListenerRegistration> dbListeners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragmentContainer, fragment, fragment.getClass().getSimpleName());
         //transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Regisztrált db listenerek eltávolítása
+        for(ListenerRegistration elem : dbListeners) {
+            elem.remove();
+        }
     }
 
     // toolbar-ikon

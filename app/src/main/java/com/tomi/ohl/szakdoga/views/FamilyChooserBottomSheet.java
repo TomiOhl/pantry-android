@@ -1,4 +1,4 @@
-package com.tomi.ohl.szakdoga;
+package com.tomi.ohl.szakdoga.views;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.tomi.ohl.szakdoga.MainActivity;
+import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.utils.InputUtils;
 

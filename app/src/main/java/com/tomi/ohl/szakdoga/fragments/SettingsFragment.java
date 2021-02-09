@@ -1,4 +1,4 @@
-package com.tomi.ohl.szakdoga;
+package com.tomi.ohl.szakdoga.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.tomi.ohl.szakdoga.BuildConfig;
+import com.tomi.ohl.szakdoga.LoginActivity;
+import com.tomi.ohl.szakdoga.MainActivity;
+import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
+import com.tomi.ohl.szakdoga.views.FamilyChooserBottomSheet;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
