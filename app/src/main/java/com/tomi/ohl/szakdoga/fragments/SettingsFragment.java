@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -52,6 +54,25 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     Toast.makeText(getContext(), R.string.whatsup, Toast.LENGTH_SHORT).show();
                 }
                 return true;
+            });
+        }
+
+        // Figyeli a témaállítást és beállítja a választottat
+        final ListPreference themePref = getPreferenceManager().findPreference("theme");
+        if (themePref != null) {
+            themePref.setOnPreferenceChangeListener((preference, newValue) -> {
+                switch ((String)newValue) {
+                    case "system":
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                        return true;
+                    case "light":
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        return true;
+                    case "dark":
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        return true;
+                }
+                return false;
             });
         }
     }
