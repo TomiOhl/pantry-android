@@ -2,6 +2,7 @@ package com.tomi.ohl.szakdoga.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,15 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
                 });
             }
         });
+        // Az utolsó elem kap egy nagy paddinget a FAB miatt
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
+        if (position == getItemCount() -1) {
+            DisplayMetrics displayMetrics = holder.getCardView().getResources().getDisplayMetrics();
+            params.bottomMargin = (int) ((88 * displayMetrics.density) + 0.5);
+        }
+        else
+            params.bottomMargin = 0;
+        holder.itemView.setLayoutParams(params);
     }
 
     @Override

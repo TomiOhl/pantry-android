@@ -40,12 +40,6 @@ public class MessagesFragment extends Fragment {
         // A fragment layoutja
         View layout =  inflater.inflate(R.layout.fragment_messages, container, false);
 
-        // Üzenetek listája RecyclerView-n
-        msgMap = new LinkedHashMap<>();
-        rv = (TopFadingEdgeRecyclerView) layout.findViewById(R.id.msgRecyclerView);
-        rv.setLayoutManager(new LinearLayoutManager(layout.getContext()));
-        rv.setAdapter(new MessagesRecyclerViewAdapter(msgMap));
-
         // Új üzenet gomb
         FloatingActionButton newMessageFab = layout.findViewById(R.id.fabNewMsg);
         newMessageFab.setOnClickListener(view ->
@@ -57,6 +51,17 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Üzenetek listája RecyclerView-n
+        msgMap = new LinkedHashMap<>();
+        rv = (TopFadingEdgeRecyclerView) requireView().findViewById(R.id.msgRecyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(requireView().getContext()));
+        rv.setAdapter(new MessagesRecyclerViewAdapter(msgMap));
         // Üzenetek listájának lekérése
         ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getNewMessages().addSnapshotListener(
                 (value, error) -> {
