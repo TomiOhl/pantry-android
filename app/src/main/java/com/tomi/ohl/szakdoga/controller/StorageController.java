@@ -46,7 +46,7 @@ public class StorageController {
         dao.deleteStorageItem(currentFamily, id);
     }
 
-    public Query getStorageItems(String location) {
+    public Query getStorageItems(int location) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         return dao.getStorageItems(currentFamily, location);
     }

@@ -3,14 +3,14 @@ package com.tomi.ohl.szakdoga.models;
 public class StorageItem {
     private String name;
     private int count;
-    private String location;
+    private int location;
     private int shelf;
     private long date;
 
     public StorageItem() {
     }
 
-    public StorageItem(String name, int count, String location, int shelf, long date) {
+    public StorageItem(String name, int count, int location, int shelf, long date) {
         this.name = name;
         this.count = count;
         this.location = location;
@@ -26,7 +26,7 @@ public class StorageItem {
         return count;
     }
 
-    public String getLocation() {
+    public int getLocation() {
         return location;
     }
 

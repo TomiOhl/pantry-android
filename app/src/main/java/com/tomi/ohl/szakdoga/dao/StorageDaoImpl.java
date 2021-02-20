@@ -49,7 +49,7 @@ public class StorageDaoImpl implements StorageDao {
     }
 
     // Elemek lekérése tárolóból
-    public Query getStorageItems(String currentFamily, String location) {
+    public Query getStorageItems(String currentFamily, int location) {
         db = FirebaseFirestore.getInstance();
         return db.collection("Families").document(currentFamily).collection("Storages").whereEqualTo("location", location).orderBy("shelf");
     }

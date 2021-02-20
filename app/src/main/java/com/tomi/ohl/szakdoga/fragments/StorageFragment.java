@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
+import com.tomi.ohl.szakdoga.adapters.StorageChooserMenuAdapter;
 import com.tomi.ohl.szakdoga.adapters.StorageListAdapter;
 import com.tomi.ohl.szakdoga.adapters.StoragePagerAdapter;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
@@ -55,6 +55,7 @@ public class StorageFragment extends Fragment {
     private FirebaseUser user;
     private ListFragment fridgeListFragment;
     private ListFragment pantryListFragment;
+    StorageChooserMenuAdapter storageTypeAdapter;
 
     public StorageFragment() {}
 
@@ -126,9 +127,9 @@ public class StorageFragment extends Fragment {
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         // Hozzáadás layout tárhelyválasztó menüje
-        // TODO: Megcsinálni úgy, hogy rendesen használható legyen több nyelven is
+        // Később majd akár a user által szerkeszthetővé lehetne tenni a tömböt
         String[] storageTypes = {getString(R.string.fridge), getString(R.string.pantry)};
-        ArrayAdapter<String> storageTypeAdapter = new ArrayAdapter<>(requireContext(), R.layout.menu_add_choose_storage, storageTypes);
+        storageTypeAdapter = new StorageChooserMenuAdapter(requireContext(), R.layout.menu_add_choose_storage, storageTypes);
         menuStorageChooser.setAdapter(storageTypeAdapter);
 
         // Hozzáadás FAB
@@ -142,8 +143,8 @@ public class StorageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Hűtőszekrény és kamra kilistázása
-        loadStorageContents(fridgeListFragment, getString(R.string.fridge));
-        loadStorageContents(pantryListFragment, getString(R.string.pantry));
+        loadStorageContents(fridgeListFragment, 0);
+        loadStorageContents(pantryListFragment, 1);
     }
 
     private void getTestList() {
@@ -166,7 +167,7 @@ public class StorageFragment extends Fragment {
     }
 
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
-    private void loadStorageContents(ListFragment listFragment, String storage) {
+    private void loadStorageContents(ListFragment listFragment, int storage) {
         LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
         StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsMap);
         listFragment.setListAdapter(listAdapter);
@@ -196,7 +197,7 @@ public class StorageFragment extends Fragment {
                 StorageItem newItem = new StorageItem(
                         nameEditText.getText().toString(),
                         Integer.parseInt(String.valueOf(countEditText.getText())),
-                        menuStorageChooser.getText().toString(),
+                        storageTypeAdapter.getIdOfItem(menuStorageChooser.getText().toString()),
                         Integer.parseInt(String.valueOf(shelfEditText.getText())),
                         System.currentTimeMillis()
                 );
