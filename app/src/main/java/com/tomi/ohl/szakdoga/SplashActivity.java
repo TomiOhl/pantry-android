@@ -1,16 +1,16 @@
 package com.tomi.ohl.szakdoga;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
+import com.tomi.ohl.szakdoga.utils.ThemeUtils;
 import com.tomi.ohl.szakdoga.views.FamilyChooserBottomSheet;
 
 import java.util.HashMap;
@@ -25,16 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(BuildConfig.APPLICATION_ID + "_preferences", Context.MODE_PRIVATE);
         String themeSetting = pref.getString("theme", "system");
         if (themeSetting != null)
-            switch(themeSetting) {
-                case "system":
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                    break;
-                case "light":
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    break;
-                case "dark":
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
+            ThemeUtils.setNightMode(themeSetting);
 
         // Van-e bejelentkezett user?
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -19,6 +18,7 @@ import com.tomi.ohl.szakdoga.LoginActivity;
 import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
+import com.tomi.ohl.szakdoga.utils.ThemeUtils;
 import com.tomi.ohl.szakdoga.views.FamilyChooserBottomSheet;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -60,20 +60,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // Figyeli a témaállítást és beállítja a választottat
         final ListPreference themePref = getPreferenceManager().findPreference("theme");
         if (themePref != null) {
-            themePref.setOnPreferenceChangeListener((preference, newValue) -> {
-                switch ((String)newValue) {
-                    case "system":
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                        return true;
-                    case "light":
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                        return true;
-                    case "dark":
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                        return true;
-                }
-                return false;
-            });
+            themePref.setOnPreferenceChangeListener((preference, newValue) -> ThemeUtils.setNightMode((String)newValue));
         }
     }
 
