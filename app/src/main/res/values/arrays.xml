@@ -1,4 +1,10 @@
 <resources>
+    <!-- Storage sort spinner -->
+    <string-array name="spinner_sort">
+        <item>@string/by_name</item>
+        <item>@string/by_shelf</item>
+    </string-array>
+
     <!-- Theme Preference -->
     <string-array name="theme_entries">
         <item>Rendszerbeállítás</item>

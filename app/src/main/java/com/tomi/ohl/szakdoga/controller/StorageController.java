@@ -46,9 +46,9 @@ public class StorageController {
         dao.deleteStorageItem(currentFamily, id);
     }
 
-    public Query getStorageItems(int location) {
+    public Query getStorageItems(int location, String sortBy) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
-        return dao.getStorageItems(currentFamily, location);
+        return dao.getStorageItems(currentFamily, location, sortBy);
     }
 
     public void insertNewMessage(MessageItem item) {

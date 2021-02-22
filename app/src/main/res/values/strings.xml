@@ -56,4 +56,7 @@
     <string name="new_message_here">Írja üzenetét ide…</string>
     <string name="edit">Szerkesztés</string>
     <string name="edit_msg">Üzenet szerkesztése</string>
+    <string name="by_name">Megnevezés szerint</string>
+    <string name="by_shelf">Polc szerint</string>
+    <string name="sort_semicolon">Rendezés:</string>
 </resources>

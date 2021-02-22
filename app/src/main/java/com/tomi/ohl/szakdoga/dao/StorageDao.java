@@ -12,7 +12,7 @@ public interface StorageDao {
     void insertStorageItem(String currentFamily, StorageItem item);
     void editStorageItem(String currentFamily, String id, int count, String name, int shelf);
     void deleteStorageItem(String currentFamily, String id);
-    Query getStorageItems(String currentFamily, int location);
+    Query getStorageItems(String currentFamily, int location, String sortBy);
     void insertNewMessage(String currentFamily, MessageItem item);
     void editMessage(String currentFamily, String id, String newContent);
     void deleteMessage(String currentFamily, String id);

@@ -1,12 +1,17 @@
 package com.tomi.ohl.szakdoga.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,10 +57,12 @@ public class StorageFragment extends Fragment {
     private TextInputLayout shelfEditTextContainer;
     private Button saveAddButton;
     private Button cancelAddButton;
+    private Spinner sortSpinner;
     private FirebaseUser user;
     private ListFragment fridgeListFragment;
     private ListFragment pantryListFragment;
     StorageChooserMenuAdapter storageTypeAdapter;
+    SharedPreferences sharedPreferences;
 
     public StorageFragment() {}
 
@@ -109,6 +116,17 @@ public class StorageFragment extends Fragment {
             getTestList();
         });
 
+        // Sharedpreferences inicializálása
+        sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+
+        // Rendezés spinner inicializálása
+        sortSpinner = layout.findViewById(R.id.spinnerSort);
+        ArrayAdapter<CharSequence> sortSpinnerAdapter = ArrayAdapter.createFromResource(
+                requireContext(), R.array.spinner_sort, android.R.layout.simple_spinner_item);
+        sortSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinner.setAdapter(sortSpinnerAdapter);
+        sortSpinner.setOnItemSelectedListener(onSortSpinnerClick());
+
         // Adapter létrehozása, ami meghatározza, mikor melyik listát kell betölteni
         StoragePagerAdapter storagePagerAdapter = new StoragePagerAdapter(getChildFragmentManager(), this.getContext(), fridgeListFragment, pantryListFragment);
 
@@ -142,9 +160,9 @@ public class StorageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Hűtőszekrény és kamra kilistázása
-        loadStorageContents(fridgeListFragment, 0);
-        loadStorageContents(pantryListFragment, 1);
+        // Hűtőszekrény és kamra rendezési sorrendjének beállítása, ami egyben kilistázza a megfelelő sorrendben
+        int sortIndex = sharedPreferences.getInt("sortindex", 0);
+        sortSpinner.setSelection(sortIndex);
     }
 
     private void getTestList() {
@@ -167,11 +185,11 @@ public class StorageFragment extends Fragment {
     }
 
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
-    private void loadStorageContents(ListFragment listFragment, int storage) {
+    private void loadStorageContents(ListFragment listFragment, int storage, String sortBy) {
         LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
         StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsMap);
         listFragment.setListAdapter(listAdapter);
-        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getStorageItems(storage).addSnapshotListener(
+        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getStorageItems(storage, sortBy).addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     itemsMap.clear();
@@ -183,6 +201,26 @@ public class StorageFragment extends Fragment {
                     listAdapter.updateKeys(itemsMap.keySet());
                 }
         ));
+    }
+
+    AdapterView.OnItemSelectedListener onSortSpinnerClick() {
+        return new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String sortBy = "name";
+                if (position == 1)
+                    sortBy = "shelf";
+                ((MainActivity)requireActivity()).dbListeners.clear();
+                loadStorageContents(fridgeListFragment, 0, sortBy);
+                loadStorageContents(pantryListFragment, 1, sortBy);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("sortindex", position);
+                editor.apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        };
     }
 
     // Ez hívódik meg, ha szükség van az elem hozzáadása bottom sheetre
