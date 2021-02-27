@@ -210,7 +210,7 @@ public class StorageFragment extends Fragment {
                 String sortBy = "name";
                 if (position == 1)
                     sortBy = "shelf";
-                ((MainActivity)requireActivity()).dbListeners.clear();
+                ((MainActivity)requireActivity()).removeDbListeners();
                 loadStorageContents(fridgeListFragment, 0, sortBy);
                 loadStorageContents(pantryListFragment, 1, sortBy);
                 SharedPreferences.Editor editor = sharedPreferences.edit();

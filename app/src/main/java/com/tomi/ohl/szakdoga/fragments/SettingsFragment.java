@@ -12,7 +12,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.tomi.ohl.szakdoga.BuildConfig;
 import com.tomi.ohl.szakdoga.LoginActivity;
 import com.tomi.ohl.szakdoga.MainActivity;
@@ -87,9 +86,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void logout() {
         // Regisztrált db listenerek eltávolítása
-        for(ListenerRegistration elem : ((MainActivity)requireActivity()).dbListeners) {
-            elem.remove();
-        }
+        ((MainActivity)requireActivity()).removeDbListeners();
         // User kijelentkeztetése
         FirebaseAuth.getInstance().signOut();
         FamilyController.getInstance().setCurrentFamily(null);

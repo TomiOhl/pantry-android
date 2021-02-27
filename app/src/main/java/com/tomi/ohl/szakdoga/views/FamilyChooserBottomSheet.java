@@ -17,7 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
@@ -72,8 +71,7 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
     private void setFamily(String family_email) {
         // Ha beállításokból jöttünk, regisztrált db listenerek eltávolítása
         if (this.getTag() != null && this.getTag().startsWith("settings"))
-            for(ListenerRegistration elem : ((MainActivity)requireActivity()).dbListeners)
-                elem.remove();
+            ((MainActivity)requireActivity()).removeDbListeners();
         FirebaseUser user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser());
         String userEmail = Objects.requireNonNull(user.getEmail());
         if (family_email == null) {

@@ -58,21 +58,10 @@ public class MainActivity extends AppCompatActivity {
             chooseFragment(new StorageFragment());
     }
 
-    // a kiválasztott fragment betöltése
-    public void chooseFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment, fragment.getClass().getSimpleName());
-        //transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
-        // Regisztrált db listenerek eltávolítása
-        for(ListenerRegistration elem : dbListeners) {
-            elem.remove();
-        }
+        removeDbListeners();
     }
 
     // toolbar-ikon
@@ -89,6 +78,21 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // a kiválasztott fragment betöltése
+    public void chooseFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, fragment, fragment.getClass().getSimpleName());
+        //transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    // Regisztrált db listenerek eltávolítása
+    public void removeDbListeners() {
+        for(ListenerRegistration elem : dbListeners)
+            elem.remove();
+        dbListeners.clear();
     }
 
 }

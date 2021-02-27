@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -49,17 +47,11 @@ public class MessagesFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         // Üzenetek listája RecyclerView-n
         msgMap = new LinkedHashMap<>();
-        rv = (TopFadingEdgeRecyclerView) requireView().findViewById(R.id.msgRecyclerView);
+        rv = requireView().findViewById(R.id.msgRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(requireView().getContext()));
         rv.setAdapter(new MessagesRecyclerViewAdapter(msgMap));
         // Üzenetek listájának lekérése
