@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.tomi.ohl.szakdoga.models.MessageItem;
+import com.tomi.ohl.szakdoga.models.ShoppingListItem;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.HashMap;
@@ -52,6 +53,30 @@ public class StorageDaoImpl implements StorageDao {
     public Query getStorageItems(String currentFamily, int location, String sortBy) {
         db = FirebaseFirestore.getInstance();
         return db.collection("Families").document(currentFamily).collection("Storages").whereEqualTo("location", location).orderBy(sortBy);
+    }
+
+    @Override
+    public void insertShoppingListItem(String currentFamily, ShoppingListItem item) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("Families").document(currentFamily).collection("ShoppingList").document().set(item);
+    }
+
+    @Override
+    public void editShoppingListItem(String currentFamily, String id, ShoppingListItem item) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("Families").document(currentFamily).collection("ShoppingList").document(id).set(item);
+    }
+
+    @Override
+    public void deleteShoppingListItem(String currentFamily, String id) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("Families").document(currentFamily).collection("ShoppingList").document(id).delete();
+    }
+
+    @Override
+    public Query getShoppingListItems(String currentFamily) {
+        db = FirebaseFirestore.getInstance();
+        return db.collection("Families").document(currentFamily).collection("ShoppingList").orderBy("checked").orderBy("name");
     }
 
     // Új üzenet mentése az adatbázisba

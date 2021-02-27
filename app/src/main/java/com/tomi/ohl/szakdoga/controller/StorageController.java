@@ -6,6 +6,7 @@ import com.google.firebase.firestore.Query;
 import com.tomi.ohl.szakdoga.dao.StorageDao;
 import com.tomi.ohl.szakdoga.dao.StorageDaoImpl;
 import com.tomi.ohl.szakdoga.models.MessageItem;
+import com.tomi.ohl.szakdoga.models.ShoppingListItem;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 
 public class StorageController {
@@ -49,6 +50,26 @@ public class StorageController {
     public Query getStorageItems(int location, String sortBy) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         return dao.getStorageItems(currentFamily, location, sortBy);
+    }
+
+    public void insertShoppingListItem(ShoppingListItem item) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.insertShoppingListItem(currentFamily, item);
+    }
+
+    public void editShoppingListItem(String id, ShoppingListItem item) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.editShoppingListItem(currentFamily, id, item);
+    }
+
+    public void deleteShoppingListItem(String id) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.deleteShoppingListItem(currentFamily, id);
+    }
+
+    public Query getShoppingListItems() {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        return dao.getShoppingListItems(currentFamily);
     }
 
     public void insertNewMessage(MessageItem item) {

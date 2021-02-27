@@ -5,14 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ShoppingListFragment">
-    
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|top"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"
-        android:text="@string/shoppinglist_desc" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/shoppingListDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|top"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="18sp"
+            android:text="@string/shoppinglist_desc" />
+
+        <com.tomi.ohl.szakdoga.views.TopFadingEdgeRecyclerView
+            android:id="@+id/shoppinglistRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="48dp"
+            app:layout_anchor="@+id/shoppinglistDesc"
+            app:layout_anchorGravity="bottom"
+            android:layout_gravity="bottom" />
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddShopping"
