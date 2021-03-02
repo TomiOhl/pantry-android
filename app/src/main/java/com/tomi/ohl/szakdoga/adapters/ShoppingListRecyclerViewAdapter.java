@@ -1,14 +1,17 @@
 package com.tomi.ohl.szakdoga.adapters;
 
+import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tomi.ohl.szakdoga.R;
+import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.ShoppingListItem;
 
 import java.util.ArrayList;
@@ -38,8 +41,20 @@ public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
         String key = keys.get(position);
         boolean isChecked = Objects.requireNonNull(items.get(key)).isChecked();
         String name = Objects.requireNonNull(items.get(key)).getName();
+        EditText shoppingNameEdit = holder.getShoppingName();
+        shoppingNameEdit.setText(name);
         holder.getShoppingCheck().setChecked(isChecked);
-        holder.getShoppingName().setText(name);
+        if (isChecked)
+            shoppingNameEdit.setPaintFlags(shoppingNameEdit.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        else
+            shoppingNameEdit.setPaintFlags(shoppingNameEdit.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        holder.getShoppingCheck().setOnCheckedChangeListener((buttonView, isCheckChecked) -> {
+            String currentKey = keys.get(position);
+            StorageController.getInstance().editShoppingListItem(
+                    currentKey,
+                    new ShoppingListItem(Objects.requireNonNull(items.get(currentKey)).getName(), !Objects.requireNonNull(items.get(key)).isChecked())
+            );
+        });
         // Az utolsó elem kap egy nagy paddinget a FAB miatt
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
         if (position == getItemCount() -1) {
@@ -54,6 +69,10 @@ public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
     @Override
     public int getItemCount() {
         return keys.size();
+    }
+
+    public String getKeyAtPosition(int position) {
+        return keys.get(position);
     }
 
     public void updateKeys(Set<String> newKeys) {

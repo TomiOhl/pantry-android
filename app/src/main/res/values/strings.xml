@@ -59,4 +59,5 @@
     <string name="by_name">Megnevezés szerint</string>
     <string name="by_shelf">Polc szerint</string>
     <string name="sort_semicolon">Rendezés:</string>
+    <string name="add_to_shopping_list">Bevásárlólistához adás</string>
 </resources>
