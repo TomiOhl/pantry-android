@@ -165,6 +165,16 @@ public class StorageFragment extends Fragment {
         sortSpinner.setSelection(sortIndex);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (((MainActivity)requireActivity()).dbListeners.size() < 1) {
+            String sortBy = sharedPreferences.getString("sortname", "name");
+            loadStorageContents(fridgeListFragment, 0, sortBy);
+            loadStorageContents(pantryListFragment, 1, sortBy);
+        }
+    }
+
     private void getTestList() {
         // Kilistázza az adott user adatait
         StorageController.getInstance().getTestInsert().addOnCompleteListener(task -> {
@@ -215,6 +225,7 @@ public class StorageFragment extends Fragment {
                 loadStorageContents(pantryListFragment, 1, sortBy);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("sortindex", position);
+                editor.putString("sortname", sortBy);
                 editor.apply();
             }
 
