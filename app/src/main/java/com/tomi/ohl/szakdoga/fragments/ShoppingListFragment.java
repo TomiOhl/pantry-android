@@ -89,8 +89,11 @@ public class ShoppingListFragment extends Fragment {
                 // A csúsztatott elem törlése
                 int position = viewHolder.getAdapterPosition();
                 ShoppingListRecyclerViewAdapter adapter = (ShoppingListRecyclerViewAdapter) rv.getAdapter();
-                if (adapter != null)
-                    StorageController.getInstance().deleteShoppingListItem(adapter.getKeyAtPosition(position));
+                if (adapter != null) {
+                    String key = adapter.getKeyAtPosition(position);
+                    adapter.deleteKey(key);
+                    StorageController.getInstance().deleteShoppingListItem(key);
+                }
             }
         };
     }

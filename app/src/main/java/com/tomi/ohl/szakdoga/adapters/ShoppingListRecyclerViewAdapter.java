@@ -2,10 +2,12 @@ package com.tomi.ohl.szakdoga.adapters;
 
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,11 +51,15 @@ public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
         else
             shoppingNameEdit.setPaintFlags(shoppingNameEdit.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         holder.getShoppingCheck().setOnCheckedChangeListener((buttonView, isCheckChecked) -> {
-            String currentKey = keys.get(position);
-            StorageController.getInstance().editShoppingListItem(
-                    currentKey,
-                    new ShoppingListItem(Objects.requireNonNull(items.get(currentKey)).getName(), !Objects.requireNonNull(items.get(key)).isChecked())
-            );
+            try {
+                String currentKey = keys.get(position);
+                StorageController.getInstance().editShoppingListItem(
+                        currentKey,
+                        new ShoppingListItem(Objects.requireNonNull(items.get(currentKey)).getName(), !Objects.requireNonNull(items.get(key)).isChecked())
+                );
+            } catch (Exception e) {
+                Log.e("CHECK", "onCheckedChangeListener on outdated data");
+            }
         });
         // Az utolsó elem kap egy nagy paddinget a FAB miatt
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
@@ -73,6 +79,10 @@ public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
 
     public String getKeyAtPosition(int position) {
         return keys.get(position);
+    }
+
+    public void deleteKey(String key) {
+        keys.remove(key);
     }
 
     public void updateKeys(Set<String> newKeys) {

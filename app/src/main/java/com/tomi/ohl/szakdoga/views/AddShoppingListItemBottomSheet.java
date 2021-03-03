@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -50,6 +51,11 @@ public class AddShoppingListItemBottomSheet extends BottomSheetDialogFragment {
                 newItemEditTextContainer.setError(getString(R.string.require_not_empty));
 
         });
+
+        if (getDialog() != null && getDialog().getWindow() != null)
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        // TODO: hozzáadás sheet legyen dialog, kell rá ez is ^
 
         return layout;
     }
