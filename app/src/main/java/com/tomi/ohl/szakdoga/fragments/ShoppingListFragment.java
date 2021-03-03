@@ -91,8 +91,8 @@ public class ShoppingListFragment extends Fragment {
                 ShoppingListRecyclerViewAdapter adapter = (ShoppingListRecyclerViewAdapter) rv.getAdapter();
                 if (adapter != null) {
                     String key = adapter.getKeyAtPosition(position);
-                    adapter.deleteKey(key);
                     StorageController.getInstance().deleteShoppingListItem(key);
+                    adapter.notifyItemRemoved(position);
                 }
             }
         };
