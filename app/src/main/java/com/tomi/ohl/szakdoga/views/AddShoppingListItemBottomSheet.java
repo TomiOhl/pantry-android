@@ -30,7 +30,7 @@ public class AddShoppingListItemBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // A sheet layoutja
         View layout = inflater.inflate(R.layout.bottom_sheet_add_shopping_list, container, false);
 
         Button cancelBtn = layout.findViewById(R.id.btnCancelAddShoppingList);
@@ -54,8 +54,6 @@ public class AddShoppingListItemBottomSheet extends BottomSheetDialogFragment {
 
         if (getDialog() != null && getDialog().getWindow() != null)
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        // TODO: hozzáadás sheet legyen dialog, kell rá ez is ^
 
         return layout;
     }

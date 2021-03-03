@@ -1,6 +1,8 @@
 package com.tomi.ohl.szakdoga.models;
 
-public class StorageItem {
+import java.io.Serializable;
+
+public class StorageItem implements Serializable {
     private String name;
     private int count;
     private int location;

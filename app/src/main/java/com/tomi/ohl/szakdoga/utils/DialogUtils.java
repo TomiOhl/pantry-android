@@ -8,8 +8,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.controller.StorageController;
-import com.tomi.ohl.szakdoga.fragments.StorageFragment;
 import com.tomi.ohl.szakdoga.models.StorageItem;
+import com.tomi.ohl.szakdoga.views.AddStorageItemBottomSheet;
 
 import java.util.Locale;
 
@@ -33,8 +33,12 @@ public class DialogUtils {
             .setNeutralButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
             .setPositiveButton(R.string.modify, (dialogInterface, i) -> {
                 Fragment parent = ((FragmentActivity) ctx).getSupportFragmentManager().findFragmentByTag("StorageFragment");
-                if (parent != null)
-                    ((StorageFragment) parent).openAddLayout(itemId, item);
+                if (parent != null) {
+                    parent.requireActivity().getIntent().putExtra("itemId", itemId);
+                    parent.requireActivity().getIntent().putExtra("storageItem", item);
+                    AddStorageItemBottomSheet addItemSheet = new AddStorageItemBottomSheet();
+                    addItemSheet.show(parent.getChildFragmentManager(), AddStorageItemBottomSheet.class.getSimpleName());
+                }
             })
             .show();
     }

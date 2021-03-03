@@ -40,7 +40,7 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // A sheet layoutja
         View layout = inflater.inflate(R.layout.bottom_sheet_family, container, false);
 
         newFamilyEditText = layout.findViewById(R.id.editTextNewFamily);
