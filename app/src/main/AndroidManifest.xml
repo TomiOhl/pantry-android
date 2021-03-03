@@ -30,6 +30,7 @@
         <activity
             android:name=".NewMessageActivity"
             android:label="@string/new_message"
+            android:theme="@style/NewMessageTheme"
             android:windowSoftInputMode="adjustResize" />
     </application>
 
