@@ -5,6 +5,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import java.util.Set;
 public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<ShoppingListViewHolder> {
     private LinkedHashMap<String, ShoppingListItem> items;
     private ArrayList<String> keys;
+    private String lastEditedItemKey;
+    private int lastDeletedItemPosition;
 
     public ShoppingListRecyclerViewAdapter(LinkedHashMap<String, ShoppingListItem> list) {
         items = list;
@@ -43,18 +46,32 @@ public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
         String name = Objects.requireNonNull(items.get(key)).getName();
         EditText shoppingNameEdit = holder.getShoppingName();
         shoppingNameEdit.setText(name);
-        holder.getShoppingCheck().setChecked(isChecked);
+        CheckBox shoppingNameCheck = holder.getShoppingCheck();
+        shoppingNameCheck.setChecked(isChecked);
         if (isChecked)
             shoppingNameEdit.setPaintFlags(shoppingNameEdit.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         else
             shoppingNameEdit.setPaintFlags(shoppingNameEdit.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-        holder.getShoppingCheck().setOnCheckedChangeListener((buttonView, isCheckChecked) -> {
+        shoppingNameCheck.setOnCheckedChangeListener((buttonView, isCheckChecked) -> {
             int currentPos = holder.getAdapterPosition();
             String currentKey = keys.get(currentPos);
             StorageController.getInstance().editShoppingListItem(
                     currentKey,
-                    new ShoppingListItem(Objects.requireNonNull(items.get(currentKey)).getName(), isCheckChecked)
+                    new ShoppingListItem(null, isCheckChecked)
             );
+        });
+        // Módosított szöveg mentése akkor, amikor a user átkattint
+        shoppingNameEdit.setOnFocusChangeListener((view, hasFocus) -> {
+            EditText editText = (EditText) view;
+            if (hasFocus) {
+                lastEditedItemKey = keys.get(holder.getAdapterPosition());
+                editText.setSelection(editText.getText().length());
+            }
+            else
+                StorageController.getInstance().editShoppingListItem(
+                        lastEditedItemKey,
+                        new ShoppingListItem(editText.getText().toString(), null)
+                );
         });
         // Az utolsó elem kap egy nagy paddinget a FAB miatt
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
@@ -76,9 +93,18 @@ public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
         return keys.get(position);
     }
 
+    public void setLastDeletedItemPosition(int position) {
+        lastDeletedItemPosition = position;
+    }
+
+    // Note: a lastDeletedItemPositionös sorok és a notifyItemRangeChanged helyett lehetne
+    // egy sima notifyDataSetChanged hívás is,
+    // azonban úgy szerkesztés után máshova kattintva mindig az első EditText kapná a fókuszt.
     public void updateKeys(Set<String> newKeys) {
+        notifyItemRemoved(lastDeletedItemPosition);
         keys.clear();
         keys.addAll(new ArrayList<>(newKeys));
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, getItemCount());
+        lastDeletedItemPosition = getItemCount();
     }
 }

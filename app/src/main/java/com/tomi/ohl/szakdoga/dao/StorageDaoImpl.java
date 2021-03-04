@@ -66,7 +66,14 @@ public class StorageDaoImpl implements StorageDao {
     @Override
     public void editShoppingListItem(String currentFamily, String id, ShoppingListItem item) {
         db = FirebaseFirestore.getInstance();
-        db.collection("Families").document(currentFamily).collection("ShoppingList").document(id).set(item);
+        if (item.getName() == null && item.isChecked() == null) // Üres elem
+            return;
+        if (item.getName() == null) // Csak pipát kaptunk
+            db.collection("Families").document(currentFamily).collection("ShoppingList").document(id).update("checked", item.isChecked());
+        else if (item.isChecked() == null) // Csak nevet kaptunk
+            db.collection("Families").document(currentFamily).collection("ShoppingList").document(id).update("name", item.getName());
+        else // Teljes elemet kaptunk
+            db.collection("Families").document(currentFamily).collection("ShoppingList").document(id).set(item);
     }
 
     // Elem törlése a bevásárlólistáról

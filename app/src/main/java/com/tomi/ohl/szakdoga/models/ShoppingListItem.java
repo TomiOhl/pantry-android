@@ -2,12 +2,12 @@ package com.tomi.ohl.szakdoga.models;
 
 public class ShoppingListItem {
     private String name;
-    private boolean checked;
+    private Boolean checked;
 
     public ShoppingListItem() {
     }
 
-    public ShoppingListItem(String name, boolean checked) {
+    public ShoppingListItem(String name, Boolean checked) {
         this.name = name;
         this.checked = checked;
     }
@@ -16,7 +16,7 @@ public class ShoppingListItem {
         return name;
     }
 
-    public boolean isChecked() {
+    public Boolean isChecked() {
         return checked;
     }
 }
