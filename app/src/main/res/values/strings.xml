@@ -60,4 +60,6 @@
     <string name="by_shelf">Polc szerint</string>
     <string name="sort_semicolon">Rendezés:</string>
     <string name="add_to_shopping_list">Bevásárlólistához adás</string>
+    <string name="confirm_discard_message">Biztosan elveti az üzenetet?</string>
+    <string name="discard">Elvetés</string>
 </resources>

@@ -10,11 +10,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.MessageItem;
+import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
 public class NewMessageActivity extends AppCompatActivity {
 
     EditText newMessageEditText;
     private boolean messageSent;
+    private String messageId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,22 +32,31 @@ public class NewMessageActivity extends AppCompatActivity {
         }
 
         newMessageEditText = findViewById(R.id.editTextNewMessage);
+        messageId = getIntent().getStringExtra("id");
         FloatingActionButton sendMessageFab = findViewById(R.id.fabSendMsg);
 
-        if(getIntent().getStringExtra("id") == null) {
+        if(messageId == null) {
             // Új üzenet lesz
             sendMessageFab.setOnClickListener(view -> sendMessage());
         } else {
             // Szerkeszteni jöttünk
             getSupportActionBar().setTitle(R.string.edit_msg);
-            String id = getIntent().getStringExtra("id");
             String oldText = getIntent().getStringExtra("content");
             newMessageEditText.setText(oldText);
-            sendMessageFab.setOnClickListener(view -> editMessage(id));
+            sendMessageFab.setOnClickListener(view -> editMessage());
         }
     }
 
-    // Az ActionBar vissza nyila mit csináljon
+    // A vissza gomb megnyomásánák művelete
+    @Override
+    public void onBackPressed() {
+        if (messageId == null && !isEditTextEmpty())
+            DialogUtils.showConfirmDiscardMessageDialog(this);
+        else
+            super.onBackPressed();
+    }
+
+    // Az ActionBar vissza nyilának megnyomásánák művelete
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -53,7 +64,6 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     // Az alkalmazás bezárásakor elvégzendő műveletek
-    // TODO: elveti az uzenetet? dialog
     @Override
     public void finish(){
         super.finish();
@@ -64,9 +74,9 @@ public class NewMessageActivity extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in, R.anim.slide_down);
     }
 
-    // Az üzenet küldése gombot megnyomva
+    // Az üzenet küldése gombot megnyomva új üzenet esetén
     private void sendMessage() {
-        if (newMessageEditText.getText().toString().trim().isEmpty())
+        if (isEditTextEmpty())
             return;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -82,12 +92,18 @@ public class NewMessageActivity extends AppCompatActivity {
         }
     }
 
-    private void editMessage(String id) {
-        if (newMessageEditText.getText().toString().trim().isEmpty())
+    // Az üzenet küldése gombot megnyomva üzenet szerkesztése esetén
+    private void editMessage() {
+        if (isEditTextEmpty())
             return;
-        StorageController.getInstance().editMessage(id, newMessageEditText.getText().toString());
+        StorageController.getInstance().editMessage(messageId, newMessageEditText.getText().toString());
         messageSent = true;
         finish();
+    }
+
+    // Üres-e a szövegdoboz
+    private boolean isEditTextEmpty() {
+        return newMessageEditText.getText().toString().trim().isEmpty();
     }
 
 }

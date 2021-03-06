@@ -1,5 +1,6 @@
 package com.tomi.ohl.szakdoga.utils;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +16,7 @@ import java.util.Locale;
 
 public class DialogUtils {
 
+    // Tárolt elemekre kattintva felugró ablak
     // TODO: egyszerűbb módja egy kivételének, véletlen törlés kivédése
     public static void showItemDetailsDialog(Context ctx, String itemId, StorageItem item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
@@ -40,6 +42,17 @@ public class DialogUtils {
                     addItemSheet.show(parent.getChildFragmentManager(), AddStorageItemBottomSheet.class.getSimpleName());
                 }
             })
+            .show();
+    }
+
+    // Üzenet akaratlan elvetését megakadályozó ablak
+    public static void showConfirmDiscardMessageDialog(Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder
+            .setMessage(activity.getString(R.string.confirm_discard_message))
+            .setCancelable(true)
+            .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
+            .setPositiveButton(R.string.discard, (dialogInterface, i) -> activity.finish())
             .show();
     }
 
