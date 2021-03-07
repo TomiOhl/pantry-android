@@ -43,15 +43,15 @@ public class StorageListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         View row;
         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            row = inflater.inflate(R.layout.storage_list_item, viewGroup, false);
+            row = inflater.inflate(R.layout.storage_list_item, parent, false);
         } else {
             row = convertView;
         }
-        StorageItem storageItem = (StorageItem) getItem(i);
+        StorageItem storageItem = (StorageItem) getItem(position);
         TextView name = row.findViewById(R.id.listTitle);
         name.setText(storageItem.getName());
         TextView shelf = row.findViewById(R.id.listSuffix);
@@ -59,7 +59,7 @@ public class StorageListAdapter extends BaseAdapter {
                 "%d%s", storageItem.getShelf(), ctx.getString(R.string.nth_shelf)
         ));
         row.setOnClickListener(view ->
-            DialogUtils.showItemDetailsDialog(ctx, keys.get(i), (StorageItem) getItem(i))
+            DialogUtils.showItemDetailsDialog(ctx, keys.get(position), (StorageItem) getItem(position))
         );
         return row;
     }

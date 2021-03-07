@@ -3,6 +3,7 @@
     <string-array name="spinner_sort">
         <item>@string/by_name</item>
         <item>@string/by_shelf</item>
+        <item>@string/by_date</item>
     </string-array>
 
     <!-- Theme Preference -->

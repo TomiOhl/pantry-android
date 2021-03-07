@@ -52,6 +52,7 @@ public class StorageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        // Tárolók listafragmentjeinek létrehozása
         fridgeListFragment = new ListFragment();
         pantryListFragment = new ListFragment();
     }
@@ -180,8 +181,13 @@ public class StorageFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String sortBy = "name";
-                if (position == 1)
-                    sortBy = "shelf";
+                switch (position) {
+                    case 0: sortBy = "name";
+                        break;
+                    case 1: sortBy = "shelf";
+                        break;
+                    case 2: sortBy = "date";
+                }
                 ((MainActivity)requireActivity()).removeDbListeners();
                 loadStorageContents(fridgeListFragment, 0, sortBy);
                 loadStorageContents(pantryListFragment, 1, sortBy);
