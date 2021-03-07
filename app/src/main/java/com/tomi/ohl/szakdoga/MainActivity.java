@@ -54,8 +54,13 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-        if (savedInstanceState == null)
-            chooseFragment(new StorageFragment());
+        if (savedInstanceState == null) {
+            String destinationFromShortcut = getIntent().getStringExtra("shortcut_destination");
+            if (destinationFromShortcut != null)
+                chooseInitialFragment(destinationFromShortcut);
+            else
+                chooseInitialFragment("storage");
+        }
     }
 
     @Override
@@ -86,6 +91,22 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragmentContainer, fragment, fragment.getClass().getSimpleName());
         //transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    // Megnyitás utáni első fragment betöltése
+    private void chooseInitialFragment(String destinationFromShortcut) {
+        int selectedId = R.id.storage;
+        switch (destinationFromShortcut) {
+            case "shoppinglist":
+                selectedId = R.id.shoppinglist;
+                break;
+            case "messages":
+                selectedId = R.id.messages;
+                break;
+            case "settings":
+                selectedId = R.id.settings;
+        }
+        bottomNavigation.setSelectedItemId(selectedId);
     }
 
     // Regisztrált db listenerek eltávolítása

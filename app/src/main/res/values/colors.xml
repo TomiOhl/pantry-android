@@ -11,4 +11,5 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="bottom_nav_background">@android:color/white</color>
     <color name="bottom_sheet_background">@android:color/white</color>
+    <color name="materialGrey100">#F5F5F5</color>
 </resources>

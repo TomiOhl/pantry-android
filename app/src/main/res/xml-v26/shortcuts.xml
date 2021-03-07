@@ -1,0 +1,64 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="storages"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_storages"
+        android:shortcutShortLabel="@string/storages">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.tomi.ohl.szakdoga"
+            android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
+            <extra
+                android:name="shortcut_destination"
+                android:value="storages" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="shoppinglist"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_shoppinglist"
+        android:shortcutShortLabel="@string/shoppinglist">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.tomi.ohl.szakdoga"
+            android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
+            <extra
+                android:name="shortcut_destination"
+                android:value="shoppinglist" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="messages"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_messages"
+        android:shortcutShortLabel="@string/messages">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.tomi.ohl.szakdoga"
+            android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
+            <extra
+                android:name="shortcut_destination"
+                android:value="messages" />
+        </intent>
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="settings"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_settings"
+        android:shortcutShortLabel="@string/settings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.tomi.ohl.szakdoga"
+            android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
+            <extra
+                android:name="shortcut_destination"
+                android:value="settings" />
+        </intent>
+    </shortcut>
+
+</shortcuts>

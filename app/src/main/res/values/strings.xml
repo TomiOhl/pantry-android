@@ -7,6 +7,7 @@
     <string name="display_name">Teljes név</string>
     <string name="add">Hozzáadás</string>
     <string name="storage">Tároló</string>
+    <string name="storages">Tárolók</string>
     <string name="shoppinglist">Bevásárlólista</string>
     <string name="messages">Üzenetek</string>
     <string name="settings">Beállítások</string>

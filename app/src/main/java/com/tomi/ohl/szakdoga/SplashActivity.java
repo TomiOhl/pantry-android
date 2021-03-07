@@ -38,11 +38,16 @@ public class SplashActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null && document.exists()) {
-                        // Van családja, ezt beállítjuk, majd irány a főkepernyő
+                        // Van családja, ezt beállítjuk
                         HashMap<String, Object> familydata = (HashMap<String, Object>) document.getData();
                         assert familydata != null;
                         FamilyController.getInstance().setCurrentFamily((String) familydata.get("family"));
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        // Irány a főkepernyő, passzolva az esetlegesen kapott extrákat (pl. shortcutból)
+                        Intent launchApp = new Intent(SplashActivity.this, MainActivity.class);
+                        Bundle extras = getIntent().getExtras();
+                        if (extras != null)
+                            launchApp.putExtras(getIntent().getExtras());
+                        startActivity(launchApp);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                     } else {
