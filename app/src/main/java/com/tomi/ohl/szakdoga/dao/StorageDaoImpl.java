@@ -55,6 +55,15 @@ public class StorageDaoImpl implements StorageDao {
         return db.collection("Families").document(currentFamily).collection("Storages").whereEqualTo("location", location).orderBy(sortBy);
     }
 
+    // Keresett elemek lekérése tárolóbol
+    public Query searchStorageItems(String currentFamily, String query) {
+        db = FirebaseFirestore.getInstance();
+        return db.collection("Families").document(currentFamily).collection("Storages")
+                .whereGreaterThanOrEqualTo("name", query)
+                .whereLessThanOrEqualTo("name", query+"z")
+                .orderBy("name");
+    }
+
     // Elem hozzáadása a bevásárlólistához
     @Override
     public void insertShoppingListItem(String currentFamily, ShoppingListItem item) {

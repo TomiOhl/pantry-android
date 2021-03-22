@@ -1,10 +1,11 @@
 package com.tomi.ohl.szakdoga;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -74,15 +75,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu, menu);
-        return true; }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.search) {
-            Toast.makeText(this, "Keresés az éléskamrában", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        setupSearch(menu.findItem(R.id.action_search));
+        return true;
     }
 
     // a kiválasztott fragment betöltése
@@ -114,6 +108,31 @@ public class MainActivity extends AppCompatActivity {
         for(ListenerRegistration elem : dbListeners)
             elem.remove();
         dbListeners.clear();
+    }
+
+    // ActionBaron lévő keresés viselkedése
+    private void setupSearch(MenuItem menuItem) {
+        final SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setMaxWidth(findViewById(R.id.mainLayout).getMeasuredWidth());
+        searchView.setQueryHint(getString(R.string.search_storages));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Bundle bundle = new Bundle();
+                bundle.putString("query", query);
+                SearchResultFragment searchFragment = new SearchResultFragment();
+                searchFragment.setArguments(bundle);
+                chooseFragment(searchFragment);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (TextUtils.isEmpty(newText) && getSupportFragmentManager().findFragmentByTag("StorageFragment") == null)
+                    chooseFragment(new StorageFragment());
+                return true;
+            }
+        });
     }
 
 }

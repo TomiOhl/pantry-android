@@ -16,6 +16,7 @@ public interface StorageDao {
     void editStorageItem(String currentFamily, String id, int count, String name, int shelf);
     void deleteStorageItem(String currentFamily, String id);
     Query getStorageItems(String currentFamily, int location, String sortBy);
+    Query searchStorageItems(String currentFamily, String query);
 
     // Shopping list
     void insertShoppingListItem(String currentFamily, ShoppingListItem item);

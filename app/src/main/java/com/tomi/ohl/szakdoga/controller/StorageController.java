@@ -52,6 +52,11 @@ public class StorageController {
         return dao.getStorageItems(currentFamily, location, sortBy);
     }
 
+    public Query searchStorageItems(String query) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        return dao.searchStorageItems(currentFamily, query);
+    }
+
     public void insertShoppingListItem(ShoppingListItem item) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         dao.insertShoppingListItem(currentFamily, item);

@@ -12,6 +12,7 @@
     <string name="messages">Üzenetek</string>
     <string name="settings">Beállítások</string>
     <string name="search">Keresés</string>
+    <string name="search_storages">Keresés a tárolókban</string>
     <string name="account_header">Fiók</string>
     <string name="app_header">Alkalmazás</string>
     <string name="edit_display_name">Név módosítása</string>
