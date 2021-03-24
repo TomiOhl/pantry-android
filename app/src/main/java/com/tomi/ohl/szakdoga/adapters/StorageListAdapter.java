@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.models.StorageItem;
+import com.tomi.ohl.szakdoga.utils.DateUtils;
 import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
 import java.util.ArrayList;
@@ -54,10 +55,14 @@ public class StorageListAdapter extends BaseAdapter {
         StorageItem storageItem = (StorageItem) getItem(position);
         TextView name = row.findViewById(R.id.listTitle);
         name.setText(storageItem.getName());
-        TextView shelf = row.findViewById(R.id.listSuffix);
+        TextView shelf = row.findViewById(R.id.listShelf);
         shelf.setText(String.format(Locale.getDefault(),
                 "%d%s", storageItem.getShelf(), ctx.getString(R.string.nth_shelf)
         ));
+        TextView date = row.findViewById(R.id.listDate);
+        date.setText(DateUtils.convertToDate(storageItem.getDate()));
+        TextView count = row.findViewById(R.id.listCount);
+        count.setText(String.format("%s%s",storageItem.getCount(), 'x'));
         row.setOnClickListener(view ->
             DialogUtils.showItemDetailsDialog(ctx, keys.get(position), (StorageItem) getItem(position))
         );
