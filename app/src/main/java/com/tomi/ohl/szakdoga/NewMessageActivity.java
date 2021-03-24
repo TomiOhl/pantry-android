@@ -45,6 +45,9 @@ public class NewMessageActivity extends AppCompatActivity {
             newMessageEditText.setText(oldText);
             sendMessageFab.setOnClickListener(view -> editMessage());
         }
+
+        // Legyen a bevitel fókuszban, hogy feljöjjön a billentyűzet
+        newMessageEditText.requestFocus();
     }
 
     // A vissza gomb megnyomásánák művelete
