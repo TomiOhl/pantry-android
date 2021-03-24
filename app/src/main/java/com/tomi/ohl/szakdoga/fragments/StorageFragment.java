@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,6 +32,7 @@ import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.views.AddStorageItemBottomSheet;
+import com.tomi.ohl.szakdoga.views.PaddedListFragment;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -42,8 +42,8 @@ public class StorageFragment extends Fragment {
     private TextView listTextView;
     private Spinner sortSpinner;
     private FirebaseUser user;
-    private ListFragment fridgeListFragment;
-    private ListFragment pantryListFragment;
+    private PaddedListFragment fridgeListFragment;
+    private PaddedListFragment pantryListFragment;
     SharedPreferences sharedPreferences;
 
     public StorageFragment() {}
@@ -53,8 +53,8 @@ public class StorageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         user = FirebaseAuth.getInstance().getCurrentUser();
         // Tárolók listafragmentjeinek létrehozása
-        fridgeListFragment = new ListFragment();
-        pantryListFragment = new ListFragment();
+        fridgeListFragment = new PaddedListFragment();
+        pantryListFragment = new PaddedListFragment();
     }
 
     @Override
@@ -158,7 +158,7 @@ public class StorageFragment extends Fragment {
     }
 
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
-    private void loadStorageContents(ListFragment listFragment, int storage, String sortBy) {
+    private void loadStorageContents(PaddedListFragment listFragment, int storage, String sortBy) {
         LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
         StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsMap);
         listFragment.setListAdapter(listAdapter);
