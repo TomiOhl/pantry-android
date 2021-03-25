@@ -1,6 +1,7 @@
 package com.tomi.ohl.szakdoga;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.tomi.ohl.szakdoga.fragments.MessagesFragment;
+import com.tomi.ohl.szakdoga.fragments.SearchResultFragment;
 import com.tomi.ohl.szakdoga.fragments.SettingsFragment;
 import com.tomi.ohl.szakdoga.fragments.ShoppingListFragment;
 import com.tomi.ohl.szakdoga.fragments.StorageFragment;
@@ -27,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dbListeners = new ArrayList<>();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        dbListeners = new ArrayList<>();
 
         // alsó navigáció beállítása
         bottomNavigation = findViewById(R.id.bottomNavigationView);
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupSearch(MenuItem menuItem) {
         final SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(findViewById(R.id.mainLayout).getMeasuredWidth());
+        searchView.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         searchView.setQueryHint(getString(R.string.search_storages));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

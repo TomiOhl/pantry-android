@@ -44,8 +44,8 @@ public class StorageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Tárolók listafragmentjeinek létrehozása
-        fridgeListFragment = new PaddedListFragment();
-        pantryListFragment = new PaddedListFragment();
+        fridgeListFragment = new PaddedListFragment(getString(R.string.storage_empty));
+        pantryListFragment = new PaddedListFragment(getString(R.string.storage_empty));
     }
 
     @Override

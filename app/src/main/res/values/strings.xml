@@ -13,6 +13,7 @@
     <string name="settings">Beállítások</string>
     <string name="search">Keresés</string>
     <string name="search_storages">Keresés a tárolókban</string>
+    <string name="search_no_result">Nincs a keresésnek megfelelő elem</string>
     <string name="account_header">Fiók</string>
     <string name="app_header">Alkalmazás</string>
     <string name="edit_display_name">Név módosítása</string>
@@ -65,4 +66,5 @@
     <string name="add_to_shopping_list">Bevásárlólistához adás</string>
     <string name="confirm_discard_message">Biztosan elveti az üzenetet?</string>
     <string name="discard">Elvetés</string>
+    <string name="storage_empty">A tároló üres</string>
 </resources>

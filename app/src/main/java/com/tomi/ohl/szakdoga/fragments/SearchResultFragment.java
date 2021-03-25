@@ -1,4 +1,4 @@
-package com.tomi.ohl.szakdoga;
+package com.tomi.ohl.szakdoga.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.fragment.app.ListFragment;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.tomi.ohl.szakdoga.MainActivity;
+import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.StorageListAdapter;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
