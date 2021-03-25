@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,9 +18,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
@@ -34,14 +29,11 @@ import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.views.AddStorageItemBottomSheet;
 import com.tomi.ohl.szakdoga.views.PaddedListFragment;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class StorageFragment extends Fragment {
 
-    private TextView listTextView;
     private Spinner sortSpinner;
-    private FirebaseUser user;
     private PaddedListFragment fridgeListFragment;
     private PaddedListFragment pantryListFragment;
     SharedPreferences sharedPreferences;
@@ -51,7 +43,6 @@ public class StorageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        user = FirebaseAuth.getInstance().getCurrentUser();
         // Tárolók listafragmentjeinek létrehozása
         fridgeListFragment = new PaddedListFragment();
         pantryListFragment = new PaddedListFragment();
@@ -63,28 +54,9 @@ public class StorageFragment extends Fragment {
         // A fragment layoutja
         View layout = inflater.inflate(R.layout.fragment_storage, container, false);
 
-        TextView nameTextView = layout.findViewById(R.id.textProfileName);
-        TextView emailTextView = layout.findViewById(R.id.textProfileEmail);
-        TextView familyTextView = layout.findViewById(R.id.textProfileFamily);
-        listTextView = layout.findViewById(R.id.textTestList);
-
-        Button addButton = layout.findViewById(R.id.btnTestAdd);
-
-        // Jelenítsük meg a bejelentkezett user adatait
-        if (user != null) {
-            nameTextView.setText(String.format("%s: %s", getString(R.string.display_name), user.getDisplayName()));
-            emailTextView.setText(String.format("%s: %s", getString(R.string.email), user.getEmail()));
-            familyTextView.setText(String.format("%s: %s", getString(R.string.family), FamilyController.getInstance().getCurrentFamily()));
-            getTestList();
-        }
-
-        // Firestore read/write tesztelése
-        addButton.setOnClickListener(view -> {
-            // A user egyedi id-jével elnevezett dokumentumba beszúr egy adatot
-            // A hozzáadás gomb többszöri megnyomása felülírja, de a kód működik több elemmel is
-            StorageController.getInstance().insertTest();
-            getTestList();
-        });
+        // Háztartás megjelenítése
+        TextView familyTextView = layout.findViewById(R.id.textCurrentFamily);
+        familyTextView.setText(String.format(getString(R.string.family), FamilyController.getInstance().getCurrentFamily()));
 
         // Sharedpreferences inicializálása
         sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
@@ -136,25 +108,6 @@ public class StorageFragment extends Fragment {
             loadStorageContents(fridgeListFragment, 0, sortBy);
             loadStorageContents(pantryListFragment, 1, sortBy);
         }
-    }
-
-    private void getTestList() {
-        // Kilistázza az adott user adatait
-        StorageController.getInstance().getTestInsert().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document != null && document.exists()) {
-                    HashMap<String, Object> userdata = (HashMap<String, Object>) document.getData();
-                    StringBuilder userDataList = new StringBuilder();
-                    assert userdata != null;
-                    for (String elem : userdata.keySet())
-                        userDataList.append(elem).append(" => ").append(userdata.get(elem)).append("\n");
-                    listTextView.setText(userDataList);
-                }
-            } else {
-                Toast.makeText(getContext(), "Az adatok lekérése sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése

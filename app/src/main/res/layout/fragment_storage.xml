@@ -15,46 +15,20 @@
         android:gravity="center|top" >
 
         <TextView
-            android:id="@+id/textProfileName"
-            android:layout_width="wrap_content"
+            android:id="@+id/textCurrentFamily"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center|top"
             android:layout_marginTop="8dp"
-            android:text="@string/display_name"/>
-
-        <TextView
-            android:id="@+id/textProfileEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"/>
-
-        <TextView
-            android:id="@+id/textProfileFamily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/family"/>
-
-        <TextView
-            android:id="@+id/textTestList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>
-
-        <Button
-            android:id="@+id/btnTestAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorAccent"
-            android:textColor="@android:color/white"
-            app:cornerRadius="18dp"
-            android:text="@string/add"/>
+            android:textSize="18sp"
+            android:text="@string/storages"/>
 
         <LinearLayout
             android:id="@+id/sortLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp" >
+            android:layout_marginTop="8dp" >
 
             <TextView
                 android:layout_width="wrap_content"

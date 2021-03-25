@@ -1,7 +1,5 @@
 package com.tomi.ohl.szakdoga.controller;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.tomi.ohl.szakdoga.dao.StorageDao;
 import com.tomi.ohl.szakdoga.dao.StorageDaoImpl;
@@ -20,16 +18,6 @@ public class StorageController {
             instance = new StorageController();
         }
         return instance;
-    }
-
-    public void insertTest() {
-        String currentFamily = FamilyController.getInstance().getCurrentFamily();
-        dao.insertTest(currentFamily);
-    }
-
-    public Task<DocumentSnapshot> getTestInsert() {
-        String currentFamily = FamilyController.getInstance().getCurrentFamily();
-        return dao.getTestInsert(currentFamily);
     }
 
     public void insertStorageItem(StorageItem item) {
