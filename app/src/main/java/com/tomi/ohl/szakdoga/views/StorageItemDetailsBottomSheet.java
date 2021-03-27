@@ -83,7 +83,7 @@ public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
         int newCount = item.getCount();
         if (isMore)
             newCount += 1;
-        else
+        else if (newCount > 0)
             newCount -= 1;
         StorageController.getInstance().editStorageItem(itemId, newCount, item.getName(), item.getShelf());
         item.setCount(newCount);
