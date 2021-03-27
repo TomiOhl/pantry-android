@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.utils.DateUtils;
-import com.tomi.ohl.szakdoga.views.AddStorageItemBottomSheet;
 import com.tomi.ohl.szakdoga.views.StorageItemDetailsBottomSheet;
 
 import java.util.ArrayList;
@@ -68,7 +68,10 @@ public class StorageListAdapter extends BaseAdapter {
         TextView count = row.findViewById(R.id.listCount);
         count.setText(String.format("%s%s",storageItem.getCount(), 'x'));
         row.setOnClickListener(view -> {
-                Fragment parentFragment = ((FragmentActivity) ctx).getSupportFragmentManager().findFragmentByTag("StorageFragment");
+            // TODO: from searchfragment
+                FragmentManager fm = ((FragmentActivity) ctx).getSupportFragmentManager();
+                Fragment parentFragment = fm.findFragmentByTag("StorageFragment") == null ?
+                        fm.findFragmentByTag("SearchResultFragment") : fm.findFragmentByTag("StorageFragment");
                 if (parentFragment != null) {
                     parentFragment.requireActivity().getIntent().putExtra("itemId", keys.get(position));
                     parentFragment.requireActivity().getIntent().putExtra("storageItem", (StorageItem) getItem(position));

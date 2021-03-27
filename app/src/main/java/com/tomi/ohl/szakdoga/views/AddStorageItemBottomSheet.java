@@ -97,7 +97,7 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
             shelfEditText.setText(String.valueOf(currentItem.getShelf()));
             saveAddButton.setOnClickListener(view -> {
                 if (invalidInputs()) return;
-                Snackbar.make(requireActivity().findViewById(R.id.storageLayout), R.string.saving, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(requireActivity().findViewById(R.id.fragmentContainer), R.string.saving, Snackbar.LENGTH_SHORT).show();
                 StorageController.getInstance().editStorageItem(
                         itemId,
                         Integer.parseInt(String.valueOf(countEditText.getText())),
