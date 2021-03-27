@@ -39,4 +39,8 @@ public class StorageItem implements Serializable {
     public long getDate() {
         return date;
     }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }

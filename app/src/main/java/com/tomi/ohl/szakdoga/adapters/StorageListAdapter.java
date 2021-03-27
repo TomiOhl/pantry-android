@@ -7,10 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.utils.DateUtils;
-import com.tomi.ohl.szakdoga.utils.DialogUtils;
+import com.tomi.ohl.szakdoga.views.AddStorageItemBottomSheet;
+import com.tomi.ohl.szakdoga.views.StorageItemDetailsBottomSheet;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -63,8 +67,15 @@ public class StorageListAdapter extends BaseAdapter {
         date.setText(DateUtils.convertToDate(storageItem.getDate()));
         TextView count = row.findViewById(R.id.listCount);
         count.setText(String.format("%s%s",storageItem.getCount(), 'x'));
-        row.setOnClickListener(view ->
-            DialogUtils.showItemDetailsDialog(ctx, keys.get(position), (StorageItem) getItem(position))
+        row.setOnClickListener(view -> {
+                Fragment parentFragment = ((FragmentActivity) ctx).getSupportFragmentManager().findFragmentByTag("StorageFragment");
+                if (parentFragment != null) {
+                    parentFragment.requireActivity().getIntent().putExtra("itemId", keys.get(position));
+                    parentFragment.requireActivity().getIntent().putExtra("storageItem", (StorageItem) getItem(position));
+                    StorageItemDetailsBottomSheet itemDetailsSheet = new StorageItemDetailsBottomSheet();
+                    itemDetailsSheet.show(parentFragment.getChildFragmentManager(), StorageItemDetailsBottomSheet.class.getSimpleName());
+                }
+            }
         );
         return row;
     }

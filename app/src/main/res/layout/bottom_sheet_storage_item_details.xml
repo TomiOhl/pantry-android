@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/bottom_sheet_storage_item_details"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingBottom="12dp"
+    android:elevation="12dp"
+    android:layout_marginTop="1dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:rotation="180"
+        android:src="@drawable/handle"
+        android:contentDescription="@string/back" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"
+        android:textSize="32sp"
+        android:textColor="@color/colorText"
+        android:text="@string/details"/>
+
+    <TextView
+        android:id="@+id/textStorageItemDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:textSize="18sp"
+        style="@android:style/TextAppearance.Material.Body1"
+        android:text="@string/details" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnLessItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:foreground="@drawable/ripple_button_secondary"
+            android:backgroundTint="@color/secondary_button_background"
+            android:textColor="@color/colorAccent"
+            app:cornerRadius="18dp"
+            android:text="@string/minus" />
+
+        <TextView
+            android:id="@+id/textItemCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="18sp"
+            style="@android:style/TextAppearance.Material.Body1"
+            android:text="@string/volume" />
+
+        <Button
+            android:id="@+id/btnMoreItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/white"
+            app:cornerRadius="18dp"
+            android:text="@string/plus" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnEditStorageItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:padding="12dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/white"
+            app:cornerRadius="26dp"
+            android:text="@string/edit" />
+
+        <Button
+            android:id="@+id/btnDeleteStorageItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:padding="12dp"
+            android:backgroundTint="@color/design_default_color_error"
+            android:textColor="@android:color/white"
+            app:cornerRadius="26dp"
+            android:text="@string/delete" />
+
+        <Button
+            android:id="@+id/btnCancelStorageItemDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:padding="12dp"
+            android:foreground="@drawable/ripple_button_secondary"
+            android:backgroundTint="@color/secondary_button_background"
+            android:textColor="@color/colorAccent"
+            app:cornerRadius="26dp"
+            android:text="@android:string/cancel" />
+
+    </LinearLayout>
+
+</LinearLayout>

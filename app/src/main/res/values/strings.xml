@@ -67,4 +67,7 @@
     <string name="confirm_discard_message">Biztosan elveti az üzenetet?</string>
     <string name="discard">Elvetés</string>
     <string name="storage_empty">A tároló üres</string>
+    <string name="confirm_delete_item">Biztosan eltávolítja az elemet?</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>

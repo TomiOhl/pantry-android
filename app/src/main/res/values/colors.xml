@@ -7,9 +7,9 @@
     <color name="darkBg">#ff202124</color>
     <color name="tabColor">@android:color/transparent</color>
     <color name="colorText">#000000</color>
-    <color name="colorLayout">@android:color/white</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="secondary_button_background">@android:color/white</color>
     <color name="bottom_nav_background">@android:color/white</color>
-    <color name="bottom_sheet_background">@android:color/white</color>
+    <color name="bottom_sheet_background">#fafafa</color>
     <color name="materialGrey100">#F5F5F5</color>
 </resources>
