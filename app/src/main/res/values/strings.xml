@@ -49,7 +49,7 @@
     <string name="require_matching_passwords">A jelszavak nem egyeznek</string>
     <string name="require_not_empty">A mező nem lehet üres</string>
     <string name="saving">Mentés…</string>
-    <string name="family">Kezelje %1$s háztartásában lévő tárolókat.</string>
+    <string name="family">Háztartás: %1$s</string>
     <string name="delete">Törlés</string>
     <string name="modify">Módosítás</string>
     <string name="details">Részletek</string>
