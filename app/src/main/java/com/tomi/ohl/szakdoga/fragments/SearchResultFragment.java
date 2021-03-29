@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.fragment.app.ListFragment;
 
@@ -34,12 +35,20 @@ public class SearchResultFragment extends ListFragment {
         return inflater.inflate(R.layout.fragment_search_result_list, container, false);
     }
 
+    @Override
+    public void onStop() {
+        SearchView searchView = ((MainActivity) requireActivity()).getSearchView();
+        if (!searchView.isIconified())
+            searchView.onActionViewCollapsed();
+        super.onStop();
+    }
+
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
     private void loadStorageContents(String query) {
         LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
         StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsMap);
         this.setListAdapter(listAdapter);
-        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().searchStorageItems(query).addSnapshotListener(
+        ((MainActivity) requireActivity()).getDbListeners().add(StorageController.getInstance().searchStorageItems(query).addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     itemsMap.clear();

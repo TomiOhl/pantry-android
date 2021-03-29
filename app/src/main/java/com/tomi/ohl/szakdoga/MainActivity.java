@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +26,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
-    public ArrayList<ListenerRegistration> dbListeners;
+    private SearchView searchView;
+    private ArrayList<ListenerRegistration> dbListeners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (searchView.isIconified())
+            super.onBackPressed();
+        else
+            searchView.onActionViewCollapsed();
+    }
+
     // a kiválasztott fragment betöltése
     public void chooseFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -112,9 +122,13 @@ public class MainActivity extends AppCompatActivity {
         dbListeners.clear();
     }
 
+    public ArrayList<ListenerRegistration> getDbListeners() {
+        return dbListeners;
+    }
+
     // ActionBaron lévő keresés viselkedése
     private void setupSearch(MenuItem menuItem) {
-        final SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(findViewById(R.id.mainLayout).getMeasuredWidth());
         searchView.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         searchView.setQueryHint(getString(R.string.search_storages));
@@ -126,16 +140,23 @@ public class MainActivity extends AppCompatActivity {
                 SearchResultFragment searchFragment = new SearchResultFragment();
                 searchFragment.setArguments(bundle);
                 chooseFragment(searchFragment);
+                bottomNavigation.setVisibility(View.GONE);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText) && getSupportFragmentManager().findFragmentByTag("StorageFragment") == null)
+                if (TextUtils.isEmpty(newText) && getSupportFragmentManager().findFragmentByTag("StorageFragment") == null) {
+                    bottomNavigation.setVisibility(View.VISIBLE);
                     chooseFragment(new StorageFragment());
+                }
                 return true;
             }
         });
+    }
+
+    public SearchView getSearchView() {
+        return searchView;
     }
 
 }

@@ -61,7 +61,7 @@ public class ShoppingListFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback());
         itemTouchHelper.attachToRecyclerView(rv);
         // Bevásárlólista lekérése
-        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getShoppingListItems().addSnapshotListener(
+        ((MainActivity)requireActivity()).getDbListeners().add(StorageController.getInstance().getShoppingListItems().addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     shoppingListMap.clear();

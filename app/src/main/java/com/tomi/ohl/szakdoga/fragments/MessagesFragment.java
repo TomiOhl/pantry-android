@@ -55,7 +55,7 @@ public class MessagesFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(requireView().getContext()));
         rv.setAdapter(new MessagesRecyclerViewAdapter(msgMap));
         // Üzenetek listájának lekérése
-        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getNewMessages().addSnapshotListener(
+        ((MainActivity)requireActivity()).getDbListeners().add(StorageController.getInstance().getNewMessages().addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     msgMap.clear();

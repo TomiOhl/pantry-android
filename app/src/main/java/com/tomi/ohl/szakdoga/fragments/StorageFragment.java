@@ -103,7 +103,7 @@ public class StorageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (((MainActivity)requireActivity()).dbListeners.size() < 1) {
+        if (((MainActivity)requireActivity()).getDbListeners().size() < 1) {
             String sortBy = sharedPreferences.getString("sortname", "name");
             loadStorageContents(fridgeListFragment, 0, sortBy);
             loadStorageContents(pantryListFragment, 1, sortBy);
@@ -115,7 +115,7 @@ public class StorageFragment extends Fragment {
         LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
         StorageListAdapter listAdapter = new StorageListAdapter(this.requireContext(), itemsMap);
         listFragment.setListAdapter(listAdapter);
-        ((MainActivity)requireActivity()).dbListeners.add(StorageController.getInstance().getStorageItems(storage, sortBy).addSnapshotListener(
+        ((MainActivity)requireActivity()).getDbListeners().add(StorageController.getInstance().getStorageItems(storage, sortBy).addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     itemsMap.clear();

@@ -68,7 +68,6 @@ public class StorageListAdapter extends BaseAdapter {
         TextView count = row.findViewById(R.id.listCount);
         count.setText(String.format("%s%s",storageItem.getCount(), 'x'));
         row.setOnClickListener(view -> {
-            // TODO: from searchfragment
                 FragmentManager fm = ((FragmentActivity) ctx).getSupportFragmentManager();
                 Fragment parentFragment = fm.findFragmentByTag("StorageFragment") == null ?
                         fm.findFragmentByTag("SearchResultFragment") : fm.findFragmentByTag("StorageFragment");
