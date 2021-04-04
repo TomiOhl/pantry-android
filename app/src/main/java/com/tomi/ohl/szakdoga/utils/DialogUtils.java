@@ -10,13 +10,13 @@ import com.tomi.ohl.szakdoga.controller.StorageController;
 public class DialogUtils {
 
     // Tárolóból való törlés megakadályozása
-    public static void showConfirmDeleteStorageItemDialog(Activity activity, String itemId) {
+    public static void showConfirmDeleteStorageItemDialog(Activity activity, String itemId, String itemName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder
             .setMessage(activity.getString(R.string.confirm_delete_item))
             .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
             .setPositiveButton(R.string.delete, (dialogInterface, i) ->
-                    StorageController.getInstance().deleteStorageItem(itemId))
+                    StorageController.getInstance().deleteStorageItem(itemId, itemName))
             .show();
     }
 

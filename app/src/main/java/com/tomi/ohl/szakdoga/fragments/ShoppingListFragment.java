@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.ShoppingListRecyclerViewAdapter;
@@ -40,6 +44,10 @@ public class ShoppingListFragment extends Fragment {
         // A fragment layoutja
         View layout = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
+        // Javaslatok megjelenítése
+        ChipGroup chipGroup = layout.findViewById(R.id.shoppinglistSuggestionsGroup);
+        loadSuggestions(chipGroup);
+
         // Új üzenet gomb
         FloatingActionButton newMessageFab = layout.findViewById(R.id.fabAddShopping);
         newMessageFab.setOnClickListener(view -> {
@@ -53,7 +61,47 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Bevásárlólista RecyclerView-n
+        loadShoppingList();
+    }
+
+    // 5 javaslat betöltése, többi törlése
+    private void loadSuggestions(ChipGroup chipGroup) {
+        StorageController.getInstance().getSuggestionItems().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && querySnapshot.size() > 0) {
+                    int count = 0;
+                    for (DocumentSnapshot elem : querySnapshot) {
+                        count++;
+                        if (count < 6) {
+                            String itemName = (String) elem.get("name");
+                            Chip suggestion = (Chip) getLayoutInflater().inflate(R.layout.chip_suggestion, chipGroup, false);
+                            suggestion.setText(itemName);
+                            suggestion.setCheckable(false);
+                            suggestion.setOnClickListener(view -> onSuggestionClicked(elem.getId(), chipGroup, suggestion, itemName));
+                            suggestion.setOnCloseIconClickListener(view -> onCloseSuggestion(elem.getId(), chipGroup, suggestion));
+                            chipGroup.addView(suggestion);
+                        } else {
+                            StorageController.getInstance().deleteSuggestionItem(elem.getId());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void onSuggestionClicked(String itemId, ChipGroup chipGroup, Chip chip, String itemName) {
+        StorageController.getInstance().insertShoppingListItem(new ShoppingListItem(itemName, false));
+        onCloseSuggestion(itemId, chipGroup, chip);
+    }
+
+    private void onCloseSuggestion(String itemId, ChipGroup chipGroup, Chip chip) {
+        chipGroup.removeView(chip);
+        StorageController.getInstance().deleteSuggestionItem(itemId);
+    }
+
+    // Bevásárlólista betöltése
+    private void loadShoppingList() {
         shoppingListMap = new LinkedHashMap<>();
         rv = requireView().findViewById(R.id.shoppinglistRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(requireView().getContext()));

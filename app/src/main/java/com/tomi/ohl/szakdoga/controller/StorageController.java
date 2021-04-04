@@ -1,11 +1,14 @@
 package com.tomi.ohl.szakdoga.controller;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.tomi.ohl.szakdoga.dao.StorageDao;
 import com.tomi.ohl.szakdoga.dao.StorageDaoImpl;
 import com.tomi.ohl.szakdoga.models.MessageItem;
 import com.tomi.ohl.szakdoga.models.ShoppingListItem;
 import com.tomi.ohl.szakdoga.models.StorageItem;
+import com.tomi.ohl.szakdoga.models.SuggestionItem;
 
 public class StorageController {
     private StorageDao dao = new StorageDaoImpl();
@@ -30,7 +33,11 @@ public class StorageController {
         dao.editStorageItem(currentFamily, id, count, name, shelf);
     }
 
-    public void deleteStorageItem(String id) {
+    public void deleteStorageItem(String id, String name) {
+        // Először adjuk hozzá a javaslatokhoz
+        SuggestionItem newSuggestion = new SuggestionItem(name, System.currentTimeMillis());
+        insertSuggestionItem(newSuggestion);
+        // Mehet a törlés
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         dao.deleteStorageItem(currentFamily, id);
     }
@@ -43,6 +50,19 @@ public class StorageController {
     public Query searchStorageItems(String query) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         return dao.searchStorageItems(currentFamily, query);
+    }
+
+    public void insertSuggestionItem(SuggestionItem item) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.insertSuggestionItem(currentFamily, item);
+    }
+    public void deleteSuggestionItem(String id) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        dao.deleteSuggestionItem(currentFamily, id);
+    }
+    public Task<QuerySnapshot> getSuggestionItems() {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        return dao.getSuggestionItems(currentFamily);
     }
 
     public void insertShoppingListItem(ShoppingListItem item) {

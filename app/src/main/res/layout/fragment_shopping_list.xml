@@ -16,10 +16,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|top"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="8dp"
             android:textSize="18sp"
             android:text="@string/shoppinglist_desc" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" >
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/shoppinglistSuggestionsGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:singleLine="true" />
+
+        </HorizontalScrollView>
 
         <com.tomi.ohl.szakdoga.views.TopFadingEdgeRecyclerView
             android:id="@+id/shoppinglistRecyclerView"

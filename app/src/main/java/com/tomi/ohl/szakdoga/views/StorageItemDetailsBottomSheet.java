@@ -70,7 +70,7 @@ public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
         });
         Button deleteBtn = layout.findViewById(R.id.btnDeleteStorageItem);
         deleteBtn.setOnClickListener(view -> {
-            DialogUtils.showConfirmDeleteStorageItemDialog(requireActivity(), itemId);
+            DialogUtils.showConfirmDeleteStorageItemDialog(requireActivity(), itemId, item.getName());
             dismiss();
         });
         Button cancelBtn = layout.findViewById(R.id.btnCancelStorageItemDetails);

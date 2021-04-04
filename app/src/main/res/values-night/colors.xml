@@ -7,4 +7,5 @@
     <color name="secondary_button_background">#424242</color>
     <color name="bottom_nav_background">#2D2D2D</color>
     <color name="bottom_sheet_background">#353535</color>
+    <color name="chip_background">@color/bottom_sheet_background</color>
 </resources>

@@ -11,5 +11,6 @@
     <color name="secondary_button_background">@android:color/white</color>
     <color name="bottom_nav_background">@android:color/white</color>
     <color name="bottom_sheet_background">#fafafa</color>
+    <color name="chip_background">@color/colorPrimary</color>
     <color name="materialGrey100">#F5F5F5</color>
 </resources>
