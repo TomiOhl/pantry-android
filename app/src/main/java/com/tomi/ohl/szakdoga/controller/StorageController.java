@@ -72,7 +72,11 @@ public class StorageController {
 
     public void editShoppingListItem(String id, ShoppingListItem item) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
-        dao.editShoppingListItem(currentFamily, id, item);
+        String itemName = item.getName();
+        if (itemName != null && itemName.trim().isEmpty())
+            dao.deleteShoppingListItem(currentFamily, id);
+        else
+            dao.editShoppingListItem(currentFamily, id, item);
     }
 
     public void deleteShoppingListItem(String id) {
