@@ -89,6 +89,11 @@ public class StorageController {
         return dao.getShoppingListItems(currentFamily);
     }
 
+    public Task<QuerySnapshot> getShoppingListItemsOnce(boolean shouldTheyBeChecked) {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        return dao.getShoppingListItemsOnce(currentFamily, shouldTheyBeChecked);
+    }
+
     public void insertNewMessage(MessageItem item) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         dao.insertNewMessage(currentFamily, item);

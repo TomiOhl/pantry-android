@@ -26,6 +26,7 @@ public interface StorageDao {
     void editShoppingListItem(String currentFamily, String id, ShoppingListItem item);
     void deleteShoppingListItem(String currentFamily, String id);
     Query getShoppingListItems(String currentFamily);
+    Task<QuerySnapshot> getShoppingListItemsOnce(String currentFamily, boolean shouldTheyBeChecked);
 
     // Messages
     void insertNewMessage(String currentFamily, MessageItem item);

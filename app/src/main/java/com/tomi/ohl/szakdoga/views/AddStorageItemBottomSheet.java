@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +20,12 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.StorageChooserMenuAdapter;
 import com.tomi.ohl.szakdoga.controller.StorageController;
@@ -36,6 +41,7 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
     private TextInputLayout menuStorageChooserContainer;
     private EditText shelfEditText;
     private TextInputLayout shelfEditTextContainer;
+    private ChipGroup suggestionsChipGroup;
     private String itemId;
     private StorageItem currentItem;
 
@@ -91,6 +97,10 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         Button saveAddButton = layout.findViewById(R.id.btnSaveAdd);
         Button cancelAddButton = layout.findViewById(R.id.btnCancelAdd);
 
+        // Legutóbb megvásárolt javaslatok
+        suggestionsChipGroup = layout.findViewById(R.id.addItemSuggestionsGroup);
+        loadSuggestions(suggestionsChipGroup);
+
         // Tárhelyválasztó menü
         // Később majd akár a user által szerkeszthetővé lehetne tenni a tömböt
         String[] storageTypes = {getString(R.string.fridge), getString(R.string.pantry)};
@@ -137,6 +147,35 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         return layout;
+    }
+
+    // Javaslatok betöltése, felirat megjelenítése, ha vannak
+    private void loadSuggestions(ChipGroup chipGroup) {
+        StorageController.getInstance().getShoppingListItemsOnce(true).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                TextView suggestionsTitle = requireDialog().findViewById(R.id.textRecentlyBought);
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && querySnapshot.size() > 0) {
+                    for (DocumentSnapshot elem : querySnapshot) {
+                        String itemName = (String) elem.get("name");
+                        Chip suggestion = (Chip) getLayoutInflater().inflate(R.layout.chip_suggestion_undeletable, chipGroup, false);
+                        suggestion.setText(itemName);
+                        suggestion.setCheckable(false);
+                        suggestion.setOnClickListener(view -> onSuggestionClicked(suggestion, itemName));
+                        chipGroup.addView(suggestion);
+                    }
+                    suggestionsTitle.setVisibility(View.VISIBLE);
+                } else {
+                    suggestionsTitle.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    private void onSuggestionClicked(Chip chip, String itemName) {
+        nameEditText.setText(itemName);
+        countEditText.requestFocus();
+        suggestionsChipGroup.removeView(chip);
     }
 
     private boolean invalidInputs() {

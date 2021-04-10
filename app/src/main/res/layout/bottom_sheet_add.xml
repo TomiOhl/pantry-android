@@ -121,6 +121,22 @@
                 android:text="@string/add" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textRecentlyBought"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/colorText"
+            android:textSize="24sp"
+            android:text="@string/recently_bought" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/addItemSuggestionsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"/>
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

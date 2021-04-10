@@ -117,6 +117,14 @@ public class StorageDaoImpl implements StorageDao {
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_SHOPPINGLIST).orderBy("checked").orderBy("name");
     }
 
+    // Bevásárlólista kipipált elemeinek egyszeri lekérése
+    @Override
+    public Task<QuerySnapshot> getShoppingListItemsOnce(String currentFamily, boolean shouldTheyBeChecked) {
+        db = FirebaseFirestore.getInstance();
+        return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_SHOPPINGLIST)
+                .whereEqualTo("checked", shouldTheyBeChecked).orderBy("name").get();
+    }
+
     // Új üzenet mentése az adatbázisba
     public void insertNewMessage(String currentFamily, MessageItem item) {
         db = FirebaseFirestore.getInstance();
