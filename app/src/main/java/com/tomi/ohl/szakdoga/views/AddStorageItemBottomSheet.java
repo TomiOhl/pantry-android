@@ -1,6 +1,8 @@
 package com.tomi.ohl.szakdoga.views;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +11,13 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -44,6 +50,25 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         Intent i = requireActivity().getIntent();
         itemId = i.getStringExtra("itemId");
         currentItem = (StorageItem) i.getSerializableExtra("storageItem");
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialogInterface -> {
+            FrameLayout bottomSheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+
+            // Legyen olyan magas, mint a képernyő, hogy kényelmesen lehessen írni az inputokba
+            int windowHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+            ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+            layoutParams.height = windowHeight;
+            bottomSheet.setLayoutParams(layoutParams);
+
+            // Nyíljon is ki egyből ilyen magasra
+            BottomSheetBehavior.from(bottomSheet).setPeekHeight(windowHeight);
+        });
+        return dialog;
     }
 
     @Override

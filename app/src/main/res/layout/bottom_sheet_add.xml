@@ -1,121 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/bottom_sheet_add"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:gravity="center|top"
-    android:orientation="vertical"
-    android:paddingStart="12dp"
-    android:paddingEnd="12dp"
-    android:paddingBottom="12dp"
-    android:elevation="12dp"
-    android:layout_marginTop="1dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent" >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:rotation="180"
-        android:src="@drawable/handle"
-        android:contentDescription="@string/back" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textSize="32sp"
-        android:textColor="@color/colorText"
-        android:text="@string/add"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutAddItemName"
+    <LinearLayout android:id="@+id/bottom_sheet_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextAddItemName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textCapSentences"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:background="@color/transparent"
-            android:hint="@string/name" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="12dp"
+        android:elevation="12dp"
+        android:layout_marginTop="1dp" >
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutAddItemVolume"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextAddItemVolume"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
-            android:background="@color/transparent"
-            android:hint="@string/volume" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/menuStoragechooserContainer"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
-        <AutoCompleteTextView
-            android:id="@+id/menuStoragechooser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:backgroundTint="@color/transparent"
-            android:hint="@string/storage"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutAddItemShelf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextAddItemShelf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
-            android:background="@color/transparent"
-            android:hint="@string/shelf" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" >
-        <Button
-            android:id="@+id/btnCancelAdd"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:foreground="@drawable/ripple_button_secondary"
-            android:backgroundTint="@color/secondary_button_background"
-            android:textColor="@color/colorAccent"
-            app:cornerRadius="18dp"
-            android:text="@android:string/cancel" />
+            android:layout_marginTop="6dp"
+            android:rotation="180"
+            android:src="@drawable/handle"
+            android:contentDescription="@string/back" />
 
-        <Button
-            android:id="@+id/btnSaveAdd"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:backgroundTint="@color/colorAccent"
-            android:textColor="@android:color/white"
-            app:cornerRadius="18dp"
-            android:text="@string/add" />
+            android:layout_marginBottom="8dp"
+            android:textSize="32sp"
+            android:textColor="@color/colorText"
+            android:text="@string/add"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutAddItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextAddItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                android:background="@color/transparent"
+                android:hint="@string/name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutAddItemVolume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextAddItemVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:background="@color/transparent"
+                android:hint="@string/volume" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/menuStoragechooserContainer"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <AutoCompleteTextView
+                android:id="@+id/menuStoragechooser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:backgroundTint="@color/transparent"
+                android:hint="@string/storage"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutAddItemShelf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextAddItemShelf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:background="@color/transparent"
+                android:hint="@string/shelf" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" >
+            <Button
+                android:id="@+id/btnCancelAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:foreground="@drawable/ripple_button_secondary"
+                android:backgroundTint="@color/secondary_button_background"
+                android:textColor="@color/colorAccent"
+                app:cornerRadius="18dp"
+                android:text="@android:string/cancel" />
+
+            <Button
+                android:id="@+id/btnSaveAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:backgroundTint="@color/colorAccent"
+                android:textColor="@android:color/white"
+                app:cornerRadius="18dp"
+                android:text="@string/add" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
