@@ -71,4 +71,6 @@
     <string name="minus">-</string>
     <string name="plus">+</string>
     <string name="recently_bought">Mostanában vásároltak</string>
+    <string name="got_it">Rendben</string>
+    <string name="first_use_shopping_list">Gyors tipp: csúsztassa oldalra az elemeket az eltávolításukhoz.</string>
 </resources>

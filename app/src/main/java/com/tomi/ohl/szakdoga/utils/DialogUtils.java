@@ -20,6 +20,16 @@ public class DialogUtils {
             .show();
     }
 
+    // Egy kis hint megjelenítése egy-egy feature első használatához
+    public static void showFirstUseDialog(Activity activity, String text) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.TransparentDialog);
+        builder
+            .setMessage(text)
+            .setCancelable(false)
+            .setPositiveButton(R.string.got_it, (dialogInterface, i) -> dialogInterface.cancel())
+            .show();
+    }
+
     // Üzenet akaratlan elvetését megakadályozó ablak
     public static void showConfirmDiscardMessageDialog(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);

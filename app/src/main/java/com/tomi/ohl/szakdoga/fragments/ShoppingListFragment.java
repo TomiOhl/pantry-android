@@ -1,5 +1,7 @@
 package com.tomi.ohl.szakdoga.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.ShoppingListRecyclerViewAdapter;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.ShoppingListItem;
+import com.tomi.ohl.szakdoga.utils.DialogUtils;
 import com.tomi.ohl.szakdoga.views.AddShoppingListItemBottomSheet;
 import com.tomi.ohl.szakdoga.views.TopFadingEdgeRecyclerView;
 
@@ -120,6 +123,8 @@ public class ShoppingListFragment extends Fragment {
                     }
                     if (rv.getAdapter() != null)
                         ((ShoppingListRecyclerViewAdapter)rv.getAdapter()).updateKeys(shoppingListMap.keySet());
+                    if (value.size() > 0)
+                        firstUseHint();
                 }
         ));
     }
@@ -144,5 +149,16 @@ public class ShoppingListFragment extends Fragment {
                 }
             }
         };
+    }
+    
+    private void firstUseHint() {
+        if (getActivity() != null) {
+            SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+            boolean firstUse = sharedPreferences.getBoolean("firstUsedShoppingList", true);
+            if (firstUse) {
+                DialogUtils.showFirstUseDialog(requireActivity(), getString(R.string.first_use_shopping_list));
+                sharedPreferences.edit().putBoolean("firstUsedShoppingList", false).apply();
+            }
+        }
     }
 }
