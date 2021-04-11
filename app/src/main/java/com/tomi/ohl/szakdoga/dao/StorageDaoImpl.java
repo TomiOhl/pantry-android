@@ -54,7 +54,7 @@ public class StorageDaoImpl implements StorageDao {
         db = FirebaseFirestore.getInstance();
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_STORAGES)
                 .whereGreaterThanOrEqualTo("name", query)
-                .whereLessThanOrEqualTo("name", query+"z")
+                .whereLessThanOrEqualTo("name", query+"Ͽ")  // a hozzáadott Ͽ biztosítja, hogy szinte az összes európai karakter lehessen utána
                 .orderBy("name");
     }
 

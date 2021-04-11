@@ -135,12 +135,17 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Bundle bundle = new Bundle();
-                bundle.putString("query", query);
-                SearchResultFragment searchFragment = new SearchResultFragment();
-                searchFragment.setArguments(bundle);
-                chooseFragment(searchFragment);
-                bottomNavigation.setVisibility(View.GONE);
+                SearchResultFragment searchResultFragment = (SearchResultFragment) getSupportFragmentManager().findFragmentByTag("SearchResultFragment");
+                if (searchResultFragment == null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("query", query);
+                    searchResultFragment = new SearchResultFragment();
+                    searchResultFragment.setArguments(bundle);
+                    chooseFragment(searchResultFragment);
+                    bottomNavigation.setVisibility(View.GONE);
+                } else {
+                    searchResultFragment.changeQuery(query);
+                }
                 return true;
             }
 

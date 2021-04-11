@@ -43,6 +43,11 @@ public class SearchResultFragment extends ListFragment {
         super.onStop();
     }
 
+    // Új kereséshez
+    public void changeQuery(String query) {
+        loadStorageContents(query);
+    }
+
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
     private void loadStorageContents(String query) {
         LinkedHashMap<String, StorageItem> itemsMap = new LinkedHashMap<>();
