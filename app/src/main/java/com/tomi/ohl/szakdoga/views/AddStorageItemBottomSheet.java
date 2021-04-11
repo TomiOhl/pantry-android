@@ -130,6 +130,7 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
             countEditText.setText(String.valueOf(currentItem.getCount()));
             menuStorageChooserContainer.setVisibility(View.GONE);
             shelfEditText.setText(String.valueOf(currentItem.getShelf()));
+            saveAddButton.setText(R.string.save);
             saveAddButton.setOnClickListener(view -> {
                 if (invalidInputs()) return;
                 Snackbar.make(requireActivity().findViewById(R.id.fragmentContainer), R.string.saving, Snackbar.LENGTH_SHORT).show();
