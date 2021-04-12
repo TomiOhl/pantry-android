@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
+    private String selectedFragment;
     private SearchView searchView;
     private ArrayList<ListenerRegistration> dbListeners;
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             if (destinationFromShortcut != null)
                 chooseInitialFragment(destinationFromShortcut);
             else
-                chooseInitialFragment("storage");
+                chooseInitialFragment("StorageFragment");
         }
     }
 
@@ -93,23 +94,25 @@ public class MainActivity extends AppCompatActivity {
 
     // a kiválasztott fragment betöltése
     public void chooseFragment(Fragment fragment) {
+        String tag = fragment.getClass().getSimpleName();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment, fragment.getClass().getSimpleName());
+        transaction.replace(R.id.fragmentContainer, fragment, tag);
         //transaction.addToBackStack(null);
         transaction.commit();
+        setSelectedFragment(tag);
     }
 
     // Megnyitás utáni első fragment betöltése
     private void chooseInitialFragment(String destinationFromShortcut) {
         int selectedId = R.id.storage;
         switch (destinationFromShortcut) {
-            case "shoppinglist":
+            case "ShoppingListFragment":
                 selectedId = R.id.shoppinglist;
                 break;
-            case "messages":
+            case "MessagesFragment":
                 selectedId = R.id.messages;
                 break;
-            case "settings":
+            case "SettingsFragment":
                 selectedId = R.id.settings;
         }
         bottomNavigation.setSelectedItemId(selectedId);
@@ -124,6 +127,16 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<ListenerRegistration> getDbListeners() {
         return dbListeners;
+    }
+
+    public SearchView getSearchView() {
+        return searchView;
+    }
+
+    // Erre térünk vissza a keresés fragmentról
+    private void setSelectedFragment(String selectedFragment) {
+        if (!selectedFragment.equals("SearchResultFragment"))
+            this.selectedFragment = selectedFragment;
     }
 
     // ActionBaron lévő keresés viselkedése
@@ -149,15 +162,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if (TextUtils.isEmpty(newText) && getSupportFragmentManager().findFragmentByTag("StorageFragment") == null) {
                     bottomNavigation.setVisibility(View.VISIBLE);
-                    chooseFragment(new StorageFragment());
+                    chooseInitialFragment(selectedFragment);
                 }
                 return true;
             }
         });
-    }
-
-    public SearchView getSearchView() {
-        return searchView;
     }
 
 }

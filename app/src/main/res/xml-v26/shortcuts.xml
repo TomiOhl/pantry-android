@@ -11,7 +11,7 @@
             android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
             <extra
                 android:name="shortcut_destination"
-                android:value="storages" />
+                android:value="StorageFragment" />
         </intent>
     </shortcut>
 
@@ -26,7 +26,7 @@
             android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
             <extra
                 android:name="shortcut_destination"
-                android:value="shoppinglist" />
+                android:value="ShoppingListFragment" />
         </intent>
     </shortcut>
 
@@ -41,7 +41,7 @@
             android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
             <extra
                 android:name="shortcut_destination"
-                android:value="messages" />
+                android:value="MessagesFragment" />
         </intent>
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
@@ -57,7 +57,7 @@
             android:targetClass="com.tomi.ohl.szakdoga.SplashActivity" >
             <extra
                 android:name="shortcut_destination"
-                android:value="settings" />
+                android:value="SettingsFragment" />
         </intent>
     </shortcut>
 
