@@ -45,9 +45,9 @@ public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
         // Szövegek
         TextView detailsText = layout.findViewById(R.id.textStorageItemDetails);
         detailsText.setText(String.format(Locale.getDefault(),
-                "%s: %s\n%s: %d%s\n%s: %s",
+                "%s: %s\n%s: %d %s (%s)\n%s: %s",
                 getString(R.string.name), item.getName(),
-                getString(R.string.shelf), item.getShelf(), getString(R.string.nth_shelf),
+                getString(R.string.shelf), item.getShelf(), getString(R.string.nth_shelf), getStorageName(item.getLocation()),
                 getString(R.string.date), DateUtils.convertToDateAndTime(item.getDate())
         ));
 
@@ -91,5 +91,11 @@ public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
                 "%s: %d",
                 getString(R.string.volume), newCount
         ));
+    }
+
+    // Ez persze nem így fog kinézni akkor, ha dinamikus lenne valamikor
+    private String getStorageName(int id) {
+        String name = id == 0 ? getString(R.string.fridge) : getString(R.string.pantry);
+        return name.toLowerCase();
     }
 }
