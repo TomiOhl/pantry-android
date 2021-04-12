@@ -43,11 +43,12 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
     @Override
     public void onBindViewHolder(@NonNull MessagesViewHolder holder, int position) {
         String key = keys.get(position);
-        String senderUid = Objects.requireNonNull(msgs.get(key)).getSenderUid();
-        String sender = Objects.requireNonNull(msgs.get(key)).getSender();
-        String content = Objects.requireNonNull(msgs.get(key)).getContent();
+        MessageItem item = Objects.requireNonNull(msgs.get(key));
+        String senderUid = item.getSenderUid();
+        String sender = item.getSender();
+        String content = item.getContent();
         holder.getSender().setText(sender);
-        holder.getDate().setText(DateUtils.convertToDateAndTime(Objects.requireNonNull(msgs.get(key)).getDate()));
+        holder.getDate().setText(DateUtils.convertToDateAndTime(item.getDate()));
         holder.getContent().setText(content);
         holder.getCardView().setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

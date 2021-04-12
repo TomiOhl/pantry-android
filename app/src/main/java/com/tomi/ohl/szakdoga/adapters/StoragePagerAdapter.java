@@ -3,17 +3,17 @@ package com.tomi.ohl.szakdoga.adapters;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.ListFragment;
 
 import com.tomi.ohl.szakdoga.R;
 
 public class StoragePagerAdapter extends FragmentPagerAdapter {
     Context ctx;
-    ListFragment fridgeListFragment, pantryListFragment;
+    Fragment fridgeListFragment, pantryListFragment;
 
-    public StoragePagerAdapter(FragmentManager fm, Context ctx, ListFragment fridgeListFragment, ListFragment pantryListFragment) {
+    public StoragePagerAdapter(FragmentManager fm, Context ctx, Fragment fridgeListFragment, Fragment pantryListFragment) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.ctx = ctx;
         this.fridgeListFragment = fridgeListFragment;
@@ -22,7 +22,7 @@ public class StoragePagerAdapter extends FragmentPagerAdapter {
 
     @NonNull
     @Override
-    public ListFragment getItem(int position) {
+    public Fragment getItem(int position) {
         if (position == 0){
             return fridgeListFragment;
         } else {

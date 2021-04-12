@@ -3,6 +3,7 @@ package com.tomi.ohl.szakdoga.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,13 +78,17 @@ public class ShoppingListFragment extends Fragment {
                     for (DocumentSnapshot elem : querySnapshot) {
                         count++;
                         if (count < 6) {
-                            String itemName = (String) elem.get("name");
-                            Chip suggestion = (Chip) getLayoutInflater().inflate(R.layout.chip_suggestion, chipGroup, false);
-                            suggestion.setText(itemName);
-                            suggestion.setCheckable(false);
-                            suggestion.setOnClickListener(view -> onSuggestionClicked(elem.getId(), chipGroup, suggestion, itemName));
-                            suggestion.setOnCloseIconClickListener(view -> onCloseSuggestion(elem.getId(), chipGroup, suggestion));
-                            chipGroup.addView(suggestion);
+                            try {
+                                String itemName = (String) elem.get("name");
+                                Chip suggestion = (Chip) getLayoutInflater().inflate(R.layout.chip_suggestion, chipGroup, false);
+                                suggestion.setText(itemName);
+                                suggestion.setCheckable(false);
+                                suggestion.setOnClickListener(view -> onSuggestionClicked(elem.getId(), chipGroup, suggestion, itemName));
+                                suggestion.setOnCloseIconClickListener(view -> onCloseSuggestion(elem.getId(), chipGroup, suggestion));
+                                chipGroup.addView(suggestion);
+                            } catch (IllegalStateException e) {
+                                Log.d("ADDCHIP", "Tried to add chip too late. The user probably didn't encounter any issues.");
+                            }
                         } else {
                             StorageController.getInstance().deleteSuggestionItem(elem.getId());
                         }

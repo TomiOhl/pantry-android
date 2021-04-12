@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
@@ -21,18 +21,20 @@ import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.LinkedHashMap;
 
-public class SearchResultFragment extends Fragment {
+public class StorageItemsFragment extends Fragment {
     private LinkedHashMap<String, StorageItem> itemsMap;
     private RecyclerView rv;
-    String query;
+    private int storage;
+    private String sortBy;
+    private ListenerRegistration dbListener;
 
-    public SearchResultFragment() {
-    }
+    public StorageItemsFragment() {}
 
-    public static SearchResultFragment newInstance(String query) {
+    public static StorageItemsFragment newInstance(int storage, String sortBy) {
         Bundle args = new Bundle();
-        args.putString("query", query);
-        SearchResultFragment fragment = new SearchResultFragment();
+        args.putInt("storage", storage);
+        args.putString("sortBy", sortBy);
+        StorageItemsFragment fragment = new StorageItemsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,38 +43,33 @@ public class SearchResultFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle args = getArguments();
-        if (args != null && query == null)
-            query = args.getString("query");
+        if (args != null && sortBy == null) {
+            storage = args.getInt("storage");
+            sortBy = args.getString("sortBy");
+        }
         return inflater.inflate(R.layout.fragment_storage_list, container, false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadStorageContents();
+        if (dbListener == null)
+            loadStorageContents(storage, sortBy);
     }
 
     @Override
     public void onStop() {
-        SearchView searchView = ((MainActivity) requireActivity()).getSearchView();
-        if (!searchView.isIconified())
-            searchView.onActionViewCollapsed();
         super.onStop();
-    }
-
-    // Új kereséshez
-    public void changeQuery(String query) {
-        this.query = query;
-        loadStorageContents();
+        dbListener = null;
     }
 
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
-    private void loadStorageContents() {
+    private void loadStorageContents(int storage, String sortBy) {
         itemsMap = new LinkedHashMap<>();
         rv = requireView().findViewById(R.id.storageRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(requireView().getContext()));
         rv.setAdapter(new StorageRecylerViewAdapter(itemsMap));
-        ((MainActivity) requireActivity()).getDbListeners().add(StorageController.getInstance().searchStorageItems(query).addSnapshotListener(
+        dbListener = StorageController.getInstance().getStorageItems(storage, sortBy).addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     itemsMap.clear();
@@ -85,15 +82,26 @@ public class SearchResultFragment extends Fragment {
                         ((StorageRecylerViewAdapter)rv.getAdapter()).updateKeys(itemsMap.keySet());
                     toggleEmptyText(itemsMap.keySet().size());
                 }
-        ));
+        );
+        ((MainActivity)requireActivity()).getDbListeners().add(dbListener);
+    }
+
+    public void setContent(String sortBy) {
+        Bundle args = getArguments();
+        if (args != null) {
+            this.sortBy = sortBy;
+            int storage = args.getInt("storage");
+            loadStorageContents(storage, sortBy);
+        }
     }
 
     // Ha nincs találat, egy szöveget jelenítsünk meg
     private void toggleEmptyText(int resultsSize) {
-        TextView emptyText = requireView().findViewById(R.id.storageListEmpty);
+        View layout = getView();
+        if (layout == null) return;
+        TextView emptyText = layout.findViewById(R.id.storageListEmpty);
         if (resultsSize == 0) {
             rv.setVisibility(View.GONE);
-            emptyText.setText(R.string.search_no_result);
             emptyText.setVisibility(View.VISIBLE);
         } else {
             rv.setVisibility(View.VISIBLE);

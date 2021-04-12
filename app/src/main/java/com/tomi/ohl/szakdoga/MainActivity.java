@@ -137,11 +137,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 SearchResultFragment searchResultFragment = (SearchResultFragment) getSupportFragmentManager().findFragmentByTag("SearchResultFragment");
                 if (searchResultFragment == null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("query", query);
-                    searchResultFragment = new SearchResultFragment();
-                    searchResultFragment.setArguments(bundle);
-                    chooseFragment(searchResultFragment);
+                    chooseFragment(SearchResultFragment.newInstance(query));
                     bottomNavigation.setVisibility(View.GONE);
                 } else {
                     searchResultFragment.changeQuery(query);
