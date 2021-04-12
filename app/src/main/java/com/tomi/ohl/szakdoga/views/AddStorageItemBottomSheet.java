@@ -81,7 +81,7 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // A sheet layoutja
-        View layout = inflater.inflate(R.layout.bottom_sheet_add, container, false);
+        View layout = inflater.inflate(R.layout.bottom_sheet_add_storage_item, container, false);
 
         // Beviteli mezők
         nameEditText = layout.findViewById(R.id.editTextAddItemName);

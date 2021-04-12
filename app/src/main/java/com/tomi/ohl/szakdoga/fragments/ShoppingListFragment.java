@@ -2,11 +2,13 @@ package com.tomi.ohl.szakdoga.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -47,6 +49,13 @@ public class ShoppingListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // A fragment layoutja
         View layout = inflater.inflate(R.layout.fragment_shopping_list, container, false);
+
+        // Hint megjelenítése, csak álló módban
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            TextView descTextView = layout.findViewById(R.id.shoppingListDesc);
+            descTextView.setVisibility(View.GONE);
+        }
 
         // Javaslatok megjelenítése
         ChipGroup chipGroup = layout.findViewById(R.id.shoppinglistSuggestionsGroup);

@@ -1,10 +1,12 @@
 package com.tomi.ohl.szakdoga.fragments;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +39,13 @@ public class MessagesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // A fragment layoutja
         View layout =  inflater.inflate(R.layout.fragment_messages, container, false);
+
+        // Hint megjelenítése, csak álló módban
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            TextView descTextView = layout.findViewById(R.id.msgDesc);
+            descTextView.setVisibility(View.GONE);
+        }
 
         // Új üzenet gomb
         FloatingActionButton newMessageFab = layout.findViewById(R.id.fabNewMsg);

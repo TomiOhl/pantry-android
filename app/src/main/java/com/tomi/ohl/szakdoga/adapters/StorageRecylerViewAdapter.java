@@ -36,7 +36,7 @@ public class StorageRecylerViewAdapter extends RecyclerView.Adapter<StorageItemV
     @Override
     public StorageItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.storage_list_item, parent, false);
+                .inflate(R.layout.item_storage_list, parent, false);
         return new StorageItemViewHolder(view);
     }
 

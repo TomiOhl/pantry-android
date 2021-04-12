@@ -2,6 +2,7 @@ package com.tomi.ohl.szakdoga.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +41,13 @@ public class StorageFragment extends Fragment {
         // A fragment layoutja
         View layout = inflater.inflate(R.layout.fragment_storage, container, false);
 
-        // Háztartás megjelenítése
+        // Háztartás megjelenítése, csak álló módban
         TextView familyTextView = layout.findViewById(R.id.textCurrentFamily);
-        familyTextView.setText(String.format(getString(R.string.family), FamilyController.getInstance().getCurrentFamily()));
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT)
+            familyTextView.setText(String.format(getString(R.string.family), FamilyController.getInstance().getCurrentFamily()));
+        else
+            familyTextView.setVisibility(View.GONE);
 
         // Sharedpreferences inicializálása
         sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="12dp"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btnCancelStorageItemDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:foreground="@drawable/ripple_button_secondary"
+        android:backgroundTint="@color/secondary_button_background"
+        android:textColor="@color/colorAccent"
+        app:cornerRadius="26dp"
+        android:text="@android:string/cancel" />
+
+    <Button
+        android:id="@+id/btnDeleteStorageItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:backgroundTint="@color/design_default_color_error"
+        android:textColor="@android:color/white"
+        app:cornerRadius="26dp"
+        android:text="@string/delete" />
+
+    <Button
+        android:id="@+id/btnEditStorageItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@android:color/white"
+        app:cornerRadius="26dp"
+        android:text="@string/edit" />
+
+</LinearLayout>
