@@ -14,9 +14,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tomi.ohl.szakdoga.NewMessageActivity;
 import com.tomi.ohl.szakdoga.R;
-import com.tomi.ohl.szakdoga.controller.StorageController;
+import com.tomi.ohl.szakdoga.adapters.viewholders.MessagesViewHolder;
 import com.tomi.ohl.szakdoga.models.MessageItem;
 import com.tomi.ohl.szakdoga.utils.DateUtils;
+import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -42,6 +43,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
 
     @Override
     public void onBindViewHolder(@NonNull MessagesViewHolder holder, int position) {
+        Context ctx = holder.getCardView().getContext();
         String key = keys.get(position);
         MessageItem item = Objects.requireNonNull(msgs.get(key));
         String senderUid = item.getSenderUid();
@@ -54,7 +56,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null && Objects.equals(user.getUid(), senderUid)) {
                 contextMenu.add(R.string.edit).setOnMenuItemClickListener(menuItem -> {
-                    Context ctx = holder.getCardView().getContext();
                     Intent i = new Intent(ctx, NewMessageActivity.class);
                     i.putExtra("id", key);
                     i.putExtra("content", content);
@@ -62,7 +63,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
                     return true;
                 });
                 contextMenu.add(R.string.delete).setOnMenuItemClickListener(menuItem -> {
-                    StorageController.getInstance().deleteMessage(key);
+                    DialogUtils.showConfirmDeleteMessageDialog(ctx, key);
                     return true;
                 });
             }

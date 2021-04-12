@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tomi.ohl.szakdoga.R;
+import com.tomi.ohl.szakdoga.adapters.viewholders.StorageItemViewHolder;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.utils.DateUtils;
 import com.tomi.ohl.szakdoga.views.StorageItemDetailsBottomSheet;

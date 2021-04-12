@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tomi.ohl.szakdoga.R;
+import com.tomi.ohl.szakdoga.adapters.viewholders.ShoppingListViewHolder;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.ShoppingListItem;
 

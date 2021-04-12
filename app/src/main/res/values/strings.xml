@@ -69,6 +69,7 @@
     <string name="discard">Elvetés</string>
     <string name="storage_empty">A tároló üres</string>
     <string name="confirm_delete_item">Biztosan eltávolítja az elemet?</string>
+    <string name="confirm_delete_message">Biztosan eltávolítja az üzenetet?</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
     <string name="recently_bought">Mostanában vásároltak</string>

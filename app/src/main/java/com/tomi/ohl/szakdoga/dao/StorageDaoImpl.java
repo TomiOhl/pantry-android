@@ -21,12 +21,14 @@ public class StorageDaoImpl implements StorageDao {
     private FirebaseFirestore db;
 
     // Elem beszúrása egy tárolóba
+    @Override
     public void insertStorageItem(String currentFamily, StorageItem item) {
         db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_STORAGES).document().set(item);
     }
 
     // Elem szerkesztése egy tárolóban
+    @Override
     public void editStorageItem(String currentFamily, String id, int count, String name, int shelf) {
         db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_STORAGES).document(id).update(
@@ -37,12 +39,14 @@ public class StorageDaoImpl implements StorageDao {
     }
 
     // Elem törlése egy tárolóból
+    @Override
     public void deleteStorageItem(String currentFamily, String id) {
         db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_STORAGES).document(id).delete();
     }
 
     // Elemek lekérése tárolóból
+    @Override
     public Query getStorageItems(String currentFamily, int location, String sortBy) {
         db = FirebaseFirestore.getInstance();
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_STORAGES)
@@ -50,6 +54,7 @@ public class StorageDaoImpl implements StorageDao {
     }
 
     // Keresett elemek lekérése tárolóból
+    @Override
     public Query searchStorageItems(String currentFamily, String query) {
         db = FirebaseFirestore.getInstance();
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_STORAGES)
@@ -126,24 +131,28 @@ public class StorageDaoImpl implements StorageDao {
     }
 
     // Új üzenet mentése az adatbázisba
+    @Override
     public void insertNewMessage(String currentFamily, MessageItem item) {
         db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_MESSAGES).document().set(item);
     }
 
     // Üzenet szerkesztése az adatbázisban
+    @Override
     public void editMessage(String currentFamily, String id, String newContent) {
         db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_MESSAGES).document(id).update("content", newContent);
     }
 
-    // Üzenet törlése az adatbázisbol
+    // Üzenet törlése az adatbázisból
+    @Override
     public void deleteMessage(String currentFamily, String id) {
         db = FirebaseFirestore.getInstance();
         db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_MESSAGES).document(id).delete();
     }
 
     // Üzenetek lekérése az adatbázisból
+    @Override
     public Query getNewMessages(String currentFamily) {
         db = FirebaseFirestore.getInstance();
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_MESSAGES).orderBy("date");

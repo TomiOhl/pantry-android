@@ -1,4 +1,4 @@
-package com.tomi.ohl.szakdoga.adapters;
+package com.tomi.ohl.szakdoga.adapters.viewholders;
 
 import android.view.View;
 import android.widget.LinearLayout;

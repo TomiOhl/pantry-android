@@ -1,4 +1,4 @@
-package com.tomi.ohl.szakdoga.adapters;
+package com.tomi.ohl.szakdoga.adapters.viewholders;
 
 import android.text.InputType;
 import android.view.View;
