@@ -49,18 +49,8 @@ public class StorageRecylerViewAdapter extends RecyclerView.Adapter<StorageItemV
         holder.getShelf().setText(String.format(Locale.getDefault(),
                 "%d%s", storageItem.getShelf(), ctx.getString(R.string.nth_shelf)
         ));
-        holder.getContainer().setOnClickListener(view -> {
-                    FragmentManager fm = ((FragmentActivity) ctx).getSupportFragmentManager();
-                    Fragment parentFragment = fm.findFragmentByTag("StorageFragment") == null ?
-                            fm.findFragmentByTag("SearchResultFragment") : fm.findFragmentByTag("StorageFragment");
-                    if (parentFragment != null) {
-                        parentFragment.requireActivity().getIntent().putExtra("itemId", keys.get(position));
-                        parentFragment.requireActivity().getIntent().putExtra("storageItem", (StorageItem) getItem(position));
-                        StorageItemDetailsBottomSheet itemDetailsSheet = new StorageItemDetailsBottomSheet();
-                        itemDetailsSheet.show(parentFragment.getChildFragmentManager(), StorageItemDetailsBottomSheet.class.getSimpleName());
-                    }
-                }
-        );
+        holder.getContainer().setOnClickListener(view -> displayDetails(ctx, position));
+        holder.getContainer().setOnLongClickListener(view -> displayDetails(ctx, position));
         // Az utolsó elem kap egy nagy paddinget a FAB miatt
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
         if (position == getItemCount() -1) {
@@ -77,9 +67,24 @@ public class StorageRecylerViewAdapter extends RecyclerView.Adapter<StorageItemV
         return keys.size();
     }
 
-    public StorageItem getItem(int position) {
+    private StorageItem getItem(int position) {
         String key = keys.get(position);
         return items.get(key);
+    }
+
+    // Részletek megjelenítése bottom sheeten
+    private boolean displayDetails(Context ctx, int position) {
+        FragmentManager fm = ((FragmentActivity) ctx).getSupportFragmentManager();
+        Fragment parentFragment = fm.findFragmentByTag("StorageFragment") == null ?
+                fm.findFragmentByTag("SearchResultFragment") : fm.findFragmentByTag("StorageFragment");
+        if (parentFragment != null) {
+            parentFragment.requireActivity().getIntent().putExtra("itemId", keys.get(position));
+            parentFragment.requireActivity().getIntent().putExtra("storageItem", getItem(position));
+            StorageItemDetailsBottomSheet itemDetailsSheet = new StorageItemDetailsBottomSheet();
+            itemDetailsSheet.show(parentFragment.getChildFragmentManager(), StorageItemDetailsBottomSheet.class.getSimpleName());
+            return true;
+        }
+        return false;
     }
 
     public void updateKeys(Set<String> newKeys) {
