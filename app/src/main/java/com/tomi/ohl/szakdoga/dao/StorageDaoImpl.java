@@ -158,4 +158,12 @@ public class StorageDaoImpl implements StorageDao {
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_MESSAGES).orderBy("date");
     }
 
+    // Legutóbbi üzenet lekérése
+    @Override
+    public Task<QuerySnapshot> getLastMessage(String currentFamily) {
+        db = FirebaseFirestore.getInstance();
+        return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_MESSAGES)
+                .orderBy("date", Query.Direction.DESCENDING).limit(1).get();
+    }
+
 }

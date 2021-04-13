@@ -40,4 +40,12 @@ public class FamilyController {
     public Task<Void> setFamily(String userEmail, String familyEmail) {
         return dao.setFamily(userEmail, familyEmail);
     }
+
+    public Task<DocumentSnapshot> getAccountInfo() {
+        return dao.getAccountInfo(getCurrentFamily());
+    }
+
+    public void setLastSeenMessage(long lastSeenTime) {
+        dao.setLastSeenMessage(getCurrentFamily(), lastSeenTime);
+    }
 }

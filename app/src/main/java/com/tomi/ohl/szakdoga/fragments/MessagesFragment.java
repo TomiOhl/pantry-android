@@ -11,14 +11,17 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.NewMessageActivity;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.MessagesRecyclerViewAdapter;
+import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.MessageItem;
+import com.tomi.ohl.szakdoga.utils.NotificationUtils;
 import com.tomi.ohl.szakdoga.views.TopFadingEdgeRecyclerView;
 
 import java.util.LinkedHashMap;
@@ -58,6 +61,12 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadMessages();
+        markAsRead(System.currentTimeMillis());
+    }
+
+    // Üzenetek betöltése
+    private void loadMessages() {
         // Üzenetek listája RecyclerView-n
         msgMap = new LinkedHashMap<>();
         rv = requireView().findViewById(R.id.msgRecyclerView);
@@ -78,5 +87,14 @@ public class MessagesFragment extends Fragment {
                     rv.scrollToPosition(msgMap.keySet().size() - 1);
                 }
         ));
+    }
+
+    // Legutóbbi olvasás idejének elmentése
+    private void markAsRead(long time) {
+        NotificationUtils.clearNotifications(requireContext());
+        FamilyController.getInstance().setLastSeenMessage(time);
+        BadgeDrawable badge = ((MainActivity) requireActivity()).getBottomNavigation().getBadge(R.id.messages);
+        if (badge != null)
+            badge.setVisible(false);
     }
 }

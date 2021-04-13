@@ -13,19 +13,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.tomi.ohl.szakdoga.controller.FamilyController;
+import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.fragments.MessagesFragment;
 import com.tomi.ohl.szakdoga.fragments.SearchResultFragment;
 import com.tomi.ohl.szakdoga.fragments.SettingsFragment;
 import com.tomi.ohl.szakdoga.fragments.ShoppingListFragment;
 import com.tomi.ohl.szakdoga.fragments.StorageFragment;
+import com.tomi.ohl.szakdoga.utils.NotificationUtils;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigation;
+    private BottomNavigationView bottomNavigation;
     private String selectedFragment;
     private SearchView searchView;
     private ArrayList<ListenerRegistration> dbListeners;
@@ -36,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Értesítési csatorna létrehozása
+        NotificationUtils.createNotificationChannel(this);
 
         // alsó navigáció beállítása
         bottomNavigation = findViewById(R.id.bottomNavigationView);
@@ -67,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
             else
                 chooseInitialFragment("StorageFragment");
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkLastSeenMsg();
     }
 
     @Override
@@ -133,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
         return searchView;
     }
 
+    public BottomNavigationView getBottomNavigation() {
+        return bottomNavigation;
+    }
+
     // Erre térünk vissza a keresés fragmentról
     private void setSelectedFragment(String selectedFragment) {
         if (!selectedFragment.equals("SearchResultFragment"))
@@ -165,6 +183,37 @@ public class MainActivity extends AppCompatActivity {
                     chooseInitialFragment(selectedFragment);
                 }
                 return true;
+            }
+        });
+    }
+
+    // Legutolsó üzenet idejének összehasonlítása az utoljára látottal
+    public void checkLastSeenMsg() {
+        // Legutolsó üzenet lekérése
+        StorageController.getInstance().getLastMessage().addOnSuccessListener(msgSnapshot -> {
+            if (msgSnapshot != null && msgSnapshot.size() > 0) {
+                long lastMsgTime = (long) msgSnapshot.getDocuments().get(0).get("date");
+                // Utoljára látott üzenet időpontja
+                FamilyController.getInstance().getAccountInfo().addOnCompleteListener(task -> {
+                    long lastSeenTime = 0;
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot != null) {
+                            Object result = documentSnapshot.get("lastSeen");
+                            if (result != null)
+                                lastSeenTime = (long) result;
+                        }
+                    }
+                    // Legutolsó üzenet idejének összehasonlítása az utoljára látottal
+                    BadgeDrawable badge = getBottomNavigation().getOrCreateBadge(R.id.messages);
+                    if (lastMsgTime > lastSeenTime) {
+                        NotificationUtils.showNewMessageNotification(this);
+                        badge.setVisible(true);
+                    } else {
+                        NotificationUtils.clearNotifications(this);
+                        badge.setVisible(false);
+                    }
+                });
             }
         });
     }

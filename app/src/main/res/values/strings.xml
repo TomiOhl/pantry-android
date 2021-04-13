@@ -75,4 +75,6 @@
     <string name="recently_bought">Mostanában vásároltak</string>
     <string name="got_it">Rendben</string>
     <string name="first_use_shopping_list">Gyors tipp: csúsztassa oldalra az elemeket az eltávolításukhoz.</string>
+    <string name="notification_new_message_title">Új üzenet érkezett</string>
+    <string name="notification_new_message_desc">Kattintson a megtekintéshez</string>
 </resources>

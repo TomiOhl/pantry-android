@@ -113,4 +113,9 @@ public class StorageController {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
         return dao.getNewMessages(currentFamily);
     }
+
+    public Task<QuerySnapshot> getLastMessage() {
+        String currentFamily = FamilyController.getInstance().getCurrentFamily();
+        return dao.getLastMessage(currentFamily);
+    }
 }

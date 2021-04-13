@@ -94,6 +94,7 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
                             FamilyController.getInstance().setFamily(userEmail, family_email)
                                     .addOnSuccessListener(runnable -> {
                                         FamilyController.getInstance().setCurrentFamily(family_email);
+                                        ((MainActivity)requireActivity()).checkLastSeenMsg();
                                         dismiss();
                                     });
                         }

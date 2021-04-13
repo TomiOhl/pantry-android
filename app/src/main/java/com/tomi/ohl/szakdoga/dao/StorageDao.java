@@ -33,4 +33,5 @@ public interface StorageDao {
     void editMessage(String currentFamily, String id, String newContent);
     void deleteMessage(String currentFamily, String id);
     Query getNewMessages(String currentFamily);
+    Task<QuerySnapshot> getLastMessage(String currentFamily);
 }
