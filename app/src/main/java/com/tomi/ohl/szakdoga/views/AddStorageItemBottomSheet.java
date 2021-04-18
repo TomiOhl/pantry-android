@@ -153,7 +153,7 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
     // Javaslatok betöltése, felirat megjelenítése, ha vannak
     private void loadSuggestions(ChipGroup chipGroup) {
         StorageController.getInstance().getShoppingListItemsOnce(true).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+            if (task.isSuccessful() && getDialog() != null) {
                 TextView suggestionsTitle = requireDialog().findViewById(R.id.textRecentlyBought);
                 QuerySnapshot querySnapshot = task.getResult();
                 if (querySnapshot != null && querySnapshot.size() > 0) {

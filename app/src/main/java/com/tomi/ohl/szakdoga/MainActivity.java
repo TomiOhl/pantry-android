@@ -119,16 +119,17 @@ public class MainActivity extends AppCompatActivity {
     // Megnyitás utáni első fragment betöltése
     private void chooseInitialFragment(String destinationFromShortcut) {
         int selectedId = R.id.storage;
-        switch (destinationFromShortcut) {
-            case "ShoppingListFragment":
-                selectedId = R.id.shoppinglist;
-                break;
-            case "MessagesFragment":
-                selectedId = R.id.messages;
-                break;
-            case "SettingsFragment":
-                selectedId = R.id.settings;
-        }
+        if (destinationFromShortcut != null)
+            switch (destinationFromShortcut) {
+                case "ShoppingListFragment":
+                    selectedId = R.id.shoppinglist;
+                    break;
+                case "MessagesFragment":
+                    selectedId = R.id.messages;
+                    break;
+                case "SettingsFragment":
+                    selectedId = R.id.settings;
+            }
         bottomNavigation.setSelectedItemId(selectedId);
     }
 

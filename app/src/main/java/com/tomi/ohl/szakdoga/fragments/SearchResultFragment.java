@@ -1,6 +1,7 @@
 package com.tomi.ohl.szakdoga.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,11 @@ public class SearchResultFragment extends Fragment {
     public void onStop() {
         SearchView searchView = ((MainActivity) requireActivity()).getSearchView();
         if (!searchView.isIconified())
-            searchView.onActionViewCollapsed();
+            try {
+                searchView.onActionViewCollapsed();
+            } catch (IllegalStateException e) {
+                Log.d("COLLAPSESEARCHVIEW", "Failed to collapse search view. This happens normally on configchanges.");
+            }
         super.onStop();
     }
 
