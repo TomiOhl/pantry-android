@@ -19,10 +19,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.StoragePagerAdapter;
 import com.tomi.ohl.szakdoga.controller.FamilyController;
+import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.views.AddStorageItemBottomSheet;
 
@@ -31,7 +31,7 @@ public class StorageFragment extends Fragment {
     private Spinner sortSpinner;
     private StorageItemsFragment fridgeListFragment;
     private StorageItemsFragment pantryListFragment;
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     public StorageFragment() {}
 
@@ -92,11 +92,10 @@ public class StorageFragment extends Fragment {
                         break;
                     case 2: sortBy = "date";
                 }
-                ((MainActivity)requireActivity()).removeDbListeners();
-                createOrLoadStorageItems(layout, sortBy);
+                StorageController.getInstance().setSortStoragesBy(sortBy);
+                createOrLoadStorageItems(layout);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("sortindex", position);
-                editor.putString("sortname", sortBy);
                 editor.apply();
             }
 
@@ -105,25 +104,20 @@ public class StorageFragment extends Fragment {
         };
     }
 
-    private void createOrLoadStorageItems(View layout, String sortBy) {
-        // Tárolólisták fragmentjeinek létrehozása
-        if (fridgeListFragment == null || pantryListFragment == null) {
-            createTabsWithViewPager(layout, sortBy);
+    // Tárolólisták fragmentjeinek létrehozása vagy frissítése
+    private void createOrLoadStorageItems(View layout) {
+        if (fridgeListFragment == null || pantryListFragment == null ||
+                fridgeListFragment.getView() == null || pantryListFragment.getView() == null) {
+            createTabsWithViewPager(layout);
         } else {
-            if (fridgeListFragment.getView() == null || pantryListFragment.getView() == null)
-                createTabsWithViewPager(layout, sortBy);
-            else {
-            if (fridgeListFragment.getView() != null)
-                fridgeListFragment.setContent(sortBy);
-            if (pantryListFragment.getView() != null)
-                pantryListFragment.setContent(sortBy);
-            }
+            fridgeListFragment.updateContent();
+            pantryListFragment.updateContent();
         }
     }
 
-    private void createTabsWithViewPager(View layout, String sortBy) {
-        fridgeListFragment = StorageItemsFragment.newInstance(0, sortBy);
-        pantryListFragment = StorageItemsFragment.newInstance(1, sortBy);
+    private void createTabsWithViewPager(View layout) {
+        fridgeListFragment = StorageItemsFragment.newInstance(0);
+        pantryListFragment = StorageItemsFragment.newInstance(1);
 
         // Adapter létrehozása, ami meghatározza, mikor melyik listát kell betölteni
         StoragePagerAdapter storagePagerAdapter = new StoragePagerAdapter(getChildFragmentManager(), requireActivity(), fridgeListFragment, pantryListFragment);

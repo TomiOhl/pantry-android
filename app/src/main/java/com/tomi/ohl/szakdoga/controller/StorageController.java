@@ -14,6 +14,9 @@ public class StorageController {
     private StorageDao dao = new StorageDaoImpl();
     private static StorageController instance = null;
 
+    // Itt tároljuk el futás közben a tárolókban lévő elemek rendezési sorrendjét, mivel ezt nem befolyásoják az Activityk/Fragmentek életciklusai
+    private String sortStoragesBy;
+
     private StorageController() {}
 
     public static StorageController getInstance() {
@@ -21,6 +24,16 @@ public class StorageController {
             instance = new StorageController();
         }
         return instance;
+    }
+
+    public String getSortStoragesBy() {
+        if (sortStoragesBy == null)
+            return "name";
+        return sortStoragesBy;
+    }
+
+    public void setSortStoragesBy(String sortStoragesBy) {
+        this.sortStoragesBy = sortStoragesBy;
     }
 
     public void insertStorageItem(StorageItem item) {
@@ -42,9 +55,9 @@ public class StorageController {
         dao.deleteStorageItem(currentFamily, id);
     }
 
-    public Query getStorageItems(int location, String sortBy) {
+    public Query getStorageItems(int location) {
         String currentFamily = FamilyController.getInstance().getCurrentFamily();
-        return dao.getStorageItems(currentFamily, location, sortBy);
+        return dao.getStorageItems(currentFamily, location, getSortStoragesBy());
     }
 
     public Query searchStorageItems(String query) {

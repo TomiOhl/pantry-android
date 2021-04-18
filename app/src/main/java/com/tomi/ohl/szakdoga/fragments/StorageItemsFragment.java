@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.adapters.StorageRecylerViewAdapter;
 import com.tomi.ohl.szakdoga.controller.StorageController;
@@ -24,16 +23,14 @@ import java.util.LinkedHashMap;
 public class StorageItemsFragment extends Fragment {
     private LinkedHashMap<String, StorageItem> itemsMap;
     private RecyclerView rv;
-    private int storage;
-    private String sortBy;
+    private int mStorage;
     private ListenerRegistration dbListener;
 
     public StorageItemsFragment() {}
 
-    public static StorageItemsFragment newInstance(int storage, String sortBy) {
+    public static StorageItemsFragment newInstance(int storage) {
         Bundle args = new Bundle();
         args.putInt("storage", storage);
-        args.putString("sortBy", sortBy);
         StorageItemsFragment fragment = new StorageItemsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -43,10 +40,8 @@ public class StorageItemsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle args = getArguments();
-        if (args != null && sortBy == null) {
-            storage = args.getInt("storage");
-            sortBy = args.getString("sortBy");
-        }
+        if (args != null)
+            mStorage = args.getInt("storage");
         return inflater.inflate(R.layout.fragment_storage_list, container, false);
     }
 
@@ -54,22 +49,23 @@ public class StorageItemsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (dbListener == null)
-            loadStorageContents(storage, sortBy);
+            loadStorageContents(mStorage);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        dbListener.remove();
         dbListener = null;
     }
 
     // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
-    private void loadStorageContents(int storage, String sortBy) {
+    private void loadStorageContents(int storage) {
         itemsMap = new LinkedHashMap<>();
         rv = requireView().findViewById(R.id.storageRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(requireView().getContext()));
         rv.setAdapter(new StorageRecylerViewAdapter(itemsMap));
-        dbListener = StorageController.getInstance().getStorageItems(storage, sortBy).addSnapshotListener(
+        dbListener = StorageController.getInstance().getStorageItems(storage).addSnapshotListener(
                 (value, error) -> {
                     assert value != null;
                     itemsMap.clear();
@@ -83,15 +79,13 @@ public class StorageItemsFragment extends Fragment {
                     toggleEmptyText(itemsMap.keySet().size());
                 }
         );
-        ((MainActivity)requireActivity()).getDbListeners().add(dbListener);
     }
 
-    public void setContent(String sortBy) {
+    public void updateContent() {
         Bundle args = getArguments();
         if (args != null) {
-            this.sortBy = sortBy;
             int storage = args.getInt("storage");
-            loadStorageContents(storage, sortBy);
+            loadStorageContents(storage);
         }
     }
 
