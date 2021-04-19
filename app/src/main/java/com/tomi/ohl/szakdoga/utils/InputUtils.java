@@ -1,6 +1,7 @@
 package com.tomi.ohl.szakdoga.utils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,8 +14,15 @@ import com.google.android.material.textfield.TextInputLayout;
 public class InputUtils {
 
     public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        View focusedView = activity.getCurrentFocus();
+        hideKeyboard(activity, activity.getCurrentFocus());
+    }
+
+    public static void hideKeyboardOnDialog(Dialog dialog) {
+        hideKeyboard(dialog.getContext(), dialog.getCurrentFocus());
+    }
+
+    private static void hideKeyboard(Context ctx, View focusedView) {
+        InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         if(imm != null && focusedView != null)
             imm.hideSoftInputFromWindow(focusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }

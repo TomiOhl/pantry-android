@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,8 +21,6 @@ import com.tomi.ohl.szakdoga.views.FamilyChooserBottomSheet;
 
 import java.util.HashMap;
 import java.util.Objects;
-
-import static com.tomi.ohl.szakdoga.utils.InputUtils.hideKeyboard;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,19 +56,36 @@ public class LoginActivity extends AppCompatActivity {
         // Gombok
         Button registerButton = findViewById(R.id.btnRegister);
         loginButton = findViewById(R.id.btnLogin);
-        registerButton.setOnClickListener(view -> registerUser());
-        loginButton.setOnClickListener(view -> loginUser());
+        registerButton.setOnClickListener(view -> onRegisterClick());
+        loginButton.setOnClickListener(view -> onLoginClick());
     }
 
     // A regisztráció gombra kattintva
-    private void registerUser() {
+    private void onRegisterClick() {
         // UI módosuljon regisztrációs módba
         if (displayNameEditTextContainer.getVisibility() == View.GONE) {
             displayNameEditTextContainer.setVisibility(View.VISIBLE);
             passwordAgainEditTextContainer.setVisibility(View.VISIBLE);
             loginButton.setText(R.string.back);
+            loginButton.setBackgroundColor(getColor(android.R.color.white));
+            loginButton.setTextColor(getColor(R.color.colorAccent));
+            loginButton.setForeground(ContextCompat.getDrawable(this, R.drawable.ripple_button_secondary));
         } else
             createUser();
+    }
+
+    // A bejelentkezés gombra kattintva
+    private void onLoginClick() {
+        // UI módosuljon bejelentkezős módba
+        if (displayNameEditTextContainer.getVisibility() == View.VISIBLE) {
+            displayNameEditTextContainer.setVisibility(View.GONE);
+            passwordAgainEditTextContainer.setVisibility(View.GONE);
+            loginButton.setText(R.string.login);
+            loginButton.setBackgroundColor(getColor(R.color.colorAccent));
+            loginButton.setTextColor(getColor(android.R.color.white));
+            loginButton.setForeground(null);
+        } else
+            loginUser();
     }
 
     private void createUser() {
@@ -85,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                                 .build();
                         user.updateProfile(profileUpdates)
                                 .addOnCompleteListener(task1 -> {
-                                    hideKeyboard(this);
+                                    InputUtils.hideKeyboard(this);
                                     if (task1.isSuccessful()) {
                                         // Névbeállítás sikeres
                                         FamilyChooserBottomSheet familyChooser = new FamilyChooserBottomSheet();
@@ -95,33 +111,26 @@ public class LoginActivity extends AppCompatActivity {
                                 });
                     } else {
                         // Sikertelen regisztráció esetén hibaüzenet
-                        hideKeyboard(this);
+                        InputUtils.hideKeyboard(this);
                         Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.create_user_failed) + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    // A bejelentkezés gombra kattintva
     private void loginUser() {
-        if (displayNameEditTextContainer.getVisibility() == View.VISIBLE) {
-            displayNameEditTextContainer.setVisibility(View.GONE);
-            passwordAgainEditTextContainer.setVisibility(View.GONE);
-            loginButton.setText(R.string.login);
-        } else {
-            if (invalidInputs())
-                return;
-            mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            // Bejelentkezés sikeres
-                            setCurrentFamilyAndRedirect();
-                        } else {
-                            // Sikertelen bejelentkezés esetén hibaüzenet
-                            hideKeyboard(this);
-                            Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.login_failed) + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
-                        }
-                    });
-        }
+        if (invalidInputs())
+            return;
+        mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Bejelentkezés sikeres
+                        setCurrentFamilyAndRedirect();
+                    } else {
+                        // Sikertelen bejelentkezés esetén hibaüzenet
+                        InputUtils.hideKeyboard(this);
+                        Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.login_failed) + ": " + task.getException(), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void setCurrentFamilyAndRedirect() {
@@ -175,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             // Egyeznek-e a jelszavak
             if (!passwordEditText.getText().toString().equals(passwordAgainEditText.getText().toString())) {
-                hideKeyboard(this);
+                InputUtils.hideKeyboard(this);
                 passwordAgainEditTextContainer.setError(getString(R.string.require_matching_passwords));
                 return true;
             }

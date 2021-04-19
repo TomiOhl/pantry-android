@@ -2,11 +2,11 @@ package com.tomi.ohl.szakdoga.views;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -33,6 +33,7 @@ import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.utils.InputUtils;
 
 public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
+    private TextView titleText;
     private EditText nameEditText;
     private TextInputLayout nameEditTextContainer;
     private EditText countEditText;
@@ -42,6 +43,7 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
     private EditText shelfEditText;
     private TextInputLayout shelfEditTextContainer;
     private ChipGroup suggestionsChipGroup;
+    private Button saveAddButton;
     private String itemId;
     private StorageItem currentItem;
 
@@ -66,13 +68,16 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
             FrameLayout bottomSheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
 
             // Legyen olyan magas, mint a képernyő, hogy kényelmesen lehessen írni az inputokba
-            int windowHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-            ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-            layoutParams.height = windowHeight;
-            bottomSheet.setLayoutParams(layoutParams);
+            Window window = requireDialog().getWindow();
+            if (window != null) {
+                int windowHeight = window.getDecorView().getHeight();
+                ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+                layoutParams.height = windowHeight;
+                bottomSheet.setLayoutParams(layoutParams);
 
-            // Nyíljon is ki egyből ilyen magasra
-            BottomSheetBehavior.from(bottomSheet).setPeekHeight(windowHeight);
+                // Nyíljon is ki egyből ilyen magasra
+                BottomSheetBehavior.from(bottomSheet).setPeekHeight(windowHeight);
+            }
         });
         return dialog;
     }
@@ -82,6 +87,8 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         // A sheet layoutja
         View layout = inflater.inflate(R.layout.bottom_sheet_add_storage_item, container, false);
+
+        titleText = layout.findViewById(R.id.textAddBottomSheetTitle);
 
         // Beviteli mezők
         nameEditText = layout.findViewById(R.id.editTextAddItemName);
@@ -94,60 +101,70 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         shelfEditTextContainer = layout.findViewById(R.id.textInputLayoutAddItemShelf);
         setInputTextWatchers();
 
-        Button saveAddButton = layout.findViewById(R.id.btnSaveAdd);
+        saveAddButton = layout.findViewById(R.id.btnSaveAdd);
         Button cancelAddButton = layout.findViewById(R.id.btnCancelAdd);
 
         // Legutóbb megvásárolt javaslatok
         suggestionsChipGroup = layout.findViewById(R.id.addItemSuggestionsGroup);
         loadSuggestions(suggestionsChipGroup);
 
+        // Gombok eseménykezelői
+        cancelAddButton.setOnClickListener(view -> dismiss());
+        if (itemId.isEmpty())
+            // Új hozzáadás, ilyenkor menteni kell elemet az adatbázisba
+            setupForNewAdd();
+        else
+            // Elem szerkesztése, ilyenkor frissíteni kell a meglévő elemet, az inputokat pedig kitölteni a mostaniakkal
+            setupForEdit();
+
+        if (getDialog() != null && getDialog().getWindow() != null)
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        return layout;
+    }
+
+    private void setupForNewAdd() {
         // Tárhelyválasztó menü
         // Később majd akár a user által szerkeszthetővé lehetne tenni a tömböt
         String[] storageTypes = {getString(R.string.fridge), getString(R.string.pantry)};
         storageTypeAdapter = new StorageChooserMenuAdapter(requireContext(), R.layout.menu_add_choose_storage, storageTypes);
         menuStorageChooser.setAdapter(storageTypeAdapter);
 
-        // Gombok eseménykezelői
-        cancelAddButton.setOnClickListener(view -> dismiss());
-        if (itemId.isEmpty()) {
-            // Új hozzáadás, ilyenkor menteni kell elemet az adatbázisba
-            saveAddButton.setOnClickListener(view -> {
-                if (invalidInputs()) return;
-                Snackbar.make(requireActivity().findViewById(R.id.storageLayout), R.string.saving, Snackbar.LENGTH_SHORT).show();
-                StorageItem newItem = new StorageItem(
-                        nameEditText.getText().toString(),
-                        Integer.parseInt(String.valueOf(countEditText.getText())),
-                        storageTypeAdapter.getIdOfItem(menuStorageChooser.getText().toString()),
-                        Integer.parseInt(String.valueOf(shelfEditText.getText())),
-                        System.currentTimeMillis()
-                );
-                StorageController.getInstance().insertStorageItem(newItem);
-                dismiss();
-            });
-        } else {
-            // Elem szerkesztése, ilyenkor frissíteni kell a meglévő elemet, az inputokat pedig kitölteni a mostaniakkal
-            nameEditText.setText(currentItem.getName());
-            countEditText.setText(String.valueOf(currentItem.getCount()));
-            menuStorageChooserContainer.setVisibility(View.GONE);
-            shelfEditText.setText(String.valueOf(currentItem.getShelf()));
-            saveAddButton.setText(R.string.save);
-            saveAddButton.setOnClickListener(view -> {
-                if (invalidInputs()) return;
-                Snackbar.make(requireActivity().findViewById(R.id.fragmentContainer), R.string.saving, Snackbar.LENGTH_SHORT).show();
-                StorageController.getInstance().editStorageItem(
-                        itemId,
-                        Integer.parseInt(String.valueOf(countEditText.getText())),
-                        String.valueOf(nameEditText.getText()),
-                        Integer.parseInt(String.valueOf(shelfEditText.getText()))
-                );
-                dismiss();
-            });
-        }
+        menuStorageChooser.setOnClickListener(view -> InputUtils.hideKeyboardOnDialog(requireDialog()));
 
-        if (getDialog() != null && getDialog().getWindow() != null)
-            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        saveAddButton.setOnClickListener(view -> {
+            if (invalidInputs()) return;
+            Snackbar.make(requireActivity().findViewById(R.id.storageLayout), R.string.saving, Snackbar.LENGTH_SHORT).show();
+            StorageItem newItem = new StorageItem(
+                    nameEditText.getText().toString(),
+                    Integer.parseInt(String.valueOf(countEditText.getText())),
+                    storageTypeAdapter.getIdOfItem(menuStorageChooser.getText().toString()),
+                    Integer.parseInt(String.valueOf(shelfEditText.getText())),
+                    System.currentTimeMillis()
+            );
+            StorageController.getInstance().insertStorageItem(newItem);
+            dismiss();
+        });
+    }
 
-        return layout;
+    private void setupForEdit() {
+        titleText.setText(R.string.edit);
+        nameEditText.setText(currentItem.getName());
+        countEditText.setText(String.valueOf(currentItem.getCount()));
+        menuStorageChooserContainer.setVisibility(View.GONE);
+        shelfEditText.setText(String.valueOf(currentItem.getShelf()));
+        saveAddButton.setText(R.string.save);
+        saveAddButton.setOnClickListener(view -> {
+            if (invalidInputs()) return;
+            Snackbar.make(requireActivity().findViewById(R.id.fragmentContainer), R.string.saving, Snackbar.LENGTH_SHORT).show();
+            StorageController.getInstance().editStorageItem(
+                    itemId,
+                    Integer.parseInt(String.valueOf(countEditText.getText())),
+                    String.valueOf(nameEditText.getText()),
+                    Integer.parseInt(String.valueOf(shelfEditText.getText()))
+            );
+            dismiss();
+        });
     }
 
     // Javaslatok betöltése, felirat megjelenítése, ha vannak
@@ -179,8 +196,8 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         suggestionsChipGroup.removeView(chip);
     }
 
+    // Üres inputok kivédése
     private boolean invalidInputs() {
-        // Üres inputok kivédése
         if (nameEditText.getText().toString().trim().isEmpty()) {
             nameEditTextContainer.setError(getString(R.string.require_not_empty));
             nameEditText.requestFocus();
