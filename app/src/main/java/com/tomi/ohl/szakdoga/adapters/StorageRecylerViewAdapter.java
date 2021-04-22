@@ -46,7 +46,7 @@ public class StorageRecylerViewAdapter extends RecyclerView.Adapter<StorageItemV
         StorageItem storageItem = getItem(position);
         holder.getTitle().setText(storageItem.getName());
         holder.getCount().setText(String.format("%s%s",storageItem.getCount(), 'x'));
-        holder.getDate().setText(DateUtils.convertToDate(storageItem.getDate()));
+        holder.getDate().setText(DateUtils.convertToDate(ctx, storageItem.getDate()));
         holder.getShelf().setText(String.format(Locale.getDefault(),
                 "%d%s", storageItem.getShelf(), ctx.getString(R.string.nth_shelf)
         ));

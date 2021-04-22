@@ -48,7 +48,7 @@ public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
                 "%s: %s\n%s: %d %s (%s)\n%s: %s",
                 getString(R.string.name), item.getName(),
                 getString(R.string.shelf), item.getShelf(), getString(R.string.nth_shelf), getStorageName(item.getLocation()),
-                getString(R.string.date), DateUtils.convertToDateAndTime(item.getDate())
+                getString(R.string.date), DateUtils.convertToDateAndTime(requireContext(), item.getDate())
         ));
 
         countText = layout.findViewById(R.id.textItemCount);

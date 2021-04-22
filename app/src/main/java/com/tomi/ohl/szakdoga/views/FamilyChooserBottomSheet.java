@@ -99,7 +99,7 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
                                     });
                         }
                     } else {
-                        Toast.makeText(this.requireContext(), "Ellenőrzés sikertelen: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this.requireContext(), getString(R.string.checking_failed) + ": " + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }
             );

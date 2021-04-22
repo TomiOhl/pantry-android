@@ -50,7 +50,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
         String sender = item.getSender();
         String content = item.getContent();
         holder.getSender().setText(sender);
-        holder.getDate().setText(DateUtils.convertToDateAndTime(item.getDate()));
+        holder.getDate().setText(DateUtils.convertToDateAndTime(ctx, item.getDate()));
         holder.getContent().setText(content);
         holder.getCardView().setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

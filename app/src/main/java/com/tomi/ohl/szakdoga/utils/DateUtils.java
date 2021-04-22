@@ -1,16 +1,20 @@
 package com.tomi.ohl.szakdoga.utils;
 
+import android.content.Context;
+
+import com.tomi.ohl.szakdoga.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class DateUtils {
-    public static String convertToDateAndTime(long timestampInMillis) {
-        return convert("yyyy.M.d. HH:mm:ss", timestampInMillis);
+    public static String convertToDateAndTime(Context ctx, long timestampInMillis) {
+        return convert(ctx.getString(R.string.format_datetime), timestampInMillis);
     }
 
-    public static String convertToDate(long timestampInMillis) {
-        return convert("yyyy.M.d.", timestampInMillis);
+    public static String convertToDate(Context ctx, long timestampInMillis) {
+        return convert(ctx.getString(R.string.format_date), timestampInMillis);
     }
 
     private static String convert(String format, long timestampInMillis) {
