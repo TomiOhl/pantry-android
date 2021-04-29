@@ -51,9 +51,16 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
         Button existingFamilyButton = layout.findViewById(R.id.btnExistingFamily);
         newFamilyButton.setOnClickListener(view -> setFamily(null));
         existingFamilyButton.setOnClickListener(view -> {
-            String s = newFamilyEditText.getText().toString();
-            if (!s.trim().isEmpty())
-                setFamily(s);
+            if (newFamilyEditTextContainer.getVisibility() == View.GONE) {
+                newFamilyEditTextContainer.setVisibility(View.VISIBLE);
+                existingFamilyButton.setText(R.string.connect);
+            } else {
+                String s = newFamilyEditText.getText().toString();
+                if (s.trim().isEmpty())
+                    newFamilyEditTextContainer.setError(getString(R.string.email_empty));
+                else
+                    setFamily(s);
+            }
         });
 
         return layout;

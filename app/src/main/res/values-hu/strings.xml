@@ -35,7 +35,9 @@
     <string name="connect_to_family">Csatlakozás háztartáshoz</string>
     <string name="create_new">Új létrehozása</string>
     <string name="connect_to_existing">Csatlakozás meglévőhöz</string>
+    <string name="connect">Csatlakozás</string>
     <string name="email_family">A háztartás létrehozjának e-mail-címe</string>
+    <string name="email_empty">Adjon meg egy e-mail-címet</string>
     <string name="family_does_not_exist">A háztartás nem létezik</string>
     <string name="fridge">Mélyhűtő</string>
     <string name="pantry">Kamra</string>

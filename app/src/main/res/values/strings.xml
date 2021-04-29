@@ -35,7 +35,9 @@
     <string name="connect_to_family">Connect to a household</string>
     <string name="create_new">Create new</string>
     <string name="connect_to_existing">Connect to existing</string>
+    <string name="connect">Connect</string>
     <string name="email_family">Email address of the creator of the household</string>
+    <string name="email_empty">Type in an email address</string>
     <string name="family_does_not_exist">The household does not exist</string>
     <string name="fridge">Freezer</string>
     <string name="pantry">Pantry</string>
