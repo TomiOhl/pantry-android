@@ -14,9 +14,16 @@ import com.tomi.ohl.szakdoga.MainActivity;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.fragments.MessagesFragment;
 
+/**
+ * Értesítéseket kezelő segédosztály.
+ */
 public class NotificationUtils {
     public static final String MSG_CHANNEL = "messages";
 
+    /**
+     * Értesítési csatorna létrehozása.
+     * @param ctx kontextus.
+     */
     public static void createNotificationChannel(Context ctx) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = ctx.getString(R.string.messages);
@@ -28,6 +35,10 @@ public class NotificationUtils {
         }
     }
 
+    /**
+     * Új üzenet értesítés megjelenítése.
+     * @param ctx kontextus.
+     */
     public static void showNewMessageNotification(Context ctx) {
         Intent intent = new Intent(ctx, MainActivity.class);
         intent.putExtra("shortcut_destination", MessagesFragment.class.getSimpleName());
@@ -47,6 +58,10 @@ public class NotificationUtils {
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
 
+    /**
+     * Az alkalmazás által küldött értesítések törlése.
+     * @param ctx kontextus.
+     */
     public static void clearNotifications(Context ctx) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(ctx);
         notificationManager.cancelAll();

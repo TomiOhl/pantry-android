@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tomi.ohl.szakdoga.R;
 
+/**
+ * Egy üzenet megjelenítésének a felületéhez tartozó elemek.
+ */
 public class MessagesViewHolder extends RecyclerView.ViewHolder {
     private CardView cardView;
     private TextView sender;

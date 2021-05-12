@@ -24,6 +24,9 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Az üzenetek megjelenítésénél használt RecyclerView adaptere.
+ */
 public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesViewHolder> {
     private LinkedHashMap<String, MessageItem> msgs;
     private ArrayList<String> keys;
@@ -84,6 +87,10 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesVi
         return keys.size();
     }
 
+    /**
+     * A megjelenítendő elemek kulcsainak frissítése.
+     * @param newKeys az új kulcsok.
+     */
     public void updateKeys(Set<String> newKeys) {
         keys.clear();
         keys.addAll(new ArrayList<>(newKeys));

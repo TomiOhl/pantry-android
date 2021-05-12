@@ -33,6 +33,9 @@ import com.tomi.ohl.szakdoga.views.TopFadingEdgeRecyclerView;
 
 import java.util.LinkedHashMap;
 
+/**
+ * Bevásárlólista megjelenítése és szerkesztése egy fragmenten.
+ */
 public class ShoppingListFragment extends Fragment {
     private LinkedHashMap<String, ShoppingListItem> shoppingListMap;
     private TopFadingEdgeRecyclerView rv;
@@ -77,7 +80,10 @@ public class ShoppingListFragment extends Fragment {
         loadShoppingList();
     }
 
-    // 5 javaslat betöltése, többi törlése
+    /**
+     * 5 javaslat betöltése, többi törlése.
+     * @param chipGroup ahol a javaslatok megjelenjenek.
+     */
     private void loadSuggestions(ChipGroup chipGroup) {
         StorageController.getInstance().getSuggestionItems().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -107,17 +113,32 @@ public class ShoppingListFragment extends Fragment {
         });
     }
 
+    /**
+     * Javaslatra kattintáskor annak bevásárlólistához adása.
+     * @param itemId a beszúrandó javaslat id-je.
+     * @param chipGroup ahonnan lekerül a javaslat.
+     * @param chip ami a javaslatot megjelenítette.
+     * @param itemName a javaslat neve.
+     */
     private void onSuggestionClicked(String itemId, ChipGroup chipGroup, Chip chip, String itemName) {
         StorageController.getInstance().insertShoppingListItem(new ShoppingListItem(itemName, false));
         onCloseSuggestion(itemId, chipGroup, chip);
     }
 
+    /**
+     * Javaslat bezárásakor annak törlése.
+     * @param itemId a törlendő javaslat id-je.
+     * @param chipGroup ahonnan lekerül a javaslat.
+     * @param chip ami a javaslatot megjelenítette.
+     */
     private void onCloseSuggestion(String itemId, ChipGroup chipGroup, Chip chip) {
         chipGroup.removeView(chip);
         StorageController.getInstance().deleteSuggestionItem(itemId);
     }
 
-    // Bevásárlólista betöltése
+    /**
+     * Bevásárlólista betöltése és megjelenítése, figyelése.
+     */
     private void loadShoppingList() {
         shoppingListMap = new LinkedHashMap<>();
         rv = requireView().findViewById(R.id.shoppinglistRecyclerView);
@@ -143,7 +164,10 @@ public class ShoppingListFragment extends Fragment {
         ));
     }
 
-    // RecyclerView-n való csúsztatás kezelése
+    /**
+     * RecyclerView-n való csúsztatás kezelése.
+     * @return a csúsztatásra reagáló callback.
+     */
     ItemTouchHelper.SimpleCallback simpleItemTouchCallback() {
         return new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -164,7 +188,10 @@ public class ShoppingListFragment extends Fragment {
             }
         };
     }
-    
+
+    /**
+     * Egy kis segítség megjelenítése első használatkor.
+     */
     private void firstUseHint() {
         if (getActivity() != null) {
             SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);

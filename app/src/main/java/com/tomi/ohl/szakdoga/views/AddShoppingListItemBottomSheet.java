@@ -17,6 +17,9 @@ import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.ShoppingListItem;
 import com.tomi.ohl.szakdoga.utils.InputUtils;
 
+/**
+ * Bevásárlólistához adás Bottom Sheet.
+ */
 public class AddShoppingListItemBottomSheet extends BottomSheetDialogFragment {
 
     public AddShoppingListItemBottomSheet() {}

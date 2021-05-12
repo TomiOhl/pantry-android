@@ -26,6 +26,9 @@ import com.tomi.ohl.szakdoga.views.TopFadingEdgeRecyclerView;
 
 import java.util.LinkedHashMap;
 
+/**
+ * Üzenetek megjelenítéséért felelős fragment.
+ */
 public class MessagesFragment extends Fragment {
     private LinkedHashMap<String, MessageItem> msgMap;
     private TopFadingEdgeRecyclerView rv;
@@ -65,7 +68,9 @@ public class MessagesFragment extends Fragment {
         markAsRead(System.currentTimeMillis());
     }
 
-    // Üzenetek betöltése
+    /**
+     * Üzenetek betöltése és megjelenítése, figyelése.
+     */
     private void loadMessages() {
         // Üzenetek listája RecyclerView-n
         msgMap = new LinkedHashMap<>();
@@ -89,7 +94,10 @@ public class MessagesFragment extends Fragment {
         ));
     }
 
-    // Legutóbbi olvasás idejének elmentése
+    /**
+     * Legutóbbi olvasás idejének elmentése.
+     * @param time a jelenlegi unix idő milliszekundumokban.
+     */
     private void markAsRead(long time) {
         NotificationUtils.clearNotifications(requireContext());
         FamilyController.getInstance().setLastSeenMessage(time);

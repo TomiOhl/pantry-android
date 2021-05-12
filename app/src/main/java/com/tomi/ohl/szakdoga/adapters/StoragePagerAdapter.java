@@ -9,6 +9,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.tomi.ohl.szakdoga.R;
 
+/**
+ * A tárolókat megjelenítő fragmentet magába foglaló ViewPager adaptere.
+ */
 public class StoragePagerAdapter extends FragmentPagerAdapter {
     Context ctx;
     Fragment fridgeListFragment, pantryListFragment;
@@ -20,6 +23,11 @@ public class StoragePagerAdapter extends FragmentPagerAdapter {
         this.pantryListFragment = pantryListFragment;
     }
 
+    /**
+     * Egy adott lap tartalmának lekérése.
+     * @param position a lap pozíciója.
+     * @return a lap tartalma, vagyis egy fragment.
+     */
     @NonNull
     @Override
     public Fragment getItem(int position) {
@@ -30,13 +38,22 @@ public class StoragePagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    // Visszaadja, hány lap van. Később, ha ezek száma dinamikus lesz, módosítani kell
+    /**
+     * Visszaadja, hány lap van.
+     * Később, ha ezek száma dinamikus lesz, módosítani kell.
+     * @return a lapok száma.
+     */
     @Override
     public int getCount() {
         return 2;
     }
 
-    // Lapok címei. Később, ha ezek száma dinamikus lesz, módosítani kell
+    /**
+     * Egy lap címének lekérése.
+     * Később, ha ezek száma dinamikus lesz, módosítani kell.
+     * @param position hányadik pozíción lévő lapra vagyunk kíváncsiak.
+     * @return a lap címe.
+     */
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {

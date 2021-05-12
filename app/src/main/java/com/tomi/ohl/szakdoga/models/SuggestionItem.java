@@ -1,5 +1,8 @@
 package com.tomi.ohl.szakdoga.models;
 
+/**
+ * Egy javaslati elem modellje az adatbázisban.
+ */
 public class SuggestionItem {
     private String name;
     private long date;

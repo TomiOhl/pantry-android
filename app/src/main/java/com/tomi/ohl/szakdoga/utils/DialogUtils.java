@@ -8,9 +8,16 @@ import androidx.appcompat.app.AlertDialog;
 import com.tomi.ohl.szakdoga.R;
 import com.tomi.ohl.szakdoga.controller.StorageController;
 
+/**
+ * Dialógusokat megjelenítő segédosztály.
+ */
 public class DialogUtils {
 
-    // Üzenet véletlen való törlésének megakadályozása
+    /**
+     * Üzenet véletlen való törlésének megakadályozása.
+     * @param ctx kontextus, ahol a Dialog megjelenítésre kerül.
+     * @param itemId a törlendő üzenet id-je.
+     */
     public static void showConfirmDeleteMessageDialog(Context ctx, String itemId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder
@@ -21,7 +28,12 @@ public class DialogUtils {
                 .show();
     }
 
-    // Tárolóból való  véletlen törlés megakadályozása
+    /**
+     * Tárolóból való  véletlen törlés megakadályozása.
+     * @param activity az Activity, ahol a Dialog megjelenítésre kerül.
+     * @param itemId a törlendő elem id-je.
+     * @param itemName a törlendő elem neve.
+     */
     public static void showConfirmDeleteStorageItemDialog(Activity activity, String itemId, String itemName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder
@@ -32,7 +44,10 @@ public class DialogUtils {
             .show();
     }
 
-    // Üzenet akaratlan elvetését megakadályozó ablak
+    /**
+     * Üzenet akaratlan elvetését megakadályozó ablak.
+     * @param activity az Activity, ahol a Dialog megjelenítésre kerül.
+     */
     public static void showConfirmDiscardMessageDialog(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder
@@ -43,7 +58,11 @@ public class DialogUtils {
                 .show();
     }
 
-    // Egy kis hint megjelenítése egy-egy feature első használatához
+    /**
+     * Egy kis hint megjelenítése egy-egy feature első használatához.
+     * @param activity az Activity, ahol a Dialog megjelenítésre kerül.
+     * @param text a hint szövege.
+     */
     public static void showFirstUseDialog(Activity activity, String text) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.TransparentDialog);
         builder

@@ -9,6 +9,10 @@ import com.tomi.ohl.szakdoga.models.ShoppingListItem;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.models.SuggestionItem;
 
+/**
+ * Egy adott családon/háztartáson belül eltárolandó adatokkal kapcsolatos adatbázisműveleteket implementáló osztály.
+ * Firebase Firestore-t használ.
+ */
 public class StorageDaoImpl implements StorageDao {
 
     // Az adatbázisban található kollekciók nevei
@@ -115,14 +119,14 @@ public class StorageDaoImpl implements StorageDao {
         db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_SHOPPINGLIST).document(id).delete();
     }
 
-    // Bevásárlólisra elemeinek lekérése
+    // Bevásárlólisra elemeinek lekérése az adatbázisból
     @Override
     public Query getShoppingListItems(String currentFamily) {
         db = FirebaseFirestore.getInstance();
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_SHOPPINGLIST).orderBy("checked").orderBy("name");
     }
 
-    // Bevásárlólista kipipált elemeinek egyszeri lekérése
+    // Bevásárlólista elemeinek egyszeri lekérése aszerint, ki vannak-e pipálva.
     @Override
     public Task<QuerySnapshot> getShoppingListItemsOnce(String currentFamily, boolean shouldTheyBeChecked) {
         db = FirebaseFirestore.getInstance();
@@ -158,7 +162,7 @@ public class StorageDaoImpl implements StorageDao {
         return db.collection(COLLECTION_FAMILIES).document(currentFamily).collection(COLLECTION_MESSAGES).orderBy("date");
     }
 
-    // Legutóbbi üzenet lekérése
+    // Legutóbbi üzenet lekérése az adatbázisból.
     @Override
     public Task<QuerySnapshot> getLastMessage(String currentFamily) {
         db = FirebaseFirestore.getInstance();

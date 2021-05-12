@@ -24,6 +24,9 @@ import com.tomi.ohl.szakdoga.utils.InputUtils;
 
 import java.util.Objects;
 
+/**
+ * Család-, vagyis háztartásválasztó Bottom Sheet.
+ */
 public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
 
     private EditText newFamilyEditText;
@@ -74,7 +77,10 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
             redirectToProfile();
     }
 
-    // Regisztrációnál családbeállítás
+    /**
+     * Család létrehozása vagy pedig létezésének ellenörzése, majd csatlakozás hozzá.
+     * @param family_email a család létrehozójának e-mail-címe. Null érték esetén újat hoz létre.
+     */
     private void setFamily(String family_email) {
         // Ha beállításokból jöttünk, regisztrált db listenerek eltávolítása
         if (this.getTag() != null && this.getTag().startsWith("settings"))
@@ -82,14 +88,14 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
         FirebaseUser user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser());
         String userEmail = Objects.requireNonNull(user.getEmail());
         if (family_email == null) {
-            // új család létrehozása
+            // Új család létrehozása
             FamilyController.getInstance().setFamily(userEmail,  userEmail)
                     .addOnSuccessListener(runnable -> {
                         FamilyController.getInstance().setCurrentFamily(userEmail);
                         dismiss();
                     });
         } else {
-            // létezik-e a család
+            // Létezik-e a család
             FamilyController.getInstance().exists(family_email).addOnCompleteListener(
                 task -> {
                     if (task.isSuccessful()) {
@@ -113,6 +119,9 @@ public class FamilyChooserBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Továbbirányítás a főoldalra.
+     */
     private void redirectToProfile() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {

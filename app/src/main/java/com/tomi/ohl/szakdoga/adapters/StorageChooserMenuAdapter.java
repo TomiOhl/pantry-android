@@ -6,6 +6,9 @@ import android.widget.ArrayAdapter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Tárolóválasztási menü adaptere.
+ */
 public class StorageChooserMenuAdapter extends ArrayAdapter<String> {
     List<String> items;
 
@@ -14,13 +17,21 @@ public class StorageChooserMenuAdapter extends ArrayAdapter<String> {
         items = Arrays.asList(storageItems);
     }
 
-    // Az elem az adott indexén a tömbnek
+    /**
+     * Egy tároló nevének visszaadása index alapján.
+     * @param i a tároló indexe.
+     * @return az elem az adott indexén a tömbnek.
+     */
     @Override
     public String getItem(int i) {
         return items.get(i);
     }
 
-    // Az adott elem indexe a tömbben
+    /**
+     * Egy tároló indexének visszaadása a neve alapján.
+     * @param item a tároló neve.
+     * @return az adott elem indexe a tömbben.
+     */
     public int getIdOfItem(String item) {
         if (items.contains(item))
             return items.indexOf(item);

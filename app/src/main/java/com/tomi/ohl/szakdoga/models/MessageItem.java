@@ -1,5 +1,8 @@
 package com.tomi.ohl.szakdoga.models;
 
+/**
+ * Egy üzenet modellje az adatbázisban.
+ */
 public class MessageItem {
     private String senderUid;
     private String sender;

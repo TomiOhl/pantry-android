@@ -19,7 +19,9 @@ import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
 import java.util.Locale;
 
-// Tárolt elemekre kattintva felugró felület
+/**
+ * Tárolt elemekre kattintva felugró felület.
+ */
 public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
     private String itemId;
     private StorageItem item;
@@ -79,6 +81,10 @@ public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
         return layout;
     }
 
+    /**
+     * Gyors mennyiségállítás kezelése.
+     * @param isMore több-e az új érték, mint az előző.
+     */
     private void setItemCount(boolean isMore) {
         int newCount = item.getCount();
         if (isMore)
@@ -93,7 +99,12 @@ public class StorageItemDetailsBottomSheet extends BottomSheetDialogFragment {
         ));
     }
 
-    // Ez persze nem így fog kinézni akkor, ha dinamikus lenne valamikor
+    /**
+     * Tároló nevének lekérése id alapján.
+     * Ez persze nem így fog kinézni akkor, ha dinamikus lenne valamikor.
+     * @param id a tároló id-je.
+     * @return a tároló megjelenítendő neve.
+     */
     private String getStorageName(int id) {
         String name = id == 0 ? getString(R.string.fridge) : getString(R.string.pantry);
         return name.toLowerCase();

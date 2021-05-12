@@ -26,6 +26,9 @@ import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.views.AddStorageItemBottomSheet;
 
+/**
+ * A fő fragment, ami otthont ad a tárolók megjelenítéséért felelős felületnek.
+ */
 public class StorageFragment extends Fragment {
 
     private Spinner sortSpinner;
@@ -80,6 +83,11 @@ public class StorageFragment extends Fragment {
         sortSpinner.setSelection(sortIndex);
     }
 
+    /**
+     * A rendezés egyik elemére kattintva lefutó metódus.
+     * @param layout a befoglaló felület.
+     * @return választásra való listener.
+     */
     AdapterView.OnItemSelectedListener onSortSpinnerClick(View layout) {
         return new AdapterView.OnItemSelectedListener() {
             @Override
@@ -104,7 +112,10 @@ public class StorageFragment extends Fragment {
         };
     }
 
-    // Tárolólisták fragmentjeinek létrehozása vagy frissítése
+    /**
+     * Tárolólisták fragmentjeinek létrehozása vagy frissítése.
+     * @param layout a befoglaló felület.
+     */
     private void createOrLoadStorageItems(View layout) {
         if (fridgeListFragment == null || pantryListFragment == null ||
                 fridgeListFragment.getView() == null || pantryListFragment.getView() == null) {
@@ -115,6 +126,10 @@ public class StorageFragment extends Fragment {
         }
     }
 
+    /**
+     * Tabek létrehozása és tárolólisták rárakása.
+     * @param layout a befoglaló felület.
+     */
     private void createTabsWithViewPager(View layout) {
         fridgeListFragment = StorageItemsFragment.newInstance(0);
         pantryListFragment = StorageItemsFragment.newInstance(1);

@@ -28,6 +28,9 @@ import com.tomi.ohl.szakdoga.utils.NotificationUtils;
 
 import java.util.ArrayList;
 
+/**
+ * A fő Activity, amely magába foglalja az alkalmazás főképernyőjét, négy tabre tagolva.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
@@ -77,19 +80,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Az Activity indításakor elvégzendő műveletek.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         checkLastSeenMsg();
     }
 
+    /**
+     * Az Activity leállításakor elvégzendő műveletek.
+     */
     @Override
     protected void onStop() {
         super.onStop();
         removeDbListeners();
     }
 
-    // toolbar-ikon
+    /**
+     * A ActionBar menüjének megjelenítése.
+     * @param menu amit kapunk.
+     * @return sikeres-e a működés.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -98,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * A vissza gomb megnyomása bezárja a keresést, amennyiben az nyitva van.
+     */
     @Override
     public void onBackPressed() {
         if (searchView.isIconified())
@@ -106,7 +122,10 @@ public class MainActivity extends AppCompatActivity {
             searchView.onActionViewCollapsed();
     }
 
-    // a kiválasztott fragment betöltése
+    /**
+     * A kiválasztott fragment betöltése a fő layoutra.
+     * @param fragment a betöltendő fragment.
+     */
     public void chooseFragment(Fragment fragment) {
         String tag = fragment.getClass().getSimpleName();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -116,7 +135,10 @@ public class MainActivity extends AppCompatActivity {
         setSelectedFragment(tag);
     }
 
-    // Megnyitás utáni első fragment betöltése
+    /**
+     * Megnyitás utáni első fragment kiválasztása.
+     * @param destinationFromShortcut egy String, ami a betöltendő fragment osztályának a nevét tartalmazza.
+     */
     private void chooseInitialFragment(String destinationFromShortcut) {
         int selectedId = R.id.storage;
         if (destinationFromShortcut != null)
@@ -133,32 +155,49 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setSelectedItemId(selectedId);
     }
 
-    // Regisztrált db listenerek eltávolítása
+    /**
+     * A regisztrált db listenerek eltávolítása.
+     */
     public void removeDbListeners() {
         for(ListenerRegistration elem : dbListeners)
             elem.remove();
         dbListeners.clear();
     }
 
+    /**
+     * @return a regisztrált db listenerek listája.
+     */
     public ArrayList<ListenerRegistration> getDbListeners() {
         return dbListeners;
     }
 
+    /**
+     * @return a keresősáv felülete.
+     */
     public SearchView getSearchView() {
         return searchView;
     }
 
+    /**
+     * @return az alsó navigációs sáv.
+     */
     public BottomNavigationView getBottomNavigation() {
         return bottomNavigation;
     }
 
-    // Erre térünk vissza a keresés fragmentról
+    /**
+     * Az itt beállított fragmentre térünk vissza a keresés fragmentről.
+     * @param selectedFragment a kívánt fragment osztályának neve.
+     */
     private void setSelectedFragment(String selectedFragment) {
         if (!selectedFragment.equals("SearchResultFragment"))
             this.selectedFragment = selectedFragment;
     }
 
-    // ActionBaron lévő keresés viselkedése
+    /**
+     * Az ActionBaron lévő keresés viselkedése.
+     * @param menuItem a menüpont, ami a keresést tartalmazza.
+     */
     private void setupSearch(MenuItem menuItem) {
         searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(findViewById(R.id.mainLayout).getMeasuredWidth());
@@ -188,7 +227,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Legutolsó üzenet idejének összehasonlítása az utoljára látottal
+    /**
+     * A legutolsó üzenet idejének összehasonlítása az utoljára látottal.
+     * Ha van új üzenet, értesít róla és badge-et jelenít meg az alsó navigációs sávon.
+     */
     public void checkLastSeenMsg() {
         // Legutolsó üzenet lekérése
         StorageController.getInstance().getLastMessage().addOnSuccessListener(msgSnapshot -> {

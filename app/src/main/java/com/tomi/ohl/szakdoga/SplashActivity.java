@@ -15,6 +15,12 @@ import com.tomi.ohl.szakdoga.views.FamilyChooserBottomSheet;
 
 import java.util.HashMap;
 
+/**
+ * Az alkalmazás ikonjára kattintva ez az Activity indul el.
+ * Eldönti, hogy van-e bejelentkezett user.
+ * Ha nincs, a bejelentkező felületre irányít.
+ * Ha van, lekéri a családját és átirányítja a főképernyőre.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     @Override

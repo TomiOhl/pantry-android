@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A családok/háztartásokkal kapcsolatos adatbázisműveleteket implementáló osztály.
+ * Firebase Firestore-t használ.
+ */
 public class FamilyDaoImpl implements FamilyDao {
 
     // Az adatbázisban található kollekciók nevei

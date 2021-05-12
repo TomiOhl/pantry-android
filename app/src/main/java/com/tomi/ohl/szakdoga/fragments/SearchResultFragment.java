@@ -22,6 +22,9 @@ import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.LinkedHashMap;
 
+/**
+ * Keresések eredményét megjelenítő fragment.
+ */
 public class SearchResultFragment extends Fragment {
     private LinkedHashMap<String, StorageItem> itemsMap;
     private RecyclerView rv;
@@ -30,6 +33,11 @@ public class SearchResultFragment extends Fragment {
     public SearchResultFragment() {
     }
 
+    /**
+     * Új példány létrehozása a megadott queryvel.
+     * @param query a keresett kifejezés.
+     * @return a fragment egy példánya a megjelenített találatokkal.
+     */
     public static SearchResultFragment newInstance(String query) {
         Bundle args = new Bundle();
         args.putString("query", query);
@@ -65,13 +73,18 @@ public class SearchResultFragment extends Fragment {
         super.onStop();
     }
 
-    // Új kereséshez
+    /**
+     * Új kereséskor query lecserélése.
+     * @param query az új keresett kifejezés.
+     */
     public void changeQuery(String query) {
         this.query = query;
         loadStorageContents();
     }
 
-    // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
+    /**
+     * Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése.
+     */
     private void loadStorageContents() {
         itemsMap = new LinkedHashMap<>();
         rv = requireView().findViewById(R.id.storageRecyclerView);
@@ -93,7 +106,10 @@ public class SearchResultFragment extends Fragment {
         ));
     }
 
-    // Ha nincs találat, egy szöveget jelenítsünk meg
+    /**
+     * Ha nincs találat, egy szöveget jelenítsünk meg.
+     * @param resultsSize a találatok listájának hossza.
+     */
     private void toggleEmptyText(int resultsSize) {
         TextView emptyText = requireView().findViewById(R.id.storageListEmpty);
         if (resultsSize == 0) {

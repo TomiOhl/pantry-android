@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.tomi.ohl.szakdoga.R;
 
+/**
+ * A bevásárlólista egy elemének megjelenítésének a felületéhez tartozó elemek.
+ */
 public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
     private LinearLayout shoppingItem;
     private MaterialCheckBox shoppingCheck;

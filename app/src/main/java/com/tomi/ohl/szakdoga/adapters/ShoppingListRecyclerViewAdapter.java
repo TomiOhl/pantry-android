@@ -21,6 +21,9 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * A bevásárlólista elemeinek megjelenítésénél használt RecyclerView adaptere.
+ */
 public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<ShoppingListViewHolder> {
     private LinkedHashMap<String, ShoppingListItem> items;
     private ArrayList<String> keys;
@@ -90,17 +93,30 @@ public class ShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
         return keys.size();
     }
 
+    /**
+     * Egy adott pozíción lévő kulcs lekérése.
+     * @param position a kért pozíció.
+     * @return a pozíción lévő kulcs.
+     */
     public String getKeyAtPosition(int position) {
         return keys.get(position);
     }
 
+    /**
+     * Legutóbb törölt elem pozíciójának elmentése.
+     * @param position a legutóbb törölt elem pozíciója.
+     */
     public void setLastDeletedItemPosition(int position) {
         lastDeletedItemPosition = position;
     }
 
-    // Note: a lastDeletedItemPositionös sorok és a notifyItemRangeChanged helyett lehetne
-    // egy sima notifyDataSetChanged hívás is,
-    // azonban úgy szerkesztés után máshova kattintva mindig az első EditText kapná a fókuszt.
+    /**
+     * A megjelenítendő elemek kulcsainak frissítése.
+     * Note: a lastDeletedItemPositionös sorok és a notifyItemRangeChanged helyett lehetne
+     * egy sima notifyDataSetChanged hívás is,
+     * azonban úgy szerkesztés után máshova kattintva mindig az első EditText kapná a fókuszt.
+     * @param newKeys az új kulcsok.
+     */
     public void updateKeys(Set<String> newKeys) {
         notifyItemRemoved(lastDeletedItemPosition);
         keys.clear();

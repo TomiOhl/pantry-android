@@ -32,6 +32,9 @@ import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.StorageItem;
 import com.tomi.ohl.szakdoga.utils.InputUtils;
 
+/**
+ * Tárolóhoz adás Bottom sheet.
+ */
 public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
     private TextView titleText;
     private EditText nameEditText;
@@ -123,6 +126,9 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         return layout;
     }
 
+    /**
+     * A Sheet beállítása új hozzáadáshoz.
+     */
     private void setupForNewAdd() {
         // Tárhelyválasztó menü
         // Később majd akár a user által szerkeszthetővé lehetne tenni a tömböt
@@ -147,6 +153,9 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
+    /**
+     * A Sheet beállítása meglévő elem szerkesztéséhez.
+     */
     private void setupForEdit() {
         titleText.setText(R.string.edit);
         nameEditText.setText(currentItem.getName());
@@ -167,7 +176,10 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
-    // Javaslatok betöltése, felirat megjelenítése, ha vannak
+    /**
+     * Javaslatok betöltése és felirat megjelenítése, ha vannak.
+     * @param chipGroup ahová a javaslatokat tartalmazó Chipek kerülnek.
+     */
     private void loadSuggestions(ChipGroup chipGroup) {
         StorageController.getInstance().getShoppingListItemsOnce(true).addOnCompleteListener(task -> {
             if (task.isSuccessful() && getDialog() != null) {
@@ -190,13 +202,21 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
+    /**
+     * Egy javaslatra nyomáskor az kerüljön a név helyére és tűnjön el a javaslatok közül.
+     * @param chip a javaslatot tartalmazó Chip.
+     * @param itemName a javasolt elem neve.
+     */
     private void onSuggestionClicked(Chip chip, String itemName) {
         nameEditText.setText(itemName);
         countEditText.requestFocus();
         suggestionsChipGroup.removeView(chip);
     }
 
-    // Üres inputok kivédése
+    /**
+     * A különböző beviteli mezők validálásáért felelős metódus.
+     * @return hibába futott-e valamelyik ellenőrzés.
+     */
     private boolean invalidInputs() {
         if (nameEditText.getText().toString().trim().isEmpty()) {
             nameEditTextContainer.setError(getString(R.string.require_not_empty));
@@ -222,7 +242,9 @@ public class AddStorageItemBottomSheet extends BottomSheetDialogFragment {
         return false;
     }
 
-    // Beviteli mezőkről hiba eltüntetése, ha írni kezdünk beléjük
+    /**
+     * Beviteli mezőkről hiba eltüntetése, ha írni kezdünk beléjük.
+     */
     private void setInputTextWatchers() {
         InputUtils.clearInputLayoutErrors(nameEditTextContainer, nameEditText);
         InputUtils.clearInputLayoutErrors(countEditTextContainer, countEditText);

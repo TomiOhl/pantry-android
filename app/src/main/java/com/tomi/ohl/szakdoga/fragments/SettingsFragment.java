@@ -20,6 +20,9 @@ import com.tomi.ohl.szakdoga.controller.FamilyController;
 import com.tomi.ohl.szakdoga.utils.ThemeUtils;
 import com.tomi.ohl.szakdoga.views.FamilyChooserBottomSheet;
 
+/**
+ * Az alkalmazás beállításainak helyet adó fragment.
+ */
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private MainActivity mainActivity;
@@ -77,6 +80,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         return super.onPreferenceTreeClick(preference);
     }
 
+    /**
+     * Profil frissítése új névvel.
+     * @param newName a beállítandó név.
+     */
     private void updateProfile(String newName) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
             .setDisplayName(newName)
@@ -84,6 +91,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         user.updateProfile(profileUpdates);
     }
 
+    /**
+     * A felhasználó kijelentkeztetése a fiókjából.
+     */
     private void logout() {
         // Regisztrált db listenerek eltávolítása
         ((MainActivity)requireActivity()).removeDbListeners();

@@ -12,6 +12,9 @@ import com.tomi.ohl.szakdoga.controller.StorageController;
 import com.tomi.ohl.szakdoga.models.MessageItem;
 import com.tomi.ohl.szakdoga.utils.DialogUtils;
 
+/**
+ * Új üzenet írásáért felelős osztály.
+ */
 public class NewMessageActivity extends AppCompatActivity {
 
     EditText newMessageEditText;
@@ -50,7 +53,9 @@ public class NewMessageActivity extends AppCompatActivity {
         newMessageEditText.requestFocus();
     }
 
-    // A vissza gomb megnyomásánák művelete
+    /**
+     * A vissza gomb megnyomásánák művelete.
+     */
     @Override
     public void onBackPressed() {
         if (messageId == null && !isEditTextEmpty())
@@ -59,14 +64,19 @@ public class NewMessageActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 
-    // Az ActionBar vissza nyilának megnyomásánák művelete
+    /**
+     * Az ActionBar vissza nyilának megnyomásánák művelete.
+     * @return true
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
-    // Az alkalmazás bezárásakor elvégzendő műveletek
+    /**
+     * Az Activity bezárásakor elvégzendő műveletek.
+     */
     @Override
     public void finish(){
         super.finish();
@@ -77,7 +87,9 @@ public class NewMessageActivity extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in, R.anim.slide_down);
     }
 
-    // Az üzenet küldése gombot megnyomva új üzenet esetén
+    /**
+     * Az üzenet küldése gombot megnyomva új üzenet esetén végrehajtódó műveletek.
+     */
     private void sendMessage() {
         if (isEditTextEmpty())
             return;
@@ -95,7 +107,9 @@ public class NewMessageActivity extends AppCompatActivity {
         }
     }
 
-    // Az üzenet küldése gombot megnyomva üzenet szerkesztése esetén
+    /**
+     * Az üzenet küldése gombot megnyomva üzenet szerkesztése esetén végrehajtódó műveletek.
+     */
     private void editMessage() {
         if (isEditTextEmpty())
             return;
@@ -104,7 +118,10 @@ public class NewMessageActivity extends AppCompatActivity {
         finish();
     }
 
-    // Üres-e a szövegdoboz
+    /**
+     * A szövegdoboz ürességét ellenőrzi.
+     * @return üres-e a szövegdoboz.
+     */
     private boolean isEditTextEmpty() {
         return newMessageEditText.getText().toString().trim().isEmpty();
     }

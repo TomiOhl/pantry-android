@@ -1,5 +1,8 @@
 package com.tomi.ohl.szakdoga.models;
 
+/**
+ * A bevásárlólista egy elemének modellje az adatbázisban.
+ */
 public class ShoppingListItem {
     private String name;
     private Boolean checked;

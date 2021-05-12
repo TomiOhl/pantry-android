@@ -2,6 +2,9 @@ package com.tomi.ohl.szakdoga.models;
 
 import java.io.Serializable;
 
+/**
+ * Egy tárolóban tárolt elem modellje az adatbázisban.
+ */
 public class StorageItem implements Serializable {
     private String name;
     private int count;

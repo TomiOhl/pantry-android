@@ -2,7 +2,15 @@ package com.tomi.ohl.szakdoga.utils;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+/**
+ * Témakezelő segédosztály.
+ */
 public class ThemeUtils {
+    /**
+     * Színséma beállítása a beépített DayNight téma lehetőségeit kihasználva.
+     * @param mode system/light/dark.
+     * @return sikerrel járt-e az átállítás.
+     */
     public static boolean setNightMode(String mode) {
         switch (mode) {
             case "system":

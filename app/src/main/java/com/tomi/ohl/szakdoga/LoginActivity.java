@@ -22,6 +22,9 @@ import com.tomi.ohl.szakdoga.views.FamilyChooserBottomSheet;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * A bejelentkezésért és a regisztrációért felelős Activity.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -60,9 +63,12 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(view -> onLoginClick());
     }
 
-    // A regisztráció gombra kattintva
+    /**
+     * A regisztráció gombra kattintva ellenőrizzük, látható-e a nevet bekérő mező.
+     * Ha nem, akkor jelenítsük meg, ami a regisztrációhoz szükséges.
+     * Ha igen, akkor hozzuk létre a felhasználót.
+     */
     private void onRegisterClick() {
-        // UI módosuljon regisztrációs módba
         if (displayNameEditTextContainer.getVisibility() == View.GONE) {
             displayNameEditTextContainer.setVisibility(View.VISIBLE);
             passwordAgainEditTextContainer.setVisibility(View.VISIBLE);
@@ -74,9 +80,12 @@ public class LoginActivity extends AppCompatActivity {
             createUser();
     }
 
-    // A bejelentkezés gombra kattintva
+    /**
+     * A bejelentkezés gombra kattintva ellenőrizzük, látható-e a nevet bekérő mező.
+     * Ha igen, váltsunk bejelentkező módba.
+     * Ha nem, jelentkeztessük be a felhasználót.
+     */
     private void onLoginClick() {
-        // UI módosuljon bejelentkezős módba
         if (displayNameEditTextContainer.getVisibility() == View.VISIBLE) {
             displayNameEditTextContainer.setVisibility(View.GONE);
             passwordAgainEditTextContainer.setVisibility(View.GONE);
@@ -88,6 +97,9 @@ public class LoginActivity extends AppCompatActivity {
             loginUser();
     }
 
+    /**
+     * Egy felhasználó létrehozásáért felelős metódus.
+     */
     private void createUser() {
         if (invalidInputs())
             return;
@@ -103,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                 .addOnCompleteListener(task1 -> {
                                     InputUtils.hideKeyboard(this);
                                     if (task1.isSuccessful()) {
-                                        // Névbeállítás sikeres
+                                        // Névbeállítás sikeres, kérjük be a családot
                                         FamilyChooserBottomSheet familyChooser = new FamilyChooserBottomSheet();
                                         familyChooser.setCancelable(false);
                                         familyChooser.show(getSupportFragmentManager(), "initial_" + FamilyChooserBottomSheet.class.getSimpleName());
@@ -117,6 +129,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Egy felhasználó bejelentkeztetéséért felelős metódus.
+     */
     private void loginUser() {
         if (invalidInputs())
             return;
@@ -133,6 +148,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * A jelenlegi család lekérése és elmentése, majd továbbirányítás.
+     */
     private void setCurrentFamilyAndRedirect() {
         FamilyController.getInstance().getFamily().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -148,6 +166,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Továbbirányítás a főoldalra.
+     */
     private void redirectToProfile() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -156,6 +177,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * A különböző beviteli mezők validálásáért felelős metódus.
+     * @return hibába futott-e valamelyik ellenőrzés.
+     */
     private boolean invalidInputs() {
         // Üres inputok kivédése
         if (emailEditText.getText().toString().trim().isEmpty()) {
@@ -188,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                 passwordAgainEditTextContainer.setError(getString(R.string.require_matching_passwords));
                 return true;
             }
-            // Még egy input
+            // Még egy input üressége
             if (displayNameEditText.getText().toString().trim().isEmpty()) {
                 displayNameEditTextContainer.setError(getString(R.string.require_name));
                 displayNameEditText.requestFocus();
@@ -198,7 +223,9 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-    // Beviteli mezőkről hiba eltüntetése, ha írni kezdünk beléjük
+    /**
+     * Beviteli mezőkről hiba eltüntetése, ha írni kezdünk beléjük.
+     */
     private void setInputTextWatchers() {
         InputUtils.clearInputLayoutErrors(emailEditTextContainer, emailEditText);
         InputUtils.clearInputLayoutErrors(passwordEditTextContainer, passwordEditText);

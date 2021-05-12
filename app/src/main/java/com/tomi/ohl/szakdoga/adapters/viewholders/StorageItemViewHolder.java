@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tomi.ohl.szakdoga.R;
 
+/**
+ * Egy tárolt elem megjelenítésének a felületéhez tartozó elemek.
+ */
 public class StorageItemViewHolder extends RecyclerView.ViewHolder {
     private LinearLayout container;
     private TextView title;

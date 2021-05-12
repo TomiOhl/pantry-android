@@ -23,6 +23,9 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * A tárolók elemeinek megjelenítésénél használt RecyclerView adaptere.
+ */
 public class StorageRecylerViewAdapter extends RecyclerView.Adapter<StorageItemViewHolder> {
     LinkedHashMap<String, StorageItem> items;
     ArrayList<String> keys;
@@ -68,12 +71,22 @@ public class StorageRecylerViewAdapter extends RecyclerView.Adapter<StorageItemV
         return keys.size();
     }
 
+    /**
+     * Az adott pozíción lévő elem lekérése.
+     * @param position a kért pozíció.
+     * @return a pozíción lévő elem.
+     */
     private StorageItem getItem(int position) {
         String key = keys.get(position);
         return items.get(key);
     }
 
-    // Részletek megjelenítése bottom sheeten
+    /**
+     * Részletek megjelenítése bottom sheeten.
+     * @param ctx kontextus.
+     * @param position az elem pozíciója.
+     * @return sikerült-e megjeleníteni.
+     */
     private boolean displayDetails(Context ctx, int position) {
         FragmentManager fm = ((FragmentActivity) ctx).getSupportFragmentManager();
         Fragment parentFragment = fm.findFragmentByTag("StorageFragment") == null ?
@@ -88,6 +101,10 @@ public class StorageRecylerViewAdapter extends RecyclerView.Adapter<StorageItemV
         return false;
     }
 
+    /**
+     * A megjelenítendő elemek kulcsainak frissítése.
+     * @param newKeys az új kulcsok.
+     */
     public void updateKeys(Set<String> newKeys) {
         keys.clear();
         keys.addAll(new ArrayList<>(newKeys));

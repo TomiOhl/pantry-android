@@ -20,6 +20,9 @@ import com.tomi.ohl.szakdoga.models.StorageItem;
 
 import java.util.LinkedHashMap;
 
+/**
+ * A tárolt elemeket megjelenítő fragment.
+ */
 public class StorageItemsFragment extends Fragment {
     private LinkedHashMap<String, StorageItem> itemsMap;
     private RecyclerView rv;
@@ -28,6 +31,11 @@ public class StorageItemsFragment extends Fragment {
 
     public StorageItemsFragment() {}
 
+    /**
+     * Új példány létrehozása a megadott tárolóval.
+     * @param storage a megjelenítendő tároló.
+     * @return a fragment egy példánya.
+     */
     public static StorageItemsFragment newInstance(int storage) {
         Bundle args = new Bundle();
         args.putInt("storage", storage);
@@ -59,7 +67,10 @@ public class StorageItemsFragment extends Fragment {
         dbListener = null;
     }
 
-    // Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése
+    /**
+     * Az adott tároló tartalmának figyelése, listázás és onClick beállítása/frissítése.
+     * @param storage a tároló, aminek tartalmára kíváncsiak vagyunk.
+     */
     private void loadStorageContents(int storage) {
         itemsMap = new LinkedHashMap<>();
         rv = requireView().findViewById(R.id.storageRecyclerView);
@@ -81,6 +92,9 @@ public class StorageItemsFragment extends Fragment {
         );
     }
 
+    /**
+     * Listener/megjelenítés frissítése.
+     */
     public void updateContent() {
         Bundle args = getArguments();
         if (args != null) {
@@ -89,7 +103,10 @@ public class StorageItemsFragment extends Fragment {
         }
     }
 
-    // Ha nincs találat, egy szöveget jelenítsünk meg
+    /**
+     * Ha nincs találat, egy szöveget jelenítsünk meg.
+     * @param resultsSize a találatok listájának hossza.
+     */
     private void toggleEmptyText(int resultsSize) {
         View layout = getView();
         if (layout == null) return;
