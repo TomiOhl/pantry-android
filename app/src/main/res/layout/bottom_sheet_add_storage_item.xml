@@ -32,7 +32,7 @@
             android:layout_marginBottom="8dp"
             android:textSize="32sp"
             android:textColor="@color/colorText"
-            android:text="@string/add"/>
+            android:text="@string/add_new"/>
 
         <include layout="@layout/bottom_sheet_add_storage_item_inputs"/>
 

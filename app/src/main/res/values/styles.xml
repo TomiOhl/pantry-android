@@ -41,19 +41,17 @@
 
     <!-- Sets Bottom sheets style. -->
     <style name="RoundedBottomSheetStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="android:backgroundTint">@color/bottom_sheet_background</item>
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.LargeComponent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">@color/bottom_sheet_background</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheetModalStyle</item>
     </style>
 
-    <style name="ShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
+    <style name="BottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_bg</item>
     </style>
 
     <!-- Transparent dialog style. -->
