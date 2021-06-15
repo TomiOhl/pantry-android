@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             displayNameEditTextContainer.setVisibility(View.VISIBLE);
             passwordAgainEditTextContainer.setVisibility(View.VISIBLE);
             loginButton.setText(R.string.back);
-            loginButton.setBackgroundColor(getColor(android.R.color.white));
+            loginButton.setBackgroundColor(getColor(R.color.secondary_button_background));
             loginButton.setTextColor(getColor(R.color.colorAccent));
             loginButton.setForeground(ContextCompat.getDrawable(this, R.drawable.ripple_button_secondary));
         } else

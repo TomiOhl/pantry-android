@@ -64,9 +64,9 @@ public class ShoppingListFragment extends Fragment {
         ChipGroup chipGroup = layout.findViewById(R.id.shoppinglistSuggestionsGroup);
         loadSuggestions(chipGroup);
 
-        // Új üzenet gomb
-        FloatingActionButton newMessageFab = layout.findViewById(R.id.fabAddShopping);
-        newMessageFab.setOnClickListener(view -> {
+        // Új elem gomb
+        FloatingActionButton newItemFab = layout.findViewById(R.id.fabAddShopping);
+        newItemFab.setOnClickListener(view -> {
             AddShoppingListItemBottomSheet addItemSheet = new AddShoppingListItemBottomSheet();
             addItemSheet.show(getChildFragmentManager(), AddShoppingListItemBottomSheet.class.getSimpleName());
         });
